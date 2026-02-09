@@ -1,7 +1,7 @@
 {
   "name": "Pura Gracia Radio",
   "short_name": "PG Radio",
-  "description": "Pura Gracia Radio es un ministerio de la Iglesia Bíblica Gracia Verdadera en Puerto Rico. Música y contenido de sana doctrina, teología reformada y predicación expositiva.",
+  "description": "Radio online cristiana – Pura Gracia Radio. Música y predicación expositiva con sana doctrina.",
   "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#065D9B",

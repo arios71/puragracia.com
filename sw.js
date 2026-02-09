@@ -1,47 +1,45 @@
-const CACHE_NAME = 'puragracia-cache-v1';
+const CACHE_NAME = 'pg-radio-cache-v1';
 const urlsToCache = [
   '/',
   '/index.html',
   '/manifest.json',
   '/assets/logo.png',
   '/assets/whatsapp.png',
-  '/assets/ministerio1.png',
-  '/assets/ministerio2.png',
-  '/assets/ministerio3.png',
-  '/assets/ministerio4.png',
-  '/assets/ministerio5.png',
-  '/assets/ministerio6.png',
-  '/assets/ministerio7.png',
-  '/assets/ministerio8.png'
+  '/assets/radio-eternidad.png',
+  '/assets/transmundial.png',
+  '/assets/thirdmill.png',
+  '/assets/lectura-publica.png',
+  '/assets/coalicion-evangelio.png',
+  '/assets/iglesia-bautista.png',
+  '/assets/integridad-sabiduria.png',
+  '/assets/desiring-god.png'
 ];
 
+// Instalación del Service Worker
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => cache.addAll(urlsToCache))
+      .then(() => self.skipWaiting())
   );
-  self.skipWaiting();
 });
 
+// Activación y limpieza de caches antiguas
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(keyList =>
+    caches.keys().then(keys => 
       Promise.all(
-        keyList.map(key => {
-          if (key !== CACHE_NAME) {
-            return caches.delete(key);
-          }
-        })
+        keys.filter(key => key !== CACHE_NAME)
+            .map(key => caches.delete(key))
       )
-    )
+    ).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
+// Interceptar requests y servir de cache si existe
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request).then(response => {
-      return response || fetch(event.request);
-    })
+    caches.match(event.request)
+      .then(resp => resp || fetch(event.request))
   );
 });
