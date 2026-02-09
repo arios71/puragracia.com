@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pura Gracia Radio</title>
 
+<!-- SEO Oculto -->
+<meta name="description" content="Pura Gracia Radio es un ministerio de la Iglesia Bíblica Gracia Verdadera en Puerto Rico. Música y contenido de sana doctrina, teología reformada y predicación expositiva.">
+
 <!-- Manifest PWA -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#065D9B">
@@ -19,63 +22,133 @@ if ('serviceWorker' in navigator) {
 </script>
 
 <style>
+/* ======================
+   VARIABLES Y RESET
+====================== */
 :root{
   --blue:#065D9B;
   --gold:#fbac33;
   --white:#ffffff;
 }
 
-/* RESET */
-*{ box-sizing:border-box; font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif; }
-body{ margin:0; background:linear-gradient(180deg,var(--blue),#043b63); color:var(--white); }
+*{ box-sizing:border-box; font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif; margin:0; padding:0; }
 
+body{
+  margin:0;
+  background:linear-gradient(180deg,var(--blue),#043b63);
+  color:var(--white);
+}
+
+/* ======================
+   MENU
+====================== */
+header{
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:rgba(6,93,155,.95);
+  backdrop-filter: blur(6px);
+}
+.nav{
+  max-width:480px;
+  margin:0 auto;
+  display:flex;
+  justify-content:space-around;
+  padding:12px 8px;
+}
+.nav a{
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  font-size:.9rem;
+}
+.nav a:hover{ color:var(--gold); }
+
+/* ======================
+   APP
+====================== */
 .app{ width:100%; max-width:480px; padding:20px; margin:0 auto; display:block; }
 
-/* LOGO Y TITULO */
-.logo{ width:200px; max-width:80%; display:block; margin:10px auto 8px; text-align:center; }
-h1.main-title{ text-align:center; color:#ffffff; font-size:1.8rem; margin:0; }
-h2.sub-title{ text-align:center; color:#ffffff; font-size:1.2rem; margin-top:4px; margin-bottom:20px; }
+/* LOGO */
+.logo{ width:200px; max-width:80%; display:block; margin:10px auto 8px; }
+h1.main-title{ text-align:center; font-size:1.8rem; margin:0; }
+h2.sub-title{ text-align:center; font-size:1.2rem; margin:4px 0 20px; }
 
-/* PLAYER */
-.player{ background:linear-gradient(180deg,#065D9B,#05497b); border-radius:26px; padding:20px; box-shadow:0 18px 40px rgba(0,0,0,.35); margin-bottom:32px; text-align:center; }
-audio{ width:100%; margin-top:14px; border-radius:14px; background:#05497b; padding:6px; }
-audio::-webkit-media-controls-panel{ background:#05497b; }
-audio::-webkit-media-controls-play-button, audio::-webkit-media-controls-pause-button{ filter:invert(1); }
-audio::-webkit-media-controls-current-time-display, audio::-webkit-media-controls-time-remaining-display{ color:#ffffff; }
-audio::-webkit-media-controls-timeline, audio::-webkit-media-controls-volume-slider{ filter:invert(1); }
+/* ======================
+   PLAYER
+====================== */
+.player{
+  background:linear-gradient(180deg,#065D9B,#05497b);
+  border-radius:26px;
+  padding:20px;
+  box-shadow:0 18px 40px rgba(0,0,0,.35);
+  margin-bottom:32px;
+  text-align:center;
+}
+.player button{
+  margin-top:12px;
+  padding:10px 18px;
+  border-radius:20px;
+  background:var(--gold);
+  color:#065D9B;
+  font-weight:700;
+  border:none;
+  cursor:pointer;
+}
+audio{ width:100%; margin-top:14px; border-radius:14px; }
 
-/* SECTIONS */
-.section{ margin-bottom:34px; }
+/* ======================
+   SECCIONES
+====================== */
+.section{ margin-bottom:34px; scroll-margin-top:80px; }
 .section h2{ color:var(--gold); font-size:1.2rem; margin-bottom:10px; }
-.section p{ font-size:.95rem; line-height:1.55; opacity:.95; }
-.contact a{ color:var(--gold); font-weight:700; text-decoration:none; }
+.section p{ font-size:.95rem; line-height:1.55; }
 
-/* WHATSAPP */
-.whatsapp-box{ background:transparent; border-radius:18px; padding:16px; text-align:center; }
-.whatsapp-box img{ width:56px; display:block; margin:0 auto 10px; }
-.whatsapp-box a{ display:inline-block; margin-top:8px; background:#25D366; color:#003b1f; font-weight:700; padding:10px 18px; border-radius:20px; text-decoration:none; }
-
-/* APPS */
-.apps-list{ list-style:none; padding:0; margin:0; }
-.apps-list li{ margin-bottom:10px; }
-.apps-list a{ color:#ffffff; font-weight:600; text-decoration:none; }
-
-footer{ text-align:center; font-size:.8rem; opacity:.75; margin-bottom:10px; }
-
-@media(max-width:600px){ .player{ padding:16px; } }
-
-/* Spotify responsive */
-.pg-spotify-wrapper{ position: relative; width: 100%; padding-top: 56.25%; }
+/* ======================
+   SAM WIDGET & SPOTIFY
+====================== */
+.pg-spotify-wrapper{ position:relative; width:100%; padding-top:56.25%; }
 .pg-spotify-wrapper iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; border-radius:12px; }
 
-/* Galería Ministerios */
+/* ======================
+   WHATSAPP
+====================== */
+.whatsapp-box{ text-align:center; margin-bottom:30px; }
+.whatsapp-box img{ width:56px; margin-bottom:10px; }
+.whatsapp-box a{
+  display:inline-block;
+  margin-top:8px;
+  background:#065D9B;
+  color:#ffffff;
+  font-weight:700;
+  padding:10px 18px;
+  border-radius:20px;
+  text-decoration:none;
+}
+/* Flotante móvil */
+.whatsapp-float{
+  position:fixed; right:18px; bottom:18px; width:60px; height:60px;
+  background:#25D366; border-radius:50%; display:none; align-items:center; justify-content:center;
+  box-shadow:0 12px 28px rgba(0,0,0,.35); z-index:999;
+}
+.whatsapp-float img{ width:34px; }
+@media(max-width:768px){ .whatsapp-float{ display:flex; } }
+
+/* ======================
+   GALLERY
+====================== */
 .pg-gallery{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
-.pg-item{text-align:center; text-decoration:none; color:var(--white);}
-.pg-item img{ width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:14px; background: rgba(255,255,255,.08); padding:6px; transition: transform .2s ease, box-shadow .2s ease; }
+.pg-item{text-align:center; text-decoration:none; color:#fff;}
+.pg-item img{ width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:14px; }
 .pg-item span{ display:block; margin-top:6px; font-size:.85rem; font-weight:600;}
-.pg-item:hover img{ transform: scale(1.03); box-shadow:0 10px 24px rgba(0,0,0,.35);}
-@media(max-width:768px){.pg-gallery{grid-template-columns:repeat(3,1fr);}}
-@media(max-width:480px){.pg-gallery{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:768px){.pg-gallery{grid-template-columns:repeat(3,1fr);} }
+@media(max-width:480px){.pg-gallery{grid-template-columns:repeat(2,1fr);} }
+
+/* ======================
+   FOOTER
+====================== */
+footer{ text-align:center; font-size:.8rem; opacity:.75; margin:20px 0 10px; }
+
 </style>
 
 <!-- SAM Widgets -->
@@ -83,32 +156,62 @@ footer{ text-align:center; font-size:.8rem; opacity:.75; margin-bottom:10px; }
 
 </head>
 <body>
-<main class="app">
 
-<!-- LOGO Y TITULO -->
-<img class="logo" src="https://raw.githubusercontent.com/arios71/puragracia-assets/refs/heads/main/LogoPG%202022.png" alt="Pura Gracia Radio">
+<header>
+  <nav class="nav">
+    <a href="#inicio">Inicio</a>
+    <a href="#programacion">Programación</a>
+    <a href="#sermones">Sermones</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+</header>
+
+<main class="app" id="inicio">
+
+<img class="logo" src="assets/logo.png" alt="Pura Gracia Radio">
 <h1 class="main-title">PURA GRACIA RADIO</h1>
 <h2 class="sub-title">WRPG-DB</h2>
 
 <!-- PLAYER -->
 <section class="player">
-  <button id="playRadio" style="margin-top:12px; padding:10px 18px; border-radius:20px; background:#fbac33; color:#065D9B; font-weight:700; border:none; cursor:pointer;">
-    ▶ Reproducir Radio
-  </button>
-  <iframe width="100%" height="90" src="https://players.rcast.net/chess/73387" frameborder="0" scrolling="no" allow="autoplay"></iframe>
+  <button id="playRadio">▶ Reproducir Radio</button>
+  <audio id="radioAudio" preload="none">
+    <source src="https://playerservices.streamtheworld.com/api/livestream-redirect/SAM05AAC459_SC" type="audio/mpeg">
+  </audio>
 </section>
 
-<!-- RECENTES -->
+<!-- RECIENTES -->
 <section class="section">
 <h2>🎧 Recientes</h2>
-<sam-widget type="history" station-id="135533" token="cdf7c7d6204a644fed684c340bda2649d7675bb0" history-limit="5" show-cover-art="true" show-buy-button="never" show-request-button="false" refresh-interval="30s" theme='{"backgroundTop":"#065d9bff","backgroundBottom":"#f9924cff","widgetBorder":"#ffffffff","dividers":"#c2b6b6ff","buttons":"#e73131ff","text":"#ffffffff"}'></sam-widget>
+<sam-widget
+  type="history"
+  station-id="135533"
+  token="cdf7c7d6204a644fed684c340bda2649d7675bb0"
+  history-limit="5"
+  show-cover-art="true"
+  show-buy-button="never"
+  show-request-button="false"
+  refresh-interval="30s"
+  theme='{"backgroundTop":"#065d9b","backgroundBottom":"#fbac33","widgetBorder":"#ffffffff","dividers":"#c2b6b6ff","buttons":"#e73131ff","text":"#ffffffff"}'>
+</sam-widget>
+</section>
+
+<!-- PROGRAMACION -->
+<section class="section" id="programacion">
+<h2>🗓️ Programación</h2>
+<iframe
+  src="https://teamup.com/ksqyre4rtx15nnfei3?view=d&showViewHeader=0&showTitle=0&showLogo=0&showMenu=0&disableSidepanel=1"
+  style="width:100%;height:600px;border:0;"
+  loading="lazy">
+</iframe>
 </section>
 
 <!-- SERMONES -->
-<section class="section">
+<section class="section" id="sermones">
 <h2>🎙️ Sermones</h2>
 <div class="pg-spotify-wrapper">
-<iframe src="https://open.spotify.com/embed/show/7bCzhWNjuVzSWeTLXvk9vt?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe>
+<iframe src="https://open.spotify.com/embed/show/7bCzhWNjuVzSWeTLXvk9vt"
+allow="autoplay; encrypted-media"></iframe>
 </div>
 </section>
 
@@ -116,35 +219,18 @@ footer{ text-align:center; font-size:.8rem; opacity:.75; margin-bottom:10px; }
 <section class="section">
 <h2>💬 Únete a nuestro canal de WhatsApp</h2>
 <div class="whatsapp-box">
-<img src="https://blogger.googleusercontent.com/img/a/AVvXsEg594n7tt0Yo5rDFeJn-OVI6DdPjsA1eJHx1C2e3spd8FmHBepgGKk-g7U23Jk6VlnXHs9YUT0g5HhJvTPbWYxrX_29mFsMJiorEujeuQmxm1vdak-Jo0omqMXnFJH9C1_VV1CH0W8dicpKrK5YbdxH5ibiBOpZeofYIwnRvkNZrI2ZezlnF2GE6KhiFWM=s150" alt="WhatsApp">
+<img src="assets/whatsapp.png" alt="WhatsApp">
 <p>Recibe anuncios sobre cambios en la programación y otras actualizaciones.</p>
-<a href="https://www.whatsapp.com/channel/0029VaAFdiO60eBjjXuyei1U" target="_blank">Seguir canal</a>
+<a href="https://www.whatsapp.com/channel/0029VaAFdiO60eBjjXuyei1U" target="_blank" rel="noopener">
+Seguir canal
+</a>
 </div>
 </section>
 
-<!-- OTRAS APPS -->
-<section class="section">
-<h2>📱 Escúchanos también en otras apps</h2>
-<ul class="apps-list">
-  <li><a href="https://play.google.com/store/apps/details?id=com.appgeneration.itunerfree" target="_blank">▶ myTuner</a></li>
-  <li><a href="https://audials.com/en/live/radio/pura-gracia-radio-2380780" target="_blank">▶ Audials</a></li>
-  <li><a href="https://www.radio.net/s/puragracia" target="_blank">▶ Radio.net</a></li>
-  <li><a href="https://www.radioline.co/es/radios/pura_gracia" target="_blank">▶ Radioline</a></li>
-  <li><a href="https://www.emisoras-puertorico.com/" target="_blank">▶ Radios de Puerto Rico</a></li>
-</ul>
-</section>
-
-<!-- QUIÉNES SOMOS -->
-<section class="section">
-<h2>✝️ Quiénes somos</h2>
-<p>Pura Gracia Radio fue lanzada el 31 de marzo de 2019 con el propósito de glorificar a Dios y edificar a la iglesia mediante una programación centrada en la suficiencia de Cristo y la autoridad de las Escrituras.</p>
-</section>
-
 <!-- CONTACTO -->
-<section class="section contact">
+<section class="section contact" id="contacto">
 <h2>📬 Contacto</h2>
-<p>¿Deseas comunicarte con nosotros?</p>
-<p>Escríbenos a: <a href="mailto:radio@puragracia.com">radio@puragracia.com</a></p>
+<p>Escríbenos a: <a href="mailto:radio@puragracia.com" style="color:#ffffff;">radio@puragracia.com</a></p>
 </section>
 
 <!-- MINISTERIOS COLABORADORES -->
@@ -152,54 +238,69 @@ footer{ text-align:center; font-size:.8rem; opacity:.75; margin-bottom:10px; }
 <h2>🤝 Ministerios colaboradores</h2>
 <div class="pg-gallery">
   <a class="pg-item" href="https://eternidadplus.com/" target="_blank">
-    <img src="https://static.mytuner.mobi/media/tvos_radios/327/radio-eternidad.9e45a029.jpg" alt="Radio Eternidad">
+    <img src="assets/ministerio1.png" alt="Radio Eternidad">
     <span>Radio Eternidad</span>
   </a>
   <a class="pg-item" href="https://transmundial.org/" target="_blank">
-    <img src="https://www.twr360.org/media/image/custom/208601.jpg" alt="Radio Transmundial">
+    <img src="assets/ministerio2.png" alt="Radio Transmundial">
     <span>Radio Transmundial</span>
   </a>
   <a class="pg-item" href="https://es.thirdmill.org/" target="_blank">
-    <img src="https://play-lh.googleusercontent.com/6kJ9D_gI6F1ZGRGofp1qnmaO-5Idq32Er3RRKHyRT6SIgqwMFlDOHeE_gHOTUKu7cARm" alt="ThirdMill Ministries">
+    <img src="assets/ministerio3.png" alt="ThirdMill Ministries">
     <span>ThirdMill Ministries</span>
   </a>
   <a class="pg-item" href="https://lecturapublicadelabiblia.org/" target="_blank">
-    <img src="https://play-lh.googleusercontent.com/hX4PAu85d0jjKbfmJHYqKQINypHB6uvDqsczkkR26keI-kSFSK9Wf9khrp8usVMRPg=w240-h480-rw" alt="Lectura Pública de la Biblia">
+    <img src="assets/ministerio4.png" alt="Lectura Pública Biblia">
     <span>Lectura Pública Biblia</span>
   </a>
   <a class="pg-item" href="https://www.coalicionporelevangelio.org/" target="_blank">
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyqR6x1-LzLeSpDR2CZlKZ2QDNPiGo1yBNog&amp;s" alt="Coalición por el Evangelio">
+    <img src="assets/ministerio5.png" alt="Coalición por el Evangelio">
     <span>Coalición por el Evangelio</span>
   </a>
   <a class="pg-item" href="https://laibi.org/" target="_blank">
-    <img src="https://s.mxmcdn.net/dynamic-images/image/500/500/webp/https%3A%2F%2Fd3t3ozftmdmh3i.cloudfront.net%2Fproduction%2Fpodcast_uploaded_nologo%2F15627119%2F15627119-1623776276280-b1bc894b6c55c.jpg" alt="Iglesia Bautista Internacional">
+    <img src="assets/ministerio6.png" alt="Iglesia Bautista Internacional">
     <span>Ig. Bautista Internacional</span>
   </a>
   <a class="pg-item" href="https://integridadysabiduria.org/" target="_blank">
-    <img src="https://yt3.googleusercontent.com/ytc/AIdro_mjYTIdyQWcbDM1RRB3_7CpnXbGQT8iybr7XD1vP6Fsvjg=s900-c-k-c0x00ffffff-no-rj" alt="Integridad y Sabiduría">
+    <img src="assets/ministerio7.png" alt="Integridad y Sabiduría">
     <span>Integridad y Sabiduría</span>
   </a>
   <a class="pg-item" href="https://www.desiringgod.org/" target="_blank">
-    <img src="https://yt3.googleusercontent.com/ytc/AIdro_mtBF1-QufP6iMSqhv7yoCHDX6ggMbqzIwLScE8audgCaI=s900-c-k-c0x00ffffff-no-rj" alt="Desiring God">
+    <img src="assets/ministerio8.png" alt="Desiring God">
     <span>Desiring God</span>
   </a>
 </div>
 </section>
 
+<footer>
+© 2026 Iglesia Bíblica Gracia Verdadera
+</footer>
+
 </main>
 
 <script>
-// BOTÓN PLAY RADIO
-document.getElementById('playRadio').addEventListener('click', function(){
-  const samAudio = document.querySelector('sam-widget');
-  if(samAudio && samAudio.shadowRoot){
-    const aud = samAudio.shadowRoot.querySelector('audio');
-    if(aud){ aud.play(); }
+// BOTÓN RADIO
+const playBtn = document.getElementById('playRadio');
+const audio = document.getElementById('radioAudio');
+playBtn.addEventListener('click', () => {
+  if(audio.paused){
+    audio.play();
+    playBtn.textContent = '⏸ Pausar';
+  }else{
+    audio.pause();
+    playBtn.textContent = '▶ Reproducir Radio';
   }
 });
 </script>
 
+<!-- WHATSAPP FLOAT -->
+<a href="https://www.whatsapp.com/channel/0029VaAFdiO60eBjjXuyei1U"
+   class="whatsapp-float"
+   target="_blank"
+   rel="noopener"
+   aria-label="WhatsApp">
+  <img src="assets/whatsapp.png" alt="WhatsApp">
+</a>
+
 </body>
 </html>
-
-
