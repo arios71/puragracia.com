@@ -9,37 +9,41 @@ const urlsToCache = [
   '/assets/transmundial.png',
   '/assets/thirdmill.png',
   '/assets/lectura-publica.png',
-  '/assets/coalicion-evangelio.png',
+  '/assets/coalicion.png',
   '/assets/iglesia-bautista.png',
-  '/assets/integridad-sabiduria.png',
+  '/assets/integridad.png',
   '/assets/desiring-god.png'
 ];
 
-// Instalación del Service Worker
+// Instalación: cachear assets
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => cache.addAll(urlsToCache))
-      .then(() => self.skipWaiting())
   );
+  self.skipWaiting();
 });
 
-// Activación y limpieza de caches antiguas
+// Activación: eliminar caches antiguos
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(keys => 
+    caches.keys().then(keys =>
       Promise.all(
         keys.filter(key => key !== CACHE_NAME)
             .map(key => caches.delete(key))
       )
-    ).then(() => self.clients.claim())
+    )
   );
+  self.clients.claim();
 });
 
-// Interceptar requests y servir de cache si existe
+// Fetch: responder con cache, fallback a red
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
-      .then(resp => resp || fetch(event.request))
+      .then(response => response || fetch(event.request))
+      .catch(() => {
+        // Opcional: aquí podrías devolver un fallback.html si lo deseas
+      })
   );
 });

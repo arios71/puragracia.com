@@ -1,7 +1,7 @@
 {
   "name": "Pura Gracia Radio",
   "short_name": "PG Radio",
-  "description": "Radio online cristiana – Pura Gracia Radio. Música y predicación expositiva con sana doctrina.",
+  "description": "Radio online cristiana – Pura Gracia Radio. Teología reformada, predicación expositiva, música y contenido de sana doctrina.",
   "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#065D9B",
