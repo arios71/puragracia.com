@@ -16,7 +16,7 @@
 
 <!-- Manifest PWA -->
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#065D9B">
+<meta name="theme-color" content="#121212">
 
 <!-- Service Worker -->
 <script>
@@ -29,21 +29,23 @@ if ('serviceWorker' in navigator) {
 
 <style>
 :root{
-  --blue:#065D9B;
-  --gold:#fbac33;
+  --bg-dark:#121212;
+  --bg-section:#1e1e1e;
+  --accent-green:#4CAF50;
+  --accent-gold:#fbac33;
   --white:#ffffff;
 }
 
 /* RESET */
 *{ box-sizing:border-box; font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif; }
-body{ margin:0; background:linear-gradient(180deg,var(--blue),#043b63); color:var(--white); }
+body{ margin:0; background:var(--bg-dark); color:var(--white); }
 
 /* MENU */
 header{
   position:sticky;
   top:0;
   z-index:100;
-  background:rgba(6,93,155,.95);
+  background:rgba(18,18,18,.95);
   backdrop-filter: blur(6px);
 }
 .nav{
@@ -54,23 +56,24 @@ header{
   padding:12px 8px;
 }
 .nav a{
-  color:#fff;
+  color:var(--white);
   text-decoration:none;
   font-weight:700;
   font-size:.9rem;
 }
-.nav a:hover{ color:var(--gold); }
+.nav a:hover{ color:var(--accent-green); }
 
 .app{ width:100%; max-width:480px; padding:20px; margin:0 auto; display:block; }
 
 /* LOGO */
 .logo{ width:200px; max-width:80%; display:block; margin:10px auto 8px; }
 h1.main-title{ text-align:center; font-size:1.8rem; margin:0; }
+h1.main-title span.radio{ font-style:italic; color:var(--accent-gold); }
 h2.sub-title{ text-align:center; font-size:1.2rem; margin:4px 0 20px; }
 
 /* PLAYER */
 .player{
-  background:linear-gradient(180deg,#065D9B,#05497b);
+  background:var(--bg-section);
   border-radius:26px;
   padding:20px;
   box-shadow:0 18px 40px rgba(0,0,0,.35);
@@ -81,36 +84,50 @@ h2.sub-title{ text-align:center; font-size:1.2rem; margin:4px 0 20px; }
   margin-top:12px;
   padding:10px 18px;
   border-radius:20px;
-  background:var(--gold);
-  color:#065D9B;
+  background:var(--accent-green);
+  color:var(--white);
   font-weight:700;
   border:none;
   cursor:pointer;
 }
-canvas#waveCanvas{
-  width:100%;
-  height:60px;
-  margin-top:14px;
-  border-radius:14px;
-  background:rgba(0,0,0,0.1);
+audio{ display:none; }
+
+/* WAVES PLAYER */
+.waves-container{
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  height:40px;
+  margin-top:20px;
+  gap:4px;
+}
+.wave{
+  width:4px;
+  background:var(--accent-green);
+  animation: waveAnim 1s infinite ease-in-out;
+}
+.wave:nth-child(1){ animation-delay: 0s; }
+.wave:nth-child(2){ animation-delay: 0.1s; }
+.wave:nth-child(3){ animation-delay: 0.2s; }
+.wave:nth-child(4){ animation-delay: 0.3s; }
+.wave:nth-child(5){ animation-delay: 0.4s; }
+@keyframes waveAnim{
+  0%, 100% { height:10px; }
+  50% { height:40px; }
 }
 
 /* SECTIONS */
 .section{ margin-bottom:34px; scroll-margin-top:80px; }
-.section h2{ color:var(--gold); font-size:1.2rem; margin-bottom:10px; }
+.section h2{ color:var(--accent-green); font-size:1.2rem; margin-bottom:10px; }
 .section p{ font-size:.95rem; line-height:1.55; }
+.bg-dark-section{ background:var(--bg-section); padding:14px; border-radius:14px; }
 
 /* Spotify */
 .pg-spotify-wrapper{ position:relative; width:100%; padding-top:56.25%; }
 .pg-spotify-wrapper iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; border-radius:12px; }
 
 /* SAM Widget Recientes */
-sam-widget{
-  display:block;
-  margin:0 auto;
-  border-radius:14px;
-  overflow:hidden;
-}
+sam-widget{ display:block; margin:0 auto; border-radius:14px; overflow:hidden; background:var(--bg-section); }
 
 /* WhatsApp flotante */
 .whatsapp-float{
@@ -128,11 +145,7 @@ sam-widget{
   z-index:999;
 }
 .whatsapp-float img{ width:34px; }
-
-/* Solo móvil */
-@media(max-width:768px){
-  .whatsapp-float{ display:flex; }
-}
+@media(max-width:768px){.whatsapp-float{ display:flex; }}
 
 /* WhatsApp sección */
 .whatsapp-box{ text-align:center; }
@@ -148,7 +161,7 @@ sam-widget{
   text-decoration:none;
 }
 
-/* Gallery */
+/* Gallery Ministerios */
 .pg-gallery{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
 .pg-item{text-align:center; text-decoration:none; color:#fff;}
 .pg-item img{ width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:14px; }
@@ -182,18 +195,27 @@ footer{
 
 <main class="app" id="inicio">
 
-<img class="logo" src="assets/logo.png" alt="Pura Gracia Radio">
-<h1 class="main-title">PURA GRACIA RADIO</h1>
+<img class="logo" src="assets/logo-gold.png" alt="Pura Gracia Radio">
+<h1 class="main-title">Pura Gracia <span class="radio">Radio</span></h1>
 <h2 class="sub-title">WRPG-DB</h2>
 
-<!-- PLAYER NUEVO CON ONDAS -->
+<!-- PLAYER -->
 <section class="player">
   <button id="playRadio">▶ Reproducir Radio</button>
-  <canvas id="waveCanvas"></canvas>
+  <div class="waves-container">
+    <div class="wave"></div>
+    <div class="wave"></div>
+    <div class="wave"></div>
+    <div class="wave"></div>
+    <div class="wave"></div>
+  </div>
+  <audio id="radioAudio" preload="none">
+    <source src="https://playerservices.streamtheworld.com/api/livestream-redirect/SAM05AAC459_SC" type="audio/mpeg">
+  </audio>
 </section>
 
 <!-- RECIENTES -->
-<section class="section">
+<section class="section bg-dark-section">
 <h2>🎧 Recientes</h2>
 <sam-widget
   type="history"
@@ -204,12 +226,12 @@ footer{
   show-buy-button="never"
   show-request-button="false"
   refresh-interval="30s"
-  theme='{"backgroundTop":"#065d9bff","backgroundBottom":"#fbac33ff","widgetBorder":"#ffffffff","dividers":"#c2b6b6ff","buttons":"#e73131ff","text":"#ffffffff"}'>
+  theme='{"backgroundTop":"#1e1e1eff","backgroundBottom":"#1e1e1eff","widgetBorder":"#ffffffff","dividers":"#c2b6b6ff","buttons":"#4CAF50ff","text":"#ffffffff"}'>
 </sam-widget>
 </section>
 
 <!-- PROGRAMACION -->
-<section class="section" id="programacion">
+<section class="section bg-dark-section" id="programacion">
 <h2>🗓️ Programación</h2>
 <iframe
   src="https://teamup.com/ksqyre4rtx15nnfei3?view=d&showViewHeader=0&showTitle=0&showLogo=0&showMenu=0&disableSidepanel=1"
@@ -219,7 +241,7 @@ footer{
 </section>
 
 <!-- SERMONES -->
-<section class="section" id="sermones">
+<section class="section bg-dark-section" id="sermones">
 <h2>🎙️ Sermones</h2>
 <div class="pg-spotify-wrapper">
 <iframe src="https://open.spotify.com/embed/show/7bCzhWNjuVzSWeTLXvk9vt"
@@ -228,23 +250,23 @@ allow="autoplay; encrypted-media"></iframe>
 </section>
 
 <!-- WHATSAPP -->
-<section class="section">
-  <h2>💬 Únete a nuestro canal de WhatsApp</h2>
-  <div class="whatsapp-box">
-    <img src="assets/whatsapp.png" alt="WhatsApp">
-    <p>Recibe anuncios sobre cambios en la programación y otras actualizaciones.</p>
-    <a href="https://www.whatsapp.com/channel/0029VaAFdiO60eBjjXuyei1U" target="_blank" rel="noopener">Seguir canal</a>
-  </div>
+<section class="section bg-dark-section">
+<h2>💬 Únete a nuestro canal de WhatsApp</h2>
+<div class="whatsapp-box">
+  <img src="assets/whatsapp.png" alt="WhatsApp">
+  <p>Recibe anuncios sobre cambios en la programación y otras actualizaciones.</p>
+  <a href="https://www.whatsapp.com/channel/0029VaAFdiO60eBjjXuyei1U" target="_blank" rel="noopener">Seguir canal</a>
+</div>
 </section>
 
 <!-- CONTACTO -->
-<section class="section contact" id="contacto">
+<section class="section bg-dark-section contact" id="contacto">
 <h2>📬 Contacto</h2>
 <p>Escríbenos a: <a href="mailto:radio@puragracia.com" style="color:#ffffff;">radio@puragracia.com</a></p>
 </section>
 
 <!-- MINISTERIOS COLABORADORES -->
-<section class="section">
+<section class="section bg-dark-section">
 <h2>🤝 Ministerios colaboradores</h2>
 <div class="pg-gallery">
   <a class="pg-item" href="https://eternidadplus.com/" target="_blank">
@@ -288,64 +310,31 @@ allow="autoplay; encrypted-media"></iframe>
 
 </main>
 
-<!-- HOWLER.JS & ECUALIZADOR -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
 <script>
-// Audio con Howler
-const sound = new Howl({
-  src: ['https://playerservices.streamtheworld.com/api/livestream-redirect/SAM05AAC459_SC'],
-  html5: true,
-  volume: 1.0,
-});
-
+// Botón de reproducción radio con ondas
 const playBtn = document.getElementById('playRadio');
-let isPlaying = false;
+const audio = document.getElementById('radioAudio');
+const waves = document.querySelectorAll('.wave');
 
-playBtn.addEventListener('click', () => {
-  if(!isPlaying){
-    sound.play();
-    playBtn.textContent = '⏸ Pausar';
-    isPlaying = true;
-    startEqualizer();
-  } else {
-    sound.pause();
-    playBtn.textContent = '▶ Reproducir Radio';
-    isPlaying = false;
+playBtn.addEventListener('click', async () => {
+  try {
+    if(audio.paused){
+      await audio.play();
+      playBtn.textContent = '⏸ Pausar Radio';
+      waves.forEach(w => w.style.animationPlayState = 'running');
+    }else{
+      audio.pause();
+      playBtn.textContent = '▶ Reproducir Radio';
+      waves.forEach(w => w.style.animationPlayState = 'paused');
+    }
+  } catch(err){
+    console.error('Error al reproducir audio:', err);
+    alert('No se pudo reproducir el audio. Intenta en otro navegador o revisa tu conexión.');
   }
 });
 
-// Canvas ecualizador
-const canvas = document.getElementById('waveCanvas');
-const ctx = canvas.getContext('2d');
-let bars = [];
-const barCount = 30;
-
-function resizeCanvas(){
-  canvas.width = canvas.clientWidth;
-  canvas.height = 60;
-  bars = [];
-  for(let i=0; i<barCount; i++){
-    bars.push({height: Math.random()*canvas.height, speed: Math.random()*2+1});
-  }
-}
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
-
-function startEqualizer(){
-  function draw(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    const barWidth = canvas.width / barCount;
-    for(let i=0; i<barCount; i++){
-      ctx.fillStyle = '#fbac33';
-      ctx.fillRect(i*barWidth, canvas.height-bars[i].height, barWidth*0.6, bars[i].height);
-      bars[i].height += (Math.random()*20 - 10) * bars[i].speed/5;
-      if(bars[i].height < 2) bars[i].height = 2;
-      if(bars[i].height > canvas.height) bars[i].height = canvas.height;
-    }
-    if(isPlaying) requestAnimationFrame(draw);
-  }
-  draw();
-}
+// Iniciar ondas pausadas al cargar
+waves.forEach(w => w.style.animationPlayState = 'paused');
 </script>
 
 <!-- WhatsApp flotante -->
