@@ -87,10 +87,12 @@ h2.sub-title{ text-align:center; font-size:1.2rem; margin:4px 0 20px; }
   border:none;
   cursor:pointer;
 }
-audio{
+canvas#waveCanvas{
   width:100%;
+  height:60px;
   margin-top:14px;
   border-radius:14px;
+  background:rgba(0,0,0,0.1);
 }
 
 /* SECTIONS */
@@ -184,12 +186,10 @@ footer{
 <h1 class="main-title">PURA GRACIA RADIO</h1>
 <h2 class="sub-title">WRPG-DB</h2>
 
-<!-- PLAYER -->
+<!-- PLAYER NUEVO CON ONDAS -->
 <section class="player">
   <button id="playRadio">▶ Reproducir Radio</button>
-  <audio id="radioAudio" preload="none">
-    <source src="https://playerservices.streamtheworld.com/api/livestream-redirect/SAM05AAC459_SC" type="audio/mpeg">
-  </audio>
+  <canvas id="waveCanvas"></canvas>
 </section>
 
 <!-- RECIENTES -->
@@ -288,12 +288,64 @@ allow="autoplay; encrypted-media"></iframe>
 
 </main>
 
+<!-- HOWLER.JS & ECUALIZADOR -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
 <script>
-// Botón de reproducción radio
-document.getElementById('playRadio').addEventListener('click', () => {
-  const audio = document.getElementById('radioAudio');
-  if(audio.paused){ audio.play(); } else { audio.pause(); }
+// Audio con Howler
+const sound = new Howl({
+  src: ['https://playerservices.streamtheworld.com/api/livestream-redirect/SAM05AAC459_SC'],
+  html5: true,
+  volume: 1.0,
 });
+
+const playBtn = document.getElementById('playRadio');
+let isPlaying = false;
+
+playBtn.addEventListener('click', () => {
+  if(!isPlaying){
+    sound.play();
+    playBtn.textContent = '⏸ Pausar';
+    isPlaying = true;
+    startEqualizer();
+  } else {
+    sound.pause();
+    playBtn.textContent = '▶ Reproducir Radio';
+    isPlaying = false;
+  }
+});
+
+// Canvas ecualizador
+const canvas = document.getElementById('waveCanvas');
+const ctx = canvas.getContext('2d');
+let bars = [];
+const barCount = 30;
+
+function resizeCanvas(){
+  canvas.width = canvas.clientWidth;
+  canvas.height = 60;
+  bars = [];
+  for(let i=0; i<barCount; i++){
+    bars.push({height: Math.random()*canvas.height, speed: Math.random()*2+1});
+  }
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+function startEqualizer(){
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    const barWidth = canvas.width / barCount;
+    for(let i=0; i<barCount; i++){
+      ctx.fillStyle = '#fbac33';
+      ctx.fillRect(i*barWidth, canvas.height-bars[i].height, barWidth*0.6, bars[i].height);
+      bars[i].height += (Math.random()*20 - 10) * bars[i].speed/5;
+      if(bars[i].height < 2) bars[i].height = 2;
+      if(bars[i].height > canvas.height) bars[i].height = canvas.height;
+    }
+    if(isPlaying) requestAnimationFrame(draw);
+  }
+  draw();
+}
 </script>
 
 <!-- WhatsApp flotante -->
