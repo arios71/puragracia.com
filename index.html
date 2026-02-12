@@ -2,6 +2,11 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pura Gracia Radio</title>
 
@@ -195,7 +200,7 @@ footer{
 
 <main class="app" id="inicio">
 
-<img class="logo" src="assets/logo-gold.png" alt="Pura Gracia Radio">
+<img class="logo" src="assets/logo.png" alt="Pura Gracia Radio">
 <h1 class="main-title">Pura Gracia <span class="radio">Radio</span></h1>
 <h2 class="sub-title">WRPG-DB</h2>
 
@@ -311,88 +316,31 @@ allow="autoplay; encrypted-media"></iframe>
 </main>
 
 <script>
-const playButton = document.getElementById('playRadio');
+// Botón de reproducción radio con ondas
+const playBtn = document.getElementById('playRadio');
 const audio = document.getElementById('radioAudio');
-const canvas = document.getElementById('audioCanvas');
-const ctx = canvas.getContext('2d');
+const waves = document.querySelectorAll('.wave');
 
-let audioCtx = null;
-let analyser = null;
-let source = null;
-let animationId = null;
-
-function resizeCanvas(){
-  canvas.width = canvas.offsetWidth;
-  canvas.height = canvas.offsetHeight;
-}
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
-
-playButton.addEventListener('click', async () => {
-  if (audio.paused) {
-    try {
-      audio.crossOrigin = "anonymous";
+playBtn.addEventListener('click', async () => {
+  try {
+    if(audio.paused){
       await audio.play();
-
-      playButton.textContent = '⏸ Pausar Radio';
-
-      // Crear AudioContext SOLO después de play()
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        analyser = audioCtx.createAnalyser();
-        analyser.fftSize = 128;
-
-        source = audioCtx.createMediaElementSource(audio);
-        source.connect(analyser);
-        analyser.connect(audioCtx.destination);
-      }
-
-      startVisualizer();
-
-    } catch (err) {
-      console.error('Error reproduciendo audio:', err);
-      alert('Toca nuevamente para permitir el audio');
+      playBtn.textContent = '⏸ Pausar Radio';
+      waves.forEach(w => w.style.animationPlayState = 'running');
+    }else{
+      audio.pause();
+      playBtn.textContent = '▶ Reproducir Radio';
+      waves.forEach(w => w.style.animationPlayState = 'paused');
     }
-
-  } else {
-    audio.pause();
-    playButton.textContent = '▶ Reproducir Radio';
-    stopVisualizer();
+  } catch(err){
+    console.error('Error al reproducir audio:', err);
+    alert('No se pudo reproducir el audio. Intenta en otro navegador o revisa tu conexión.');
   }
 });
 
-function startVisualizer(){
-  const bufferLength = analyser.frequencyBinCount;
-  const dataArray = new Uint8Array(bufferLength);
-
-  function draw(){
-    animationId = requestAnimationFrame(draw);
-    analyser.getByteFrequencyData(dataArray);
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    const barWidth = canvas.width / bufferLength;
-    let x = 0;
-
-    for (let i = 0; i < bufferLength; i++) {
-      const barHeight = dataArray[i] / 2;
-      ctx.fillStyle = '#25D366';
-      ctx.fillRect(x, canvas.height - barHeight, barWidth - 1, barHeight);
-      x += barWidth;
-    }
-  }
-  draw();
-}
-
-function stopVisualizer(){
-  if (animationId) {
-    cancelAnimationFrame(animationId);
-    animationId = null;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-  }
-}
+// Iniciar ondas pausadas al cargar
+waves.forEach(w => w.style.animationPlayState = 'paused');
 </script>
-
 
 <!-- WhatsApp flotante -->
 <a href="https://www.whatsapp.com/channel/0029VaAFdiO60eBjjXuyei1U"
