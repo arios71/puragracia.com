@@ -1,6 +1,7 @@
-const CACHE_NAME = 'puragracia-static-v2';
+const CACHE_VERSION = 'v3';
+const CACHE_NAME = `puragracia-static-${CACHE_VERSION}`;
 
-
+// Solo assets propios esenciales
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -9,7 +10,9 @@ const STATIC_ASSETS = [
 ];
 
 
-// Instalar
+// =======================
+// INSTALL
+// =======================
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => cache.addAll(STATIC_ASSETS))
@@ -18,7 +21,9 @@ self.addEventListener('install', event => {
 });
 
 
-// Activar y limpiar caches viejos
+// =======================
+// ACTIVATE
+// =======================
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys =>
@@ -35,51 +40,94 @@ self.addEventListener('activate', event => {
 });
 
 
-// Fetch
+// =======================
+// FETCH
+// =======================
 self.addEventListener('fetch', event => {
+
   const request = event.request;
-  const url = request.url;
+  const url = new URL(request.url);
 
-
-  // 🔥 Navegación: SIEMPRE red
+  // =======================
+  // 1️⃣ Navegaciones HTML
+  // Siempre ir a la red
+  // =======================
   if (request.mode === 'navigate') {
     event.respondWith(fetch(request));
     return;
   }
 
+  // =======================
+  // 2️⃣ NO INTERCEPTAR SERVICIOS EXTERNOS
+  // =======================
 
-  // ❌ NO cachear audio en vivo
-  if (url.includes('streamtheworld.com')) {
+  // Stream en vivo
+  if (url.origin.includes('streamtheworld.com')) {
     return;
   }
 
-
-  // ❌ NO cachear SAM widgets
-  if (url.includes('samcloudmedia') || url.includes('spacial.com')) {
+  // SAM Widgets
+  if (
+    url.origin.includes('samcloudmedia') ||
+    url.origin.includes('spacial.com')
+  ) {
     event.respondWith(fetch(request));
     return;
   }
 
-
-  // ❌ NO cachear embeds dinámicos
-  if (url.includes('teamup.com') || url.includes('spotify.com')) {
+  // Spotify embed + recursos internos
+  if (
+    url.origin.includes('spotify.com') ||
+    url.origin.includes('scdn.co')
+  ) {
     event.respondWith(fetch(request));
     return;
   }
 
+  // Calendario
+  if (url.origin.includes('teamup.com')) {
+    event.respondWith(fetch(request));
+    return;
+  }
 
-  // ✅ SOLO assets estáticos propios
-  event.respondWith(
-    caches.match(request).then(response => {
-      return (
-        response ||
-        fetch(request).then(networkResponse => {
+  // Google Analytics
+  if (
+    url.origin.includes('googletagmanager.com') ||
+    url.origin.includes('google-analytics.com')
+  ) {
+    return;
+  }
+
+  // =======================
+  // 3️⃣ SOLO CACHEAR RECURSOS PROPIOS
+  // =======================
+
+  if (url.origin === location.origin) {
+
+    event.respondWith(
+      caches.match(request).then(response => {
+
+        if (response) {
+          return response;
+        }
+
+        return fetch(request).then(networkResponse => {
+
+          // Solo cachear respuestas válidas
+          if (!networkResponse || networkResponse.status !== 200) {
+            return networkResponse;
+          }
+
           return caches.open(CACHE_NAME).then(cache => {
             cache.put(request, networkResponse.clone());
             return networkResponse;
           });
-        })
-      );
-    })
-  );
+
+        });
+
+      })
+    );
+
+  }
+
 });
