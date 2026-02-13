@@ -1,5 +1,3 @@
-console.log('SW VERSION v4 activo');
-
 const CACHE_VERSION = 'v4';
 const CACHE_NAME = `puragracia-static-${CACHE_VERSION}`;
 
@@ -133,5 +131,6 @@ self.addEventListener('fetch', event => {
   }
 
 });
+
 
 
