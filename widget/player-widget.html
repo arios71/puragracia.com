@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pura Gracia Radio</title>
+
+<!-- Logo como icono -->
+<link rel="icon" type="image/png"
+href="https://raw.githubusercontent.com/arios71/puragracia.com/refs/heads/main/assets/logo-512.png">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GX4KQ87HQC"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-GX4KQ87HQC');
+</script>
+
+<style>
+:root{
+  --bg:#121212;
+  --card:#1e1e1e;
+  --green:#4CAF50;
+  --gold:#fbac33;
+  --white:#ffffff;
+}
+
+html, body{
+  margin:0;
+  padding:0;
+  background:var(--bg);
+  color:var(--white);
+  font-family:system-ui, sans-serif;
+}
+
+.widget{
+  width:100%;
+  max-width:400px;
+  margin:0 auto;
+  padding:10px 20px 12px 20px;
+  text-align:center;
+}
+
+.logo{
+  width:150px;
+  margin:0 auto 8px;
+  display:block;
+}
+
+.main-title{
+  font-size:1.6rem;
+  margin:0;
+}
+
+.main-title span{
+  font-style:italic;
+  color:var(--gold);
+}
+
+.sub-title{
+  font-size:1rem;
+  margin:2px 0 16px;
+  opacity:.9;
+}
+
+.player{
+  background:var(--card);
+  padding:20px;
+  border-radius:24px;
+  box-shadow:0 20px 45px rgba(0,0,0,.35);
+}
+
+button{
+  background:var(--green);
+  border:none;
+  color:#fff;
+  font-weight:700;
+  padding:12px 20px;
+  border-radius:20px;
+  cursor:pointer;
+  font-size:1rem;
+}
+
+audio{
+  display:none;
+}
+
+.waves{
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  height:32px;
+  gap:4px;
+  margin-top:16px;
+}
+
+.wave{
+  width:4px;
+  background:var(--green);
+  animation:wave 1s infinite ease-in-out;
+}
+
+.wave:nth-child(1){animation-delay:0s;}
+.wave:nth-child(2){animation-delay:.1s;}
+.wave:nth-child(3){animation-delay:.2s;}
+.wave:nth-child(4){animation-delay:.3s;}
+.wave:nth-child(5){animation-delay:.4s;}
+
+@keyframes wave{
+  0%,100%{height:10px;}
+  50%{height:32px;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="widget">
+
+<img class="logo"
+src="https://raw.githubusercontent.com/arios71/puragracia.com/refs/heads/main/assets/logo-512.png"
+alt="Pura Gracia Radio">
+
+<h1 class="main-title">
+  Pura Gracia <span>Radio</span>
+</h1>
+
+<h2 class="sub-title">
+  WRPG-DB
+</h2>
+
+<div class="player">
+  <button id="playBtn">▶ Reproducir Radio</button>
+
+  <div class="waves">
+    <div class="wave"></div>
+    <div class="wave"></div>
+    <div class="wave"></div>
+    <div class="wave"></div>
+    <div class="wave"></div>
+  </div>
+
+  <audio id="audio" preload="none">
+    <source src="https://playerservices.streamtheworld.com/api/livestream-redirect/SAM05AAC459_SC" type="audio/mpeg">
+  </audio>
+</div>
+
+</div>
+
+<script>
+const btn = document.getElementById('playBtn');
+const audio = document.getElementById('audio');
+const waves = document.querySelectorAll('.wave');
+
+waves.forEach(w => w.style.animationPlayState = 'paused');
+
+btn.addEventListener('click', async () => {
+  try{
+    if(audio.paused){
+      await audio.play();
+      btn.textContent = '⏸ Pausar Radio';
+      waves.forEach(w => w.style.animationPlayState = 'running');
+    } else {
+      audio.pause();
+      btn.textContent = '▶ Reproducir Radio';
+      waves.forEach(w => w.style.animationPlayState = 'paused');
+    }
+  } catch(e){
+    alert('No se pudo reproducir el audio.');
+  }
+});
+</script>
+
+</body>
+</html>
