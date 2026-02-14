@@ -66,10 +66,13 @@ html, body{
 }
 
 .player{
-  background:var(--card);
+  background:var(--bg-section);
+  border-radius:26px;
   padding:20px;
-  border-radius:24px;
-  box-shadow:0 20px 45px rgba(0,0,0,.35);
+  box-shadow:0 18px 40px rgba(0,0,0,.35);
+  margin:0 auto 32px auto; /* <-- cambia esto */
+  max-width:360px;          /* <-- limita ancho para que no toque el borde */
+  text-align:center;
 }
 
 button{
