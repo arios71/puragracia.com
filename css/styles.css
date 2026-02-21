@@ -4,18 +4,27 @@
   --accent-green:#4CAF50;
   --accent-gold:#fbac33;
   --white:#ffffff;
+  --recientes-gradient: linear-gradient(135deg,#065d9b,#fab33c);
 }
 
 /* RESET */
-*{ box-sizing:border-box; font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif; }
-body{ margin:0; background:var(--bg-dark); color:var(--white); }
+*{ 
+  box-sizing:border-box; 
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif; 
+  margin:0;
+  padding:0;
+}
+body{ 
+  background: var(--bg-dark); 
+  color: var(--white); 
+}
 
 /* MENU */
 header{
   position:sticky;
   top:0;
   z-index:100;
-  background:rgba(18,18,18,.95);
+  background: rgba(18,18,18,0.95);
   backdrop-filter: blur(6px);
 }
 .nav{
@@ -26,24 +35,58 @@ header{
   padding:12px 8px;
 }
 .nav a{
-  color:var(--white);
+  color: var(--white);
   text-decoration:none;
   font-weight:700;
-  font-size:.9rem;
+  font-size:.95rem;
+  transition: color .2s;
 }
-.nav a:hover{ color:var(--accent-green); }
+.nav a:hover{ 
+  color: var(--accent-green); 
+}
 
-.app{ width:100%; max-width:480px; padding:20px; margin:0 auto; display:block; }
+/* SECCIONES SPA */
+.section{ 
+  display:none; 
+  padding:20px; 
+  scroll-margin-top:80px; 
+}
+.section.active{ 
+  display:block; 
+}
+
+/* APP WRAPPER */
+.app{ 
+  width:100%; 
+  max-width:480px; 
+  margin:0 auto; 
+  padding:20px;
+}
 
 /* LOGO */
-.logo{ width:200px; max-width:80%; display:block; margin:10px auto 8px; }
-h1.main-title{ text-align:center; font-size:1.8rem; margin:0; }
-h1.main-title span.radio{ font-style:italic; color:var(--accent-gold); }
-h2.sub-title{ text-align:center; font-size:1.2rem; margin:4px 0 20px; }
+.logo{ 
+  width:200px; 
+  max-width:80%; 
+  display:block; 
+  margin:10px auto 8px; 
+}
+h1.main-title{ 
+  text-align:center; 
+  font-size:1.8rem; 
+}
+h1.main-title span.radio{ 
+  font-style:italic; 
+  color: var(--accent-gold); 
+}
+h2.sub-title{ 
+  text-align:center; 
+  font-size:1.2rem; 
+  margin:4px 0 20px; 
+}
 
 /* PLAYER */
 .player{
-  background:var(--bg-section);
+  background: var(--bg-section);
   border-radius:26px;
   padding:20px;
   box-shadow:0 18px 40px rgba(0,0,0,.35);
@@ -54,8 +97,8 @@ h2.sub-title{ text-align:center; font-size:1.2rem; margin:4px 0 20px; }
   margin-top:12px;
   padding:10px 18px;
   border-radius:20px;
-  background:var(--accent-green);
-  color:var(--white);
+  background: var(--accent-green);
+  color: var(--white);
   font-weight:700;
   border:none;
   cursor:pointer;
@@ -73,7 +116,7 @@ audio{ display:none; }
 }
 .wave{
   width:4px;
-  background:var(--accent-green);
+  background: var(--accent-green);
   animation: waveAnim 1s infinite ease-in-out;
 }
 .wave:nth-child(1){ animation-delay: 0s; }
@@ -86,18 +129,54 @@ audio{ display:none; }
   50% { height:40px; }
 }
 
-/* SECTIONS */
-.section{ margin-bottom:34px; scroll-margin-top:80px; }
-.section h2{ color:var(--accent-green); font-size:1.2rem; margin-bottom:10px; }
-.section p{ font-size:.95rem; line-height:1.55; }
-.bg-dark-section{ background:var(--bg-section); padding:14px; border-radius:14px; }
+/* SECCIONES */
+.section h2{ 
+  color: var(--accent-green); 
+  font-size:1.2rem; 
+  margin-bottom:10px; 
+}
+.section p{ 
+  font-size:.95rem; 
+  line-height:1.55; 
+}
+.bg-dark-section{ 
+  background: var(--bg-section); 
+  padding:14px; 
+  border-radius:14px; 
+  margin-bottom:20px;
+}
+
+/* RECENTES CON GRADIENTE */
+.section.bg-dark-section:nth-of-type(2){ 
+  background: var(--recientes-gradient); 
+  padding:14px; 
+  border-radius:14px; 
+  margin-bottom:20px;
+}
 
 /* Spotify */
-.pg-spotify-wrapper{ position:relative; width:100%; padding-top:56.25%; }
-.pg-spotify-wrapper iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; border-radius:12px; }
+.pg-spotify-wrapper{ 
+  position:relative; 
+  width:100%; 
+  padding-top:56.25%; 
+}
+.pg-spotify-wrapper iframe{ 
+  position:absolute; 
+  inset:0; 
+  width:100%; 
+  height:100%; 
+  border:0; 
+  border-radius:12px; 
+}
 
-/* SAM Widget Recientes */
-sam-widget{ display:block; margin:0 auto; border-radius:14px; overflow:hidden; background:var(--bg-section); }
+/* SAM Widgets */
+sam-widget{ 
+  display:block; 
+  margin:0 auto; 
+  border-radius:14px; 
+  overflow:hidden; 
+  background: var(--bg-section);
+}
 
 /* WhatsApp flotante */
 .whatsapp-float{
@@ -117,28 +196,6 @@ sam-widget{ display:block; margin:0 auto; border-radius:14px; overflow:hidden; b
 .whatsapp-float img{ width:34px; }
 @media(max-width:768px){.whatsapp-float{ display:flex; }}
 
-/* WhatsApp sección */
-.whatsapp-box{ text-align:center; }
-.whatsapp-box img{ width:56px; margin-bottom:10px; }
-.whatsapp-box a{
-  display:inline-block;
-  margin-top:8px;
-  background:#25D366;
-  color:#003b1f;
-  font-weight:700;
-  padding:10px 18px;
-  border-radius:20px;
-  text-decoration:none;
-}
-
-/* Gallery Ministerios */
-.pg-gallery{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
-.pg-item{text-align:center; text-decoration:none; color:#fff;}
-.pg-item img{ width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:14px; }
-.pg-item span{ display:block; margin-top:6px; font-size:.85rem; font-weight:600;}
-@media(max-width:768px){.pg-gallery{grid-template-columns:repeat(3,1fr);} }
-@media(max-width:480px){.pg-gallery{grid-template-columns:repeat(2,1fr);} }
-
 /* Footer */
 footer{
   text-align:center;
@@ -146,3 +203,16 @@ footer{
   opacity:.75;
   margin:20px 0 10px;
 }
+
+/* Enlaces dentro de secciones */
+.section a{
+  color: var(--white);
+  text-decoration:none;
+}
+.section a:hover{
+  color: var(--accent-gold);
+}
+
+/* Reajuste iframe calendario y Spotify en móvil */
+iframe{ border:0; width:100%; height:600px; border-radius:12px; }
+@media(max-width:480px){ iframe{ height:400px; } }
