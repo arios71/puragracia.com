@@ -1,22 +1,23 @@
+/* VARIABLES */
 :root{
   --bg-dark:#121212;
   --bg-section:#1e1e1e;
   --accent-green:#4CAF50;
   --accent-gold:#fbac33;
   --white:#ffffff;
-  --recientes-gradient: linear-gradient(135deg,#065d9b,#fab33c);
 }
 
 /* RESET */
-*{ 
-  box-sizing:border-box; 
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif; 
+*{
+  box-sizing:border-box;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
   margin:0;
   padding:0;
 }
-body{ 
-  background: var(--bg-dark); 
-  color: var(--white); 
+body{
+  margin:0;
+  background:var(--bg-dark);
+  color:var(--white);
 }
 
 /* MENU */
@@ -24,7 +25,7 @@ header{
   position:sticky;
   top:0;
   z-index:100;
-  background: rgba(18,18,18,0.95);
+  background:rgba(18,18,18,.95);
   backdrop-filter: blur(6px);
 }
 .nav{
@@ -35,77 +36,65 @@ header{
   padding:12px 8px;
 }
 .nav a{
-  color: var(--white);
+  color:var(--white);
   text-decoration:none;
   font-weight:700;
-  font-size:.95rem;
-  transition: color .2s;
+  font-size:.9rem;
 }
-.nav a:hover{ 
-  color: var(--accent-green); 
-}
+.nav a:hover{ color:var(--accent-green); }
 
-/* SECCIONES SPA */
-.section{ 
-  display:none; 
-  padding:20px; 
-  scroll-margin-top:80px; 
-}
-.section.active{ 
-  display:block; 
-}
-
-/* APP WRAPPER */
-.app{ 
-  width:100%; 
-  max-width:480px; 
-  margin:0 auto; 
+/* APP CONTAINER */
+.app{
+  width:100%;
+  max-width:480px;
   padding:20px;
+  margin:0 auto;
+  display:block;
 }
 
 /* LOGO */
-.logo{ 
-  width:200px; 
-  max-width:80%; 
-  display:block; 
-  margin:10px auto 8px; 
+.logo{
+  width:200px;
+  max-width:80%;
+  display:block;
+  margin:10px auto 8px;
 }
-h1.main-title{ 
-  text-align:center; 
-  font-size:1.8rem; 
+h1.main-title{
+  text-align:center;
+  font-size:1.8rem;
 }
-h1.main-title span.radio{ 
-  font-style:italic; 
-  color: var(--accent-gold); 
+h1.main-title span.radio{
+  font-style:italic;
+  color:var(--accent-gold);
 }
-h2.sub-title{ 
-  text-align:center; 
-  font-size:1.2rem; 
-  margin:4px 0 20px; 
+h2.sub-title{
+  text-align:center;
+  font-size:1.2rem;
+  margin:4px 0 20px;
 }
 
 /* PLAYER */
 .player{
-  background: var(--bg-section);
+  background:var(--bg-section);
   border-radius:26px;
   padding:20px;
   box-shadow:0 18px 40px rgba(0,0,0,.35);
-  margin-bottom:32px;
+  margin-bottom:20px;
   text-align:center;
 }
 .player button{
   margin-top:12px;
   padding:10px 18px;
   border-radius:20px;
-  background: var(--accent-green);
-  color: var(--white);
+  background:var(--accent-green);
+  color:var(--white);
   font-weight:700;
   border:none;
   cursor:pointer;
 }
 audio{ display:none; }
 
-/* WAVES PLAYER */
+/* WAVES */
 .waves-container{
   display:flex;
   justify-content:center;
@@ -116,66 +105,63 @@ audio{ display:none; }
 }
 .wave{
   width:4px;
-  background: var(--accent-green);
+  background:var(--accent-green);
   animation: waveAnim 1s infinite ease-in-out;
 }
-.wave:nth-child(1){ animation-delay: 0s; }
-.wave:nth-child(2){ animation-delay: 0.1s; }
-.wave:nth-child(3){ animation-delay: 0.2s; }
-.wave:nth-child(4){ animation-delay: 0.3s; }
-.wave:nth-child(5){ animation-delay: 0.4s; }
+.wave:nth-child(1){ animation-delay:0s; }
+.wave:nth-child(2){ animation-delay:0.1s; }
+.wave:nth-child(3){ animation-delay:0.2s; }
+.wave:nth-child(4){ animation-delay:0.3s; }
+.wave:nth-child(5){ animation-delay:0.4s; }
 @keyframes waveAnim{
-  0%, 100% { height:10px; }
+  0%,100% { height:10px; }
   50% { height:40px; }
 }
 
 /* SECCIONES */
-.section h2{ 
-  color: var(--accent-green); 
-  font-size:1.2rem; 
-  margin-bottom:10px; 
+.section{
+  margin-bottom:34px;
+  scroll-margin-top:80px;
+  display:none;
 }
-.section p{ 
-  font-size:.95rem; 
-  line-height:1.55; 
+.section.active{
+  display:block;
 }
-.bg-dark-section{ 
-  background: var(--bg-section); 
-  padding:14px; 
-  border-radius:14px; 
-  margin-bottom:20px;
+.section h2{
+  font-size:1.2rem;
+  margin-bottom:10px;
+}
+.bg-dark-section{
+  padding:14px;
+  border-radius:14px;
 }
 
-/* RECENTES CON GRADIENTE */
-.section.bg-dark-section:nth-of-type(2){ 
-  background: var(--recientes-gradient); 
-  padding:14px; 
-  border-radius:14px; 
-  margin-bottom:20px;
+/* NOW PLAYING Y RECIENTES */
+section.bg-dark-section sam-widget{
+  display:block;
+  margin:0 auto;
+  border-radius:14px;
+  overflow:hidden;
+}
+
+/* Recientes gradiente */
+section.bg-dark-section h2 + sam-widget{
+  background:linear-gradient(135deg,#065d9b,#fab33c);
 }
 
 /* Spotify */
-.pg-spotify-wrapper{ 
-  position:relative; 
-  width:100%; 
-  padding-top:56.25%; 
+.pg-spotify-wrapper{
+  position:relative;
+  width:100%;
+  padding-top:56.25%;
 }
-.pg-spotify-wrapper iframe{ 
-  position:absolute; 
-  inset:0; 
-  width:100%; 
-  height:100%; 
-  border:0; 
-  border-radius:12px; 
-}
-
-/* SAM Widgets */
-sam-widget{ 
-  display:block; 
-  margin:0 auto; 
-  border-radius:14px; 
-  overflow:hidden; 
-  background: var(--bg-section);
+.pg-spotify-wrapper iframe{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  border:0;
+  border-radius:12px;
 }
 
 /* WhatsApp flotante */
@@ -187,32 +173,41 @@ sam-widget{
   height:60px;
   background:#25D366;
   border-radius:50%;
-  display:none;
+  display:flex;
   align-items:center;
   justify-content:center;
   box-shadow:0 12px 28px rgba(0,0,0,.35);
   z-index:999;
 }
-.whatsapp-float img{ width:34px; }
-@media(max-width:768px){.whatsapp-float{ display:flex; }}
+.whatsapp-float img{
+  width:34px;
+}
 
-/* Footer */
+/* SECCIONES INTERIORES WHATSAPP */
+.whatsapp-box{
+  text-align:center;
+}
+.whatsapp-box img{
+  width:56px;
+  margin-bottom:10px;
+}
+.whatsapp-box a{
+  display:inline-block;
+  margin-top:8px;
+  background:#25D366;
+  color:#003b1f;
+  font-weight:700;
+  padding:10px 18px;
+  border-radius:20px;
+  text-decoration:none;
+}
+
+/* GALLERY MINISTERIOS (eliminada en SPA) */
+
+/* FOOTER */
 footer{
   text-align:center;
   font-size:.8rem;
   opacity:.75;
   margin:20px 0 10px;
 }
-
-/* Enlaces dentro de secciones */
-.section a{
-  color: var(--white);
-  text-decoration:none;
-}
-.section a:hover{
-  color: var(--accent-gold);
-}
-
-/* Reajuste iframe calendario y Spotify en móvil */
-iframe{ border:0; width:100%; height:600px; border-radius:12px; }
-@media(max-width:480px){ iframe{ height:400px; } }
