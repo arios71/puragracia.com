@@ -6,7 +6,7 @@
 <title>Pura Gracia Radio</title>
 
 <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico">
 
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-GX4KQ87HQC"></script>
@@ -20,9 +20,6 @@
 <!-- Manifest PWA -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#121212">
-
-<!-- Favicon -->
-<link rel="icon" type="image/x-icon" href="assets/favicon.ico">
 
 <!-- Styles -->
 <link rel="stylesheet" href="css/styles.css">
@@ -91,7 +88,7 @@
       show-buy-button="never"
       show-request-button="false"
       refresh-interval="30s"
-      theme='{"backgroundTop":"#1e1e1eff","backgroundBottom":"#1e1e1eff","widgetBorder":"#ffffffff","dividers":"#c2b6b6ff","buttons":"#4CAF50ff","text":"#ffffffff"}'>
+      theme='{"backgroundTop":"#065d9bff","backgroundBottom":"#fab33cff","widgetBorder":"#5f5f5f","dividers":"#5f5f5f","buttons":"#4CAF50ff","text":"#ffffffff"}'>
     </sam-widget>
   </section>
 
@@ -138,6 +135,23 @@
 
 <!-- JS -->
 <script src="js/radio.js"></script>
+<script>
+// SPA navigation
+const links = document.querySelectorAll('nav a');
+const sections = document.querySelectorAll('.section');
+
+links.forEach(link=>{
+  link.addEventListener('click', e=>{
+    e.preventDefault();
+    const target = link.dataset.section;
+    sections.forEach(s=>{
+      if(s.id===target){ s.classList.add('active'); }
+      else{ s.classList.remove('active'); }
+    });
+    window.scrollTo(0,0);
+  });
+});
+</script>
 
 </body>
 </html>
