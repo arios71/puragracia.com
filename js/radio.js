@@ -1,47 +1,31 @@
-// radio.js – Player SPA centralizado
-
-const audio = document.getElementById('radioAudio');
+// radio.js
 const playBtn = document.getElementById('playRadio');
 const waves = document.querySelectorAll('.wave');
 
-// Función para reproducir/pausar audio en vivo
+// Creamos un nuevo elemento <audio> cada vez que reproducimos
+let audio = null;
+
 playBtn.addEventListener('click', async () => {
   try {
-    if (audio.paused) {
-      // Reinicia al momento en vivo
-      audio.currentTime = 0;
-      await audio.play();
+    if (!audio) {
+      // Crear audio nuevo para reproducción en vivo
+      audio = new Audio("https://playerservices.streamtheworld.com/api/livestream-redirect/SAM05AAC459_SC");
+      audio.autoplay = true;
+      audio.play();
       playBtn.textContent = '⏸ Pausar Radio';
       waves.forEach(w => w.style.animationPlayState = 'running');
-    } else {
+    } else if (!audio.paused) {
+      // Pausar/detener el audio
       audio.pause();
+      audio = null; // destruimos para que next play sea en vivo
       playBtn.textContent = '▶ Reproducir Radio';
       waves.forEach(w => w.style.animationPlayState = 'paused');
     }
-  } catch(err) {
+  } catch (err) {
     console.error('Error al reproducir audio:', err);
     alert('No se pudo reproducir el audio. Intenta en otro navegador o revisa tu conexión.');
   }
 });
 
-// Inicializa ondas pausadas
+// Iniciar ondas pausadas al cargar
 waves.forEach(w => w.style.animationPlayState = 'paused');
-
-// SPA Navigation
-const menuLinks = document.querySelectorAll('.nav a');
-const sections = document.querySelectorAll('main .section');
-
-menuLinks.forEach(link => {
-  link.addEventListener('click', e => {
-    e.preventDefault();
-    const target = link.getAttribute('data-section');
-
-    sections.forEach(sec => {
-      if (sec.id === target) {
-        sec.classList.add('active');
-      } else {
-        sec.classList.remove('active');
-      }
-    });
-  });
-});
