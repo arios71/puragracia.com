@@ -43,6 +43,7 @@
 
 <!-- INICIO -->
 <section id="inicio" class="section active">
+
   <img class="logo" src="assets/logo.png" alt="Pura Gracia Radio">
   <h1 class="main-title">Pura Gracia <span class="radio">Radio</span></h1>
   <h2 class="sub-title">WRPG-DB</h2>
@@ -69,7 +70,9 @@
       token="cdf7c7d6204a644fed684c340bda2649d7675bb0"
       playlist-id="undefined"
       anim-type='focus-in-expand' easing='ease-in-out-back' refresh-interval='30s'
-      station-refresh-interval='default' theme-border-radius='square' image-border-radius='square'
+      station-refresh-interval='default'
+      theme-border-radius='square' image-border-radius='square'
+      robustness-level="full"
       theme='{"backgroundTop":"#fab33cff","backgroundBottom":"#065d9bff","widgetBorder":"#5f5f5f","dividers":"#5f5f5f","buttons":"#ffffffff","text":"#ffffffff"}'
       show-buy-button='never' show-request-button='false'
       show-cover-art='true'>
@@ -88,7 +91,8 @@
       show-buy-button="never"
       show-request-button="false"
       refresh-interval="30s"
-      theme='{"backgroundTop":"#065d9bff","backgroundBottom":"#fab33cff","widgetBorder":"#5f5f5f","dividers":"#5f5f5f","buttons":"#4CAF50ff","text":"#ffffffff"}'>
+      robustness-level="full"
+      theme='{"backgroundTop":"#065d9bff","backgroundBottom":"#fab33cff","widgetBorder":"#ffffffff","dividers":"#c2b6b6ff","buttons":"#4CAF50ff","text":"#ffffffff"}'>
     </sam-widget>
   </section>
 
@@ -100,6 +104,7 @@
      aria-label="WhatsApp">
     <img src="assets/whatsapp.png" alt="WhatsApp">
   </a>
+
 </section>
 
 <!-- PROGRAMACION -->
@@ -135,23 +140,6 @@
 
 <!-- JS -->
 <script src="js/radio.js"></script>
-<script>
-// SPA navigation
-const links = document.querySelectorAll('nav a');
-const sections = document.querySelectorAll('.section');
-
-links.forEach(link=>{
-  link.addEventListener('click', e=>{
-    e.preventDefault();
-    const target = link.dataset.section;
-    sections.forEach(s=>{
-      if(s.id===target){ s.classList.add('active'); }
-      else{ s.classList.remove('active'); }
-    });
-    window.scrollTo(0,0);
-  });
-});
-</script>
 
 </body>
 </html>
