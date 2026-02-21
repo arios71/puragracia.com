@@ -1,24 +1,25 @@
+// radio.js para player.html
 const playBtn = document.getElementById('playRadio');
 const audio = document.getElementById('radioAudio');
 const waves = document.querySelectorAll('.wave');
 
-if(playBtn){
-  playBtn.addEventListener('click', async () => {
-    try {
-      if(audio.paused){
-        await audio.play();
-        playBtn.textContent = '⏸ Pausar Radio';
-        waves.forEach(w => w.style.animationPlayState = 'running');
-      }else{
-        audio.pause();
-        playBtn.textContent = '▶ Reproducir Radio';
-        waves.forEach(w => w.style.animationPlayState = 'paused');
-      }
-    } catch(err){
-      alert('No se pudo reproducir el audio.');
+// Reproducir / Pausar
+playBtn.addEventListener('click', async () => {
+  try {
+    if (audio.paused) {
+      await audio.play();
+      playBtn.textContent = '⏸ Pausar Radio';
+      waves.forEach(w => w.style.animationPlayState = 'running');
+    } else {
+      audio.pause();
+      playBtn.textContent = '▶ Reproducir Radio';
+      waves.forEach(w => w.style.animationPlayState = 'paused');
     }
-  });
+  } catch(err) {
+    console.error('Error al reproducir audio:', err);
+    alert('No se pudo reproducir el audio. Intenta en otro navegador o revisa tu conexión.');
+  }
+});
 
-  waves.forEach(w => w.style.animationPlayState = 'paused');
-
-}
+// Inicializar ondas pausadas
+waves.forEach(w => w.style.animationPlayState = 'paused');
