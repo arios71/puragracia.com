@@ -26,7 +26,6 @@
 
 <!-- SAM Widgets -->
 <script type="module" src="//samcloudmedia.spacial.com/webwidgets/widget/v6/sam-widgets/sam-widgets.esm.js"></script>
-
 </head>
 <body>
 
@@ -43,7 +42,7 @@
 
 <!-- INICIO -->
 <section id="inicio" class="section active">
-
+  <!-- Logo y títulos -->
   <img class="logo" src="assets/logo.png" alt="Pura Gracia Radio">
   <h1 class="main-title">Pura Gracia <span class="radio">Radio</span></h1>
   <h2 class="sub-title">WRPG-DB</h2>
@@ -70,9 +69,7 @@
       token="cdf7c7d6204a644fed684c340bda2649d7675bb0"
       playlist-id="undefined"
       anim-type='focus-in-expand' easing='ease-in-out-back' refresh-interval='30s'
-      station-refresh-interval='default'
-      theme-border-radius='square' image-border-radius='square'
-      robustness-level="full"
+      station-refresh-interval='default' theme-border-radius='square' image-border-radius='square'
       theme='{"backgroundTop":"#fab33cff","backgroundBottom":"#065d9bff","widgetBorder":"#5f5f5f","dividers":"#5f5f5f","buttons":"#ffffffff","text":"#ffffffff"}'
       show-buy-button='never' show-request-button='false'
       show-cover-art='true'>
@@ -80,7 +77,7 @@
   </section>
 
   <!-- RECIENTES -->
-  <section class="section bg-dark-section">
+  <section class="section bg-dark-section" id="recientes">
     <h2>🎧 Recientes</h2>
     <sam-widget
       type="history"
@@ -91,7 +88,6 @@
       show-buy-button="never"
       show-request-button="false"
       refresh-interval="30s"
-      robustness-level="full"
       theme='{"backgroundTop":"#065d9bff","backgroundBottom":"#fab33cff","widgetBorder":"#ffffffff","dividers":"#c2b6b6ff","buttons":"#4CAF50ff","text":"#ffffffff"}'>
     </sam-widget>
   </section>
@@ -104,7 +100,6 @@
      aria-label="WhatsApp">
     <img src="assets/whatsapp.png" alt="WhatsApp">
   </a>
-
 </section>
 
 <!-- PROGRAMACION -->
@@ -140,6 +135,17 @@
 
 <!-- JS -->
 <script src="js/radio.js"></script>
+<script>
+// SPA: mostrar/ocultar secciones
+document.querySelectorAll('.nav a').forEach(link=>{
+  link.addEventListener('click', e=>{
+    e.preventDefault();
+    const sectionId = link.dataset.section;
+    document.querySelectorAll('.section').forEach(sec=>sec.classList.remove('active'));
+    document.getElementById(sectionId).classList.add('active');
+  });
+});
+</script>
 
 </body>
 </html>
