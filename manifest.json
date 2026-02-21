@@ -4,8 +4,8 @@
   "description": "Radio online cristiana – Pura Gracia Radio. Música y contenido de sana doctrina, teología reformada y predicación expositiva.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0a1f12",
-  "theme_color": "#0a3d2f",
+  "background_color": "#121212",
+"theme_color": "#121212"
   "orientation": "portrait-primary",
   "icons": [
     {
@@ -21,3 +21,4 @@
   ]
 
 }
+
