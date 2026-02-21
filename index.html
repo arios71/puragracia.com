@@ -3,63 +3,137 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Pura Gracia Radio</title>
-<meta name="description" content="Escucha Pura Gracia Radio en vivo. Música cristiana, mensajes de fe y esperanza.">
 
-<link rel="stylesheet" href="style.css">
+<!-- Favicon -->
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico">
 
-<!-- Spacial Widgets Script -->
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GX4KQ87HQC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-GX4KQ87HQC');
+</script>
+
+<!-- Manifest PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#121212">
+
+<!-- Styles -->
+<link rel="stylesheet" href="css/styles.css">
+
+<!-- SAM Widgets -->
 <script type="module" src="//samcloudmedia.spacial.com/webwidgets/widget/v6/sam-widgets/sam-widgets.esm.js"></script>
 
 </head>
 <body>
 
-<header class="header">
-  <div class="logo">
-    <h1>Pura Gracia Radio</h1>
-    <p>Transmitiendo esperanza 24/7</p>
-  </div>
+<header>
+  <nav class="nav">
+    <a href="#" data-section="inicio">Inicio</a>
+    <a href="#" data-section="programacion">Programación</a>
+    <a href="#" data-section="sermones">Sermones</a>
+    <a href="#" data-section="contacto">Contacto</a>
+  </nav>
 </header>
 
-<section class="player-section">
-  <div class="player-card">
-    <audio id="radioPlayer" controls autoplay>
-      <source src="https://26343.live.streamtheworld.com/SAM05AAC459.mp3" type="audio/mpeg">
-      Tu navegador no soporta audio HTML5.
+<main class="app">
+
+<!-- INICIO -->
+<section id="inicio" class="section active">
+  <img class="logo" src="assets/logo.png" alt="Pura Gracia Radio">
+  <h1 class="main-title">Pura Gracia <span class="radio">Radio</span></h1>
+  <h2 class="sub-title">WRPG-DB</h2>
+
+  <!-- PLAYER -->
+  <section class="player">
+    <button id="playRadio">▶ Reproducir Radio</button>
+    <div class="waves-container">
+      <div class="wave"></div>
+      <div class="wave"></div>
+      <div class="wave"></div>
+      <div class="wave"></div>
+      <div class="wave"></div>
+    </div>
+    <audio id="radioAudio" preload="none">
+      <source src="https://playerservices.streamtheworld.com/api/livestream-redirect/SAM05AAC459_SC" type="audio/mpeg">
     </audio>
+  </section>
+
+  <!-- NOW PLAYING -->
+  <section class="section bg-dark-section" id="nowPlaying">
+    <h2>🎵 Ahora</h2>
+    <sam-widget type="now playing" station-id="135533"
+        token="cdf7c7d6204a644fed684c340bda2649d7675bb0"
+        playlist-id="undefined"
+        anim-type='focus-in-expand' easing='ease-in-out-back' refresh-interval='30s'
+        station-refresh-interval='default' theme-border-radius='square' image-border-radius='square'
+        theme='{"backgroundTop":"#fab33cff","backgroundBottom":"#065d9bff","widgetBorder":"#5f5f5f","dividers":"#5f5f5f","buttons":"#ffffffff","text":"#ffffffff"}'
+        show-buy-button='never' show-request-button='false'
+        show-cover-art='true'>
+    </sam-widget>
+  </section>
+
+  <!-- RECIENTES -->
+  <section class="section bg-dark-section" id="recientes">
+    <h2>🎧 Recientes</h2>
+    <sam-widget type="history"
+        station-id="135533"
+        token="cdf7c7d6204a644fed684c340bda2649d7675bb0"
+        history-limit="5"
+        show-cover-art="true"
+        show-buy-button="never"
+        show-request-button="false"
+        refresh-interval="30s"
+        theme='{"backgroundTop":"#065d9bff","backgroundBottom":"#fab33cff","widgetBorder":"#ffffffff","dividers":"#5f5f5f","buttons":"#4CAF50ff","text":"#ffffffff"}'>
+    </sam-widget>
+  </section>
+
+  <!-- WhatsApp flotante -->
+  <a href="https://www.whatsapp.com/channel/0029VaAFdiO60eBjjXuyei1U"
+     class="whatsapp-float"
+     target="_blank"
+     rel="noopener"
+     aria-label="WhatsApp">
+    <img src="assets/whatsapp.png" alt="WhatsApp">
+  </a>
+</section>
+
+<!-- PROGRAMACION -->
+<section id="programacion" class="section">
+  <h2>🗓️ Programación</h2>
+  <iframe
+    src="https://teamup.com/ksqyre4rtx15nnfei3?view=d&showViewHeader=0&showTitle=0&showLogo=0&showMenu=0&disableSidepanel=1"
+    style="width:100%;height:600px;border:0;"
+    loading="lazy">
+  </iframe>
+</section>
+
+<!-- SERMONES -->
+<section id="sermones" class="section">
+  <h2>🎙️ Sermones</h2>
+  <div class="pg-spotify-wrapper">
+    <iframe src="https://open.spotify.com/embed/show/7bCzhWNjuVzSWeTLXvk9vt"
+      allow="autoplay; encrypted-media"></iframe>
   </div>
 </section>
 
-<section class="radio-widgets">
-
-  <div class="widget-card">
-    <h2>🎵 Ahora Suena</h2>
-
-    <sam-widget
-      type="now playing"
-      station-id="135533"
-      token="cdf7c7d6204a644fed684c340bda2649d7675bb0">
-    </sam-widget>
-
-  </div>
-
-  <div class="widget-card">
-    <h2>📻 Recientes</h2>
-
-    <sam-widget
-      type="recently played"
-      station-id="135533"
-      token="cdf7c7d6204a644fed684c340bda2649d7675bb0">
-    </sam-widget>
-
-  </div>
-
+<!-- CONTACTO -->
+<section id="contacto" class="section">
+  <h2>📬 Contacto</h2>
+  <p>Escríbenos a: <a href="mailto:radio@puragracia.com" style="color:#ffffff;">radio@puragracia.com</a></p>
 </section>
 
-<footer class="footer">
-  <p>© 2026 Pura Gracia Radio • Todos los derechos reservados</p>
+<footer>
+© 2026 Iglesia Bíblica Gracia Verdadera
 </footer>
+
+</main>
+
+<!-- JS -->
+<script src="js/radio.js"></script>
 
 </body>
 </html>
