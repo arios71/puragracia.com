@@ -64,7 +64,7 @@
 
   <!-- NOW PLAYING -->
   <section class="section bg-dark-section" id="nowPlaying">
-    <h2>🎵 Ahora </h2>
+    <h2>🎵 Ahora</h2>
     <sam-widget type="now playing" station-id="135533"
         token="cdf7c7d6204a644fed684c340bda2649d7675bb0"
         playlist-id="undefined"
@@ -134,19 +134,6 @@
 
 <!-- JS -->
 <script src="js/radio.js"></script>
-<script>
-// SPA navigation
-const links = document.querySelectorAll('.nav a');
-const sections = document.querySelectorAll('.section');
-links.forEach(link => {
-  link.addEventListener('click', e => {
-    e.preventDefault();
-    const target = link.dataset.section;
-    sections.forEach(s => s.id === target ? s.classList.add('active') : s.classList.remove('active'));
-    window.scrollTo(0,0);
-  });
-});
-</script>
 
 </body>
 </html>
