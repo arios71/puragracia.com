@@ -1,15 +1,11 @@
-/* ==========================
-   RESET
-   ========================== */
+/* RESET */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* ==========================
-   BODY
-   ========================== */
+/* BODY */
 body {
   font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(135deg, #0a0f1a, #111c2e);
@@ -17,69 +13,57 @@ body {
   min-height: 100vh;
 }
 
-/* ==========================
-   HEADER & NAV
-   ========================== */
-header {
-  background: rgba(0,0,0,0.7);
-  padding: 15px 20px;
-  position: sticky;
-  top: 0;
-  z-index: 999;
-}
-
+/* HEADER */
 .nav {
   display: flex;
   justify-content: center;
-  gap: 25px;
+  gap: 30px;
+  padding: 20px 0;
+  background: rgba(0,0,0,0.5);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .nav a {
+  color: #fff;
   text-decoration: none;
-  color: #ffffff;
   font-weight: 500;
-  padding: 8px 12px;
-  transition: color 0.3s, background 0.3s;
-  border-radius: 6px;
+  transition: color 0.3s;
 }
 
-.nav a:hover,
-.nav a.active {
+.nav a:hover {
   color: #4da3ff;
-  background: rgba(77, 163, 255, 0.1);
 }
 
-/* ==========================
-   LOGO
-   ========================== */
-.logo {
+/* LOGO */
+.logo-container {
   text-align: center;
-  margin: 30px 0;
+  margin-top: 40px;
+  margin-bottom: 20px;
 }
 
-.logo img {
+.logo {
   max-width: 180px;
-  margin-bottom: 15px;
+  height: auto;
+  margin-bottom: 12px;
 }
 
-.logo h1 {
+.main-title {
   font-size: 2rem;
   font-weight: 600;
 }
 
-.logo .radio {
+.radio {
   color: #4da3ff;
 }
 
-.logo h2 {
+.sub-title {
   font-size: 1rem;
   color: #9aa7c0;
-  margin-top: 5px;
 }
 
-/* ==========================
-   PLAYER SECTION
-   ========================== */
+/* PLAYER */
 .player-section {
   display: flex;
   justify-content: center;
@@ -95,28 +79,58 @@ header {
   max-width: 600px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(77, 163, 255, 0.2);
+  text-align: center;
 }
 
-/* Player audio */
-.player-card audio {
-  width: 100%;
-  outline: none;
+button#playRadio {
+  background: #4da3ff;
+  color: #fff;
+  border: none;
+  padding: 12px 25px;
   border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 15px;
+  font-size: 1rem;
+}
+
+button#playRadio:hover {
+  background: #3a8bd8;
+}
+
+.waves-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.wave {
+  width: 6px;
+  height: 20px;
+  background: #4da3ff;
+  margin: 0 3px;
+  animation: wave 1s infinite ease-in-out;
+}
+
+@keyframes wave {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(2.2); }
+}
+
+/* AUDIO */
+audio {
+  width: 100%;
   margin-bottom: 20px;
 }
 
-/* ==========================
-   NOW PLAYING BOX
-   ========================== */
+/* NOW PLAYING BOX */
 .now-playing-box {
   display: flex;
   align-items: center;
   background: linear-gradient(135deg, #121212, #1f1f1f);
   padding: 12px;
   border-radius: 12px;
-  color: #ffffff;
+  color: #fff;
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  max-width: 600px;
 }
 
 .now-playing-box img {
@@ -130,50 +144,23 @@ header {
 .nowInfo p {
   margin: 2px 0;
   font-weight: 500;
-  font-size: 0.95rem;
 }
 
-/* ==========================
-   SECTION STYLING
-   ========================== */
-.section {
-  display: none;
-  padding: 20px;
+/* IFRAME WRAPPERS */
+.iframe-wrapper {
+  max-width: 900px;
+  margin: 20px auto;
+  overflow-x: auto;
 }
 
-.section.active {
-  display: block;
-}
-
-.section h2 {
-  font-size: 1.4rem;
-  color: #4da3ff;
-  margin-bottom: 15px;
-}
-
-/* ==========================
-   WHATSAPP FLOATING BUTTON
-   ========================== */
-.whatsapp-float {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 55px;
-  height: 55px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.whatsapp-float img {
+.iframe-wrapper iframe {
   width: 100%;
-  height: 100%;
+  height: 600px;
+  display: block;
+  border: 0;
 }
 
-/* ==========================
-   FOOTER
-   ========================== */
+/* FOOTER */
 footer {
   text-align: center;
   padding: 40px 20px;
@@ -182,22 +169,26 @@ footer {
   border-top: 1px solid rgba(255,255,255,0.05);
 }
 
-/* ==========================
-   RESPONSIVE
-   ========================== */
+/* RESPONSIVE */
 @media (max-width: 768px) {
-  .logo h1 {
+  .logo {
+    max-width: 140px;
+  }
+
+  .main-title {
     font-size: 1.6rem;
   }
 
-  .player-card,
-  .now-playing-box {
-    padding: 15px;
+  .player-card {
+    padding: 20px;
+  }
+
+  .iframe-wrapper iframe {
+    height: 400px;
   }
 
   .now-playing-box img {
     width: 60px;
     height: 60px;
-    margin-right: 10px;
   }
 }
