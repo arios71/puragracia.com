@@ -23,7 +23,6 @@
 
 <!-- Styles -->
 <link rel="stylesheet" href="css/styles.css">
-
 </head>
 <body>
 
@@ -45,7 +44,7 @@
   <h2 class="sub-title">WRPG-DB</h2>
 
   <!-- PLAYER -->
-  <section class="player-section">
+  <section class="player player-section">
     <div class="player-card">
       <button id="playRadio">▶ Reproducir Radio</button>
       <div class="waves-container">
@@ -58,18 +57,17 @@
       <audio id="radioAudio" preload="none">
         <source src="https://playerservices.streamtheworld.com/api/livestream-redirect/SAM05AAC459_SC" type="audio/mpeg">
       </audio>
-    </div>
-  </section>
 
-  <!-- NOW PLAYING BOX -->
-  <section class="radio-widgets">
-    <div class="now-playing-box">
-      <img id="nowCover" src="https://via.placeholder.com/80" alt="Carátula">
-      <div class="nowInfo">
-        <p id="nowArtist">Artista: --</p>
-        <p id="nowTitle">Canción: --</p>
-        <p id="nowAlbum">Álbum: --</p>
+      <!-- NOW PLAYING BOX -->
+      <div class="now-playing-box">
+        <img id="nowCover" src="https://via.placeholder.com/80" alt="Portada">
+        <div class="nowInfo">
+          <p id="nowArtist">Artista: --</p>
+          <p id="nowTitle">Canción: --</p>
+          <p id="nowAlbum">Álbum: --</p>
+        </div>
       </div>
+
     </div>
   </section>
 
@@ -116,5 +114,7 @@
 
 <!-- JS -->
 <script src="js/radio.js"></script>
+<script src="js/nowplaying.js"></script>
+
 </body>
 </html>
