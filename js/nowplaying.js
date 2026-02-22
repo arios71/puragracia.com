@@ -1,51 +1,62 @@
-// nowplaying.js
-// Selecciona el contenedor donde mostrar la metadata
-const nowPlayingBox = document.getElementById('nowPlayingBox');
+// js/nowplaying.js
 
-// Función para actualizar la información de la canción
+// Selecciona el contenedor donde se mostrará la metadata
+const nowPlayingBox = document.getElementById("nowPlayingBox");
+
+// Función para actualizar la metadata
 function updateNowPlaying(metadata) {
-  // Limpiamos contenido previo
-  nowPlayingBox.innerHTML = '';
+  if (!metadata) return;
+
+  // Limpiamos el contenido anterior
+  nowPlayingBox.innerHTML = "";
 
   // Crear imagen del álbum
-  const cover = document.createElement('img');
-  cover.src = metadata.cover || 'https://via.placeholder.com/80';
-  cover.alt = metadata.album || 'Cover';
-  
-  // Crear contenedor de texto
-  const info = document.createElement('div');
-  info.className = 'nowInfo';
-  
-  const title = document.createElement('p');
-  title.textContent = metadata.title || 'Título desconocido';
-  
-  const artist = document.createElement('p');
-  artist.textContent = metadata.artist || 'Artista desconocido';
-  
-  const album = document.createElement('p');
-  album.textContent = metadata.album || 'Álbum desconocido';
-  
-  // Añadir texto al contenedor
-  info.appendChild(title);
-  info.appendChild(artist);
-  info.appendChild(album);
-  
+  const coverImg = document.createElement("img");
+  coverImg.src = metadata.cover || "https://via.placeholder.com/80";
+  coverImg.alt = metadata.album || "Álbum";
+
+  // Crear contenedor de info textual
+  const infoDiv = document.createElement("div");
+  infoDiv.classList.add("nowInfo");
+
+  const artistP = document.createElement("p");
+  artistP.textContent = `🎤 ${metadata.artist || "Desconocido"}`;
+
+  const titleP = document.createElement("p");
+  titleP.textContent = `🎵 ${metadata.title || "Sin título"}`;
+
+  const albumP = document.createElement("p");
+  albumP.textContent = `💿 ${metadata.album || "Sin álbum"}`;
+
+  infoDiv.appendChild(artistP);
+  infoDiv.appendChild(titleP);
+  infoDiv.appendChild(albumP);
+
   // Añadir imagen y texto al recuadro
-  nowPlayingBox.appendChild(cover);
-  nowPlayingBox.appendChild(info);
+  nowPlayingBox.appendChild(coverImg);
+  nowPlayingBox.appendChild(infoDiv);
 }
 
-// Si quieres hacer pruebas en local, puedes simular un JSON así:
-const testMetadata = {
-  title: "Canción de prueba",
-  artist: "Antolin Maldonado",
-  album: "Álbum Demo",
-  cover: "https://via.placeholder.com/80"
-};
+// ==== OPCIÓN 1: Escuchar cambios desde un endpoint JSON ====
+// Aquí asumimos que tu webhook POSTea la metadata a un archivo JSON público en tu proyecto
+// Por ejemplo: https://tu-dominio.vercel.app/nowplaying.json
+// Se puede refrescar cada 10-15 segundos o cuando lo decidas
 
-// Para probar sin webhook:
-updateNowPlaying(testMetadata);
+async function fetchNowPlaying() {
+  try {
+    const res = await fetch("/nowplaying.json?_=" + new Date().getTime());
+    if (!res.ok) throw new Error("No se pudo obtener metadata");
+    const data = await res.json();
+    updateNowPlaying(data);
+  } catch (err) {
+    console.error("Error cargando Now Playing:", err);
+  }
+}
 
-// Aquí se puede agregar lógica de WebSocket o fetch a tu endpoint
-// Si el webhook de Vercel almacena un JSON, puedes hacer fetch cada pocos segundos
-// o usar SSE/WebSocket para actualizar en tiempo real
+// Llamamos inmediatamente y luego cada 15s
+fetchNowPlaying();
+setInterval(fetchNowPlaying, 15000);
+
+// ==== OPCIÓN 2: WebSocket o Server-Sent Events ====
+// Si quieres que la metadata se actualice instantáneamente al cambiar la canción,
+// lo ideal es implementar SSE o WebSocket desde tu endpoint del webhook.
