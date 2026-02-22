@@ -18,28 +18,25 @@ body {
 }
 
 /* ==========================
-   HEADER & NAV
+   HEADER
    ========================== */
 header {
-  background: rgba(0,0,0,0.4);
-  backdrop-filter: blur(10px);
-  padding: 15px 0;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+  padding: 20px;
+  background: rgba(0,0,0,0.3);
+  backdrop-filter: blur(8px);
 }
 
 .nav {
   display: flex;
   justify-content: center;
-  gap: 25px;
+  gap: 30px;
 }
 
 .nav a {
-  color: #ffffff;
   text-decoration: none;
+  color: #ffffff;
   font-weight: 500;
-  transition: color 0.3s;
+  transition: color 0.3s ease;
 }
 
 .nav a:hover {
@@ -47,23 +44,23 @@ header {
 }
 
 /* ==========================
-   LOGO Y TITULOS
+   LOGO / TITLES
    ========================== */
 .logo {
   text-align: center;
-  padding: 40px 20px 20px;
-}
-
-.logo img {
-  max-width: 150px;
   margin-bottom: 15px;
 }
 
+.logo img {
+  width: 140px;
+  margin-bottom: 10px;
+}
+
 .main-title {
+  text-align: center;
   font-size: 2rem;
   font-weight: 600;
-  color: #ffffff;
-  text-align: center;
+  letter-spacing: 1px;
 }
 
 .main-title .radio {
@@ -72,12 +69,13 @@ header {
 
 .sub-title {
   text-align: center;
+  font-size: 1rem;
   color: #9aa7c0;
-  margin-top: 5px;
+  margin-bottom: 30px;
 }
 
 /* ==========================
-   PLAYER
+   PLAYER SECTION
    ========================== */
 .player-section {
   display: flex;
@@ -94,58 +92,55 @@ header {
   max-width: 600px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(77, 163, 255, 0.2);
+  text-align: center;
 }
 
-.player-card button {
-  background: #4da3ff;
+.player-card button#playRadio {
+  font-size: 1.2rem;
+  font-weight: 600;
   color: #fff;
+  background: linear-gradient(135deg, #4da3ff, #065d9b);
   border: none;
-  padding: 10px 20px;
-  border-radius: 10px;
-  font-size: 1rem;
+  border-radius: 12px;
+  padding: 12px 25px;
   cursor: pointer;
-  transition: background 0.3s;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
 }
 
-.player-card button:hover {
-  background: #3a82cc;
+.player-card button#playRadio:hover {
+  transform: scale(1.05);
 }
 
+/* WAVES ANIMATION */
 .waves-container {
   display: flex;
-  justify-content: space-between;
-  margin-top: 15px;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 20px;
 }
 
 .wave {
   width: 5px;
   height: 20px;
   background: #4da3ff;
-  border-radius: 2px;
-  animation: waveAnim 1s infinite ease-in-out;
+  animation: wave 1s infinite ease-in-out;
 }
 
-.wave:nth-child(2) {
-  animation-delay: 0.1s;
-}
-.wave:nth-child(3) {
-  animation-delay: 0.2s;
-}
-.wave:nth-child(4) {
-  animation-delay: 0.3s;
-}
-.wave:nth-child(5) {
-  animation-delay: 0.4s;
-}
+.wave:nth-child(2) { animation-delay: 0.1s; }
+.wave:nth-child(3) { animation-delay: 0.2s; }
+.wave:nth-child(4) { animation-delay: 0.3s; }
+.wave:nth-child(5) { animation-delay: 0.4s; }
 
-@keyframes waveAnim {
-  0%, 100% { transform: scaleY(0.3); }
+@keyframes wave {
+  0%, 100% { transform: scaleY(0.4); }
   50% { transform: scaleY(1); }
 }
 
-audio {
+audio#radioAudio {
   width: 100%;
-  margin-top: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
 }
 
 /* ==========================
@@ -160,6 +155,7 @@ audio {
   margin-top: 20px;
   color: #fff;
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  max-width: 100%;
 }
 
 .now-playing-box img {
@@ -173,35 +169,38 @@ audio {
 .nowInfo p {
   margin: 2px 0;
   font-weight: 500;
-  font-size: 0.95rem;
 }
 
 /* ==========================
-   SECTION TITLES
-   ========================== */
-.section h2 {
-  color: #4da3ff;
-  margin-bottom: 15px;
-  font-size: 1.5rem;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  text-align: center;
-}
-
-/* ==========================
-   WHATSAPP FLOATING BUTTON
+   WHATSAPP FLOAT
    ========================== */
 .whatsapp-float {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 100;
-  display: flex;
+  bottom: 25px;
+  right: 25px;
+  z-index: 1000;
 }
 
 .whatsapp-float img {
-  width: 50px;
-  height: 50px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+}
+
+/* ==========================
+   SECTIONS GENERALES
+   ========================== */
+.section {
+  padding: 40px 20px;
+}
+
+/* ==========================
+   IFRAMES
+   ========================== */
+iframe {
+  width: 100%;
+  border-radius: 12px;
 }
 
 /* ==========================
@@ -213,27 +212,13 @@ footer {
   font-size: 0.85rem;
   color: #9aa7c0;
   border-top: 1px solid rgba(255,255,255,0.05);
-  margin-top: 40px;
 }
 
 /* ==========================
    RESPONSIVE
    ========================== */
 @media (max-width: 768px) {
-  .logo img {
-    max-width: 120px;
-  }
-  .main-title {
-    font-size: 1.6rem;
-  }
-  .player-card {
-    padding: 20px;
-  }
-  .now-playing-box {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .now-playing-box img {
-    margin-bottom: 10px;
-  }
+  .main-title { font-size: 1.6rem; }
+  .player-card { padding: 20px; }
+  .now-playing-box img { width: 60px; height: 60px; }
 }
