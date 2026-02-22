@@ -57,19 +57,19 @@
       <audio id="radioAudio" preload="none">
         <source src="https://playerservices.streamtheworld.com/api/livestream-redirect/SAM05AAC459_SC" type="audio/mpeg">
       </audio>
+      
+<!-- NOW PLAYING BOX -->
+<section class="player-section">
+  <div class="player-card">
+    <audio id="radioAudio" preload="none" controls>
+      <source src="https://playerservices.streamtheworld.com/api/livestream-redirect/SAM05AAC459_SC" type="audio/mpeg">
+    </audio>
 
-      <!-- NOW PLAYING BOX -->
-      <div class="now-playing-box">
-        <img id="nowCover" src="https://via.placeholder.com/80" alt="Portada">
-        <div class="nowInfo">
-          <p id="nowArtist">Artista: --</p>
-          <p id="nowTitle">Canción: --</p>
-          <p id="nowAlbum">Álbum: --</p>
-        </div>
-      </div>
-
+    <div id="nowPlayingBox" class="now-playing-box">
+      <!-- Aquí se cargará la metadata via nowplaying.js -->
     </div>
-  </section>
+  </div>
+</section>
 
   <!-- WhatsApp flotante -->
   <a href="https://www.whatsapp.com/channel/0029VaAFdiO60eBjjXuyei1U"
@@ -117,4 +117,5 @@
 <script src="js/nowplaying.js"></script>
 
 </body>
+
 </html>
