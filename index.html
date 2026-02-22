@@ -24,9 +24,6 @@
 <!-- Styles -->
 <link rel="stylesheet" href="css/styles.css">
 
-<!-- SAM Widgets -->
-<script type="module" src="//samcloudmedia.spacial.com/webwidgets/widget/v6/sam-widgets/sam-widgets.esm.js"></script>
-
 </head>
 <body>
 
@@ -48,47 +45,32 @@
   <h2 class="sub-title">WRPG-DB</h2>
 
   <!-- PLAYER -->
-  <section class="player">
-    <button id="playRadio">▶ Reproducir Radio</button>
-    <div class="waves-container">
-      <div class="wave"></div>
-      <div class="wave"></div>
-      <div class="wave"></div>
-      <div class="wave"></div>
-      <div class="wave"></div>
+  <section class="player-section">
+    <div class="player-card">
+      <button id="playRadio">▶ Reproducir Radio</button>
+      <div class="waves-container">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+      </div>
+      <audio id="radioAudio" preload="none">
+        <source src="https://playerservices.streamtheworld.com/api/livestream-redirect/SAM05AAC459_SC" type="audio/mpeg">
+      </audio>
     </div>
-    <audio id="radioAudio" preload="none">
-      <source src="https://playerservices.streamtheworld.com/api/livestream-redirect/SAM05AAC459_SC" type="audio/mpeg">
-    </audio>
   </section>
 
-  <!-- NOW PLAYING -->
-  <section class="section bg-dark-section" id="nowPlaying">
-    <h2>🎵 Ahora</h2>
-    <sam-widget type="now playing" station-id="135533"
-        token="cdf7c7d6204a644fed684c340bda2649d7675bb0"
-        playlist-id="undefined"
-        anim-type='focus-in-expand' easing='ease-in-out-back' refresh-interval='30s'
-        station-refresh-interval='default' theme-border-radius='square' image-border-radius='square'
-        theme='{"backgroundTop":"#fab33cff","backgroundBottom":"#065d9bff","widgetBorder":"#5f5f5f","dividers":"#5f5f5f","buttons":"#ffffffff","text":"#ffffffff"}'
-        show-buy-button='never' show-request-button='false'
-        show-cover-art='true'>
-    </sam-widget>
-  </section>
-
-  <!-- RECIENTES -->
-  <section class="section bg-dark-section" id="recientes">
-    <h2>🎧 Recientes</h2>
-    <sam-widget type="history"
-        station-id="135533"
-        token="cdf7c7d6204a644fed684c340bda2649d7675bb0"
-        history-limit="5"
-        show-cover-art="true"
-        show-buy-button="never"
-        show-request-button="false"
-        refresh-interval="30s"
-        theme='{"backgroundTop":"#065d9bff","backgroundBottom":"#fab33cff","widgetBorder":"#ffffffff","dividers":"#5f5f5f","buttons":"#4CAF50ff","text":"#ffffffff"}'>
-    </sam-widget>
+  <!-- NOW PLAYING BOX -->
+  <section class="radio-widgets">
+    <div class="now-playing-box">
+      <img id="nowCover" src="https://via.placeholder.com/80" alt="Carátula">
+      <div class="nowInfo">
+        <p id="nowArtist">Artista: --</p>
+        <p id="nowTitle">Canción: --</p>
+        <p id="nowAlbum">Álbum: --</p>
+      </div>
+    </div>
   </section>
 
   <!-- WhatsApp flotante -->
@@ -134,6 +116,5 @@
 
 <!-- JS -->
 <script src="js/radio.js"></script>
-
 </body>
 </html>
