@@ -38,75 +38,68 @@
 
 <main class="app">
 
-<!-- INICIO -->
-<section id="inicio" class="section active">
-  <img class="logo" src="assets/logo.png" alt="Pura Gracia Radio">
-  <h1 class="main-title">Pura Gracia <span class="radio">Radio</span></h1>
-  <h2 class="sub-title">WRPG-DB</h2>
+  <!-- INICIO -->
+  <section id="inicio" class="section active">
+    <div class="logo">
+      <img src="assets/logo.png" alt="Pura Gracia Radio" style="max-width:180px;">
+      <h1 class="main-title">Pura Gracia <span class="radio">Radio</span></h1>
+      <h2 class="sub-title">WRPG-DB</h2>
+    </div>
 
-  <!-- PLAYER -->
-  <section class="player-section">
-    <div class="player-card">
-      <button id="playRadio">▶ Reproducir Radio</button>
-      <div class="waves-container">
-        <div class="wave"></div>
-        <div class="wave"></div>
-        <div class="wave"></div>
-        <div class="wave"></div>
-        <div class="wave"></div>
-      </div>
-      <audio id="radioAudio" preload="none">
-        <source src="https://playerservices.streamtheworld.com/api/livestream-redirect/SAM05AAC459_SC" type="audio/mpeg">
-      </audio>
+    <!-- PLAYER + NOW PLAYING BOX -->
+    <section class="player-section">
+      <div class="player-card">
+        <audio id="radioAudio" preload="none" controls>
+          <source src="https://playerservices.streamtheworld.com/api/livestream-redirect/SAM05AAC459_SC" type="audio/mpeg">
+        </audio>
 
-      <!-- NOW PLAYING BOX -->
-      <div id="nowPlayingBox" class="now-playing-box">
-        <!-- Aquí se cargará la metadata via nowplaying.js -->
-        <p>Esperando canción...</p>
+        <!-- NOW PLAYING BOX -->
+        <div id="nowPlayingBox" class="now-playing-box">
+          <!-- Aquí se cargará la metadata via nowplaying.js -->
+        </div>
       </div>
+    </section>
+
+    <!-- WhatsApp flotante -->
+    <a href="https://www.whatsapp.com/channel/0029VaAFdiO60eBjjXuyei1U"
+       class="whatsapp-float"
+       target="_blank"
+       rel="noopener"
+       aria-label="WhatsApp">
+      <img src="assets/whatsapp.png" alt="WhatsApp">
+    </a>
+  </section>
+
+  <!-- PROGRAMACION -->
+  <section id="programacion" class="section">
+    <h2>🗓️ Programación</h2>
+    <iframe
+      src="https://teamup.com/ksqyre4rtx15nnfei3?view=d&showViewHeader=0&showTitle=0&showLogo=0&showMenu=0&disableSidepanel=1"
+      style="width:100%;height:600px;border:0;"
+      loading="lazy">
+    </iframe>
+  </section>
+
+  <!-- SERMONES -->
+  <section id="sermones" class="section">
+    <h2>🎙️ Sermones</h2>
+    <div class="pg-spotify-wrapper">
+      <iframe src="https://open.spotify.com/embed/show/7bCzhWNjuVzSWeTLXvk9vt"
+        allow="autoplay; encrypted-media"></iframe>
     </div>
   </section>
 
-  <!-- WhatsApp flotante -->
-  <a href="https://www.whatsapp.com/channel/0029VaAFdiO60eBjjXuyei1U"
-     class="whatsapp-float"
-     target="_blank"
-     rel="noopener"
-     aria-label="WhatsApp">
-    <img src="assets/whatsapp.png" alt="WhatsApp">
-  </a>
-</section>
+  <!-- CONTACTO -->
+  <section id="contacto" class="section">
+    <h2>📬 Contacto</h2>
+    <p>Escríbenos a: <a href="mailto:radio@puragracia.com" style="color:#ffffff;">radio@puragracia.com</a></p>
+  </section>
 
-<!-- PROGRAMACION -->
-<section id="programacion" class="section">
-  <h2>🗓️ Programación</h2>
-  <iframe
-    src="https://teamup.com/ksqyre4rtx15nnfei3?view=d&showViewHeader=0&showTitle=0&showLogo=0&showMenu=0&disableSidepanel=1"
-    style="width:100%;height:600px;border:0;"
-    loading="lazy">
-  </iframe>
-</section>
-
-<!-- SERMONES -->
-<section id="sermones" class="section">
-  <h2>🎙️ Sermones</h2>
-  <div class="pg-spotify-wrapper">
-    <iframe src="https://open.spotify.com/embed/show/7bCzhWNjuVzSWeTLXvk9vt"
-      allow="autoplay; encrypted-media"></iframe>
-  </div>
-</section>
-
-<!-- CONTACTO -->
-<section id="contacto" class="section">
-  <h2>📬 Contacto</h2>
-  <p>Escríbenos a: <a href="mailto:radio@puragracia.com" style="color:#ffffff;">radio@puragracia.com</a></p>
-</section>
+</main>
 
 <footer>
 © 2026 Iglesia Bíblica Gracia Verdadera
 </footer>
-
-</main>
 
 <!-- JS -->
 <script src="js/radio.js"></script>
