@@ -18,60 +18,63 @@ body {
 }
 
 /* ==========================
-   HEADER
+   HEADER & NAV
    ========================== */
 header {
-  padding: 20px;
-  background: rgba(0,0,0,0.3);
-  backdrop-filter: blur(8px);
+  background: rgba(0,0,0,0.7);
+  padding: 15px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 999;
 }
 
 .nav {
   display: flex;
   justify-content: center;
-  gap: 30px;
+  gap: 25px;
 }
 
 .nav a {
   text-decoration: none;
   color: #ffffff;
   font-weight: 500;
-  transition: color 0.3s ease;
+  padding: 8px 12px;
+  transition: color 0.3s, background 0.3s;
+  border-radius: 6px;
 }
 
-.nav a:hover {
+.nav a:hover,
+.nav a.active {
   color: #4da3ff;
+  background: rgba(77, 163, 255, 0.1);
 }
 
 /* ==========================
-   LOGO / TITLES
+   LOGO
    ========================== */
 .logo {
   text-align: center;
-  margin-bottom: 15px;
+  margin: 30px 0;
 }
 
 .logo img {
-  width: 140px;
-  margin-bottom: 10px;
+  max-width: 180px;
+  margin-bottom: 15px;
 }
 
-.main-title {
-  text-align: center;
+.logo h1 {
   font-size: 2rem;
   font-weight: 600;
-  letter-spacing: 1px;
 }
 
-.main-title .radio {
+.logo .radio {
   color: #4da3ff;
 }
 
-.sub-title {
-  text-align: center;
+.logo h2 {
   font-size: 1rem;
   color: #9aa7c0;
-  margin-bottom: 30px;
+  margin-top: 5px;
 }
 
 /* ==========================
@@ -92,53 +95,12 @@ header {
   max-width: 600px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(77, 163, 255, 0.2);
-  text-align: center;
 }
 
-.player-card button#playRadio {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #fff;
-  background: linear-gradient(135deg, #4da3ff, #065d9b);
-  border: none;
-  border-radius: 12px;
-  padding: 12px 25px;
-  cursor: pointer;
-  margin-bottom: 20px;
-  transition: all 0.3s ease;
-}
-
-.player-card button#playRadio:hover {
-  transform: scale(1.05);
-}
-
-/* WAVES ANIMATION */
-.waves-container {
-  display: flex;
-  justify-content: center;
-  gap: 6px;
-  margin-bottom: 20px;
-}
-
-.wave {
-  width: 5px;
-  height: 20px;
-  background: #4da3ff;
-  animation: wave 1s infinite ease-in-out;
-}
-
-.wave:nth-child(2) { animation-delay: 0.1s; }
-.wave:nth-child(3) { animation-delay: 0.2s; }
-.wave:nth-child(4) { animation-delay: 0.3s; }
-.wave:nth-child(5) { animation-delay: 0.4s; }
-
-@keyframes wave {
-  0%, 100% { transform: scaleY(0.4); }
-  50% { transform: scaleY(1); }
-}
-
-audio#radioAudio {
+/* Player audio */
+.player-card audio {
   width: 100%;
+  outline: none;
   border-radius: 8px;
   margin-bottom: 20px;
 }
@@ -152,10 +114,9 @@ audio#radioAudio {
   background: linear-gradient(135deg, #121212, #1f1f1f);
   padding: 12px;
   border-radius: 12px;
-  margin-top: 20px;
-  color: #fff;
+  color: #ffffff;
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  max-width: 100%;
+  max-width: 600px;
 }
 
 .now-playing-box img {
@@ -169,38 +130,45 @@ audio#radioAudio {
 .nowInfo p {
   margin: 2px 0;
   font-weight: 500;
+  font-size: 0.95rem;
 }
 
 /* ==========================
-   WHATSAPP FLOAT
+   SECTION STYLING
+   ========================== */
+.section {
+  display: none;
+  padding: 20px;
+}
+
+.section.active {
+  display: block;
+}
+
+.section h2 {
+  font-size: 1.4rem;
+  color: #4da3ff;
+  margin-bottom: 15px;
+}
+
+/* ==========================
+   WHATSAPP FLOATING BUTTON
    ========================== */
 .whatsapp-float {
   position: fixed;
-  bottom: 25px;
-  right: 25px;
+  bottom: 20px;
+  right: 20px;
+  width: 55px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 1000;
 }
 
 .whatsapp-float img {
-  width: 55px;
-  height: 55px;
-  border-radius: 50%;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.4);
-}
-
-/* ==========================
-   SECTIONS GENERALES
-   ========================== */
-.section {
-  padding: 40px 20px;
-}
-
-/* ==========================
-   IFRAMES
-   ========================== */
-iframe {
   width: 100%;
-  border-radius: 12px;
+  height: 100%;
 }
 
 /* ==========================
@@ -218,7 +186,18 @@ footer {
    RESPONSIVE
    ========================== */
 @media (max-width: 768px) {
-  .main-title { font-size: 1.6rem; }
-  .player-card { padding: 20px; }
-  .now-playing-box img { width: 60px; height: 60px; }
+  .logo h1 {
+    font-size: 1.6rem;
+  }
+
+  .player-card,
+  .now-playing-box {
+    padding: 15px;
+  }
+
+  .now-playing-box img {
+    width: 60px;
+    height: 60px;
+    margin-right: 10px;
+  }
 }
