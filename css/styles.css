@@ -163,6 +163,17 @@ audio {
   text-align: left;
 }
 
+.nowInfo p:first-child {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.nowInfo p:last-child {
+  font-size: 0.8rem;
+  font-weight: 400;
+  opacity: 0.85;
+}
+
 /* ================= IFRAME WRAPPERS ================= */
 .iframe-wrapper {
   width: 100%;
@@ -301,3 +312,4 @@ footer {
     padding: 8px 5px;
   }
 }
+
