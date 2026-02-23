@@ -467,15 +467,23 @@ html, body {
   justify-content: center;  /* centra vertical */
   align-items: center;      /* centra horizontal */
   text-align: center;
+
+/* ===== MENÚ MÓVIL EN UNA SOLA LÍNEA ===== */
+
+.nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;        /* evita segunda línea */
+  gap: 14px;                /* espacio más compacto */
+  padding: 10px 12px;
+  max-width: 100%;
 }
 
-
-
-
-
-
-
-
-
-
-
+/* Que cada item se ajuste proporcionalmente */
+.nav a {
+  flex: 1;                  /* distribuye los 4 evenly */
+  text-align: center;
+  font-size: 0.85rem;       /* ligeramente más pequeño */
+  white-space: nowrap;      /* evita que el texto se parta */
+}
