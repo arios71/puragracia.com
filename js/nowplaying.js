@@ -12,7 +12,7 @@ function updateNowPlaying(metadata) {
 
   // Crear imagen del álbum
   const coverImg = document.createElement("img");
-  coverImg.src = metadata.cover || "https://via.placeholder.com/80";
+coverImg.src = metadata.coverArt || "https://via.placeholder.com/80";
   coverImg.alt = metadata.album || "Álbum";
 
   // Crear contenedor de info textual
@@ -61,3 +61,4 @@ setInterval(fetchNowPlaying, 15000);
 // Si quieres que la metadata se actualice instantáneamente al cambiar la canción,
 
 // lo ideal es implementar SSE o WebSocket desde tu endpoint del webhook.
+
