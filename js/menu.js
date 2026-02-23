@@ -10,7 +10,7 @@ menuLinks.forEach(link => {
     // Ocultar todas las secciones
     document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
 
-    // Mostrar la sección seleccionada
+    // Mostrar sección seleccionada
     const section = document.getElementById(target);
     if(section) section.classList.add('active');
 
