@@ -1,18 +1,18 @@
 // js/nowplaying.js
 
-// Selecciona el contenedor donde se mostrará la metadata
+// Contenedor donde se mostrará la metadata
 const nowPlayingBox = document.getElementById("nowPlayingBox");
 
-// Función para actualizar la metadata
+// Función para actualizar la metadata en pantalla
 function updateNowPlaying(metadata) {
   if (!metadata) return;
 
-  // Limpiamos el contenido anterior
+  // Limpiar contenido anterior
   nowPlayingBox.innerHTML = "";
 
   // Crear imagen del álbum
   const coverImg = document.createElement("img");
-coverImg.src = metadata.coverArt || "https://via.placeholder.com/80";
+  coverImg.src = metadata.coverArt || "https://via.placeholder.com/80"; // <-- adaptado
   coverImg.alt = metadata.album || "Álbum";
 
   // Crear contenedor de info textual
@@ -37,11 +37,7 @@ coverImg.src = metadata.coverArt || "https://via.placeholder.com/80";
   nowPlayingBox.appendChild(infoDiv);
 }
 
-// ==== OPCIÓN 1: Escuchar cambios desde un endpoint JSON ====
-// Aquí asumimos que tu webhook POSTea la metadata a un archivo JSON público en tu proyecto
-// Por ejemplo: https://tu-dominio.vercel.app/nowplaying.json
-// Se puede refrescar cada 10-15 segundos o cuando lo decidas
-
+// Función para obtener metadata desde tu webhook en Vercel
 async function fetchNowPlaying() {
   try {
     const res = await fetch("https://pg-radio-webhook.vercel.app/api/nowplaying?_=" + new Date().getTime());
@@ -53,12 +49,6 @@ async function fetchNowPlaying() {
   }
 }
 
-// Llamamos inmediatamente y luego cada 15s
+// Llamada inicial y luego cada 15 segundos
 fetchNowPlaying();
 setInterval(fetchNowPlaying, 15000);
-
-// ==== OPCIÓN 2: WebSocket o Server-Sent Events ====
-// Si quieres que la metadata se actualice instantáneamente al cambiar la canción,
-
-// lo ideal es implementar SSE o WebSocket desde tu endpoint del webhook.
-
