@@ -295,6 +295,72 @@ body, html {
   .section h2 {
     font-size: 1.4rem;
   }
+
+  /* Menú centrado en desktop y móvil */
+.nav {
+  display: flex;
+  justify-content: center; /* centra los enlaces */
+  flex-wrap: wrap; /* permite que se ajusten en pantallas pequeñas */
+  gap: 20px; /* espacio entre enlaces */
+  padding: 15px 10px; /* padding interno para no pegar a los bordes */
 }
+
+/* Ajuste de enlaces del menú */
+.nav a {
+  flex: 1 1 auto; /* permiten que se adapten */
+  text-align: center;
+  min-width: 80px; /* evita que se compriman demasiado */
 }
+
+/* Ajuste específico para móviles */
+@media (max-width: 768px) {
+  .nav {
+    flex-direction: row;
+    gap: 10px;
+    padding: 10px 5px;
+  }
+  .nav a {
+    font-size: 0.9rem;
+    padding: 8px 5px;
+  }
+
+  /* Centralizar todos los iframes y evitar scroll horizontal */
+.iframe-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 20px auto;
+  padding: 0 10px; /* margen interno para que no toque bordes */
+  overflow-x: hidden;
+}
+
+.iframe-wrapper iframe {
+  max-width: 100%;
+  width: 100%;
+  border: 0;
+}
+
+/* Secciones y textos centrados */
+.section {
+  text-align: center; /* centra encabezados y párrafos */
+  padding: 20px 15px;
+  box-sizing: border-box;
+}
+
+/* Contacto: email y párrafos centrados */
+#contacto p, #contacto a {
+  text-align: center;
+  word-break: break-word;
+}
+
+/* Ajustes responsivos para móvil */
+@media (max-width: 768px) {
+  .section {
+    padding: 15px 12px;
+  }
+  #contacto p {
+    font-size: 0.95rem;
+  }
+}
+
+
 
