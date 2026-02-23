@@ -441,14 +441,35 @@ html, body {
   text-align: center;
   word-break: break-word;
 
-/* ===== AJUSTE ALTURA SIN NECESIDAD DE <main> ===== */
+/* ===== SPA SIN SCROLL VERTICAL NI HORIZONTAL ===== */
+
 html, body {
+  margin: 0;
+  padding: 0;
   height: 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;   /* elimina scroll vertical global */
 }
 
-body {
-  min-height: 100vh;
+/* Todas las secciones ocultas por defecto */
+.section {
+  display: none;
+  height: 100vh;        /* ocupa exactamente la pantalla */
+  overflow-y: auto;     /* si alguna sección necesita scroll interno */
+  padding: 20px;
+  box-sizing: border-box;
 }
+
+/* Solo la sección activa se muestra */
+.section.active {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  /* centra vertical */
+  align-items: center;      /* centra horizontal */
+  text-align: center;
+}
+
+
 
 
 
