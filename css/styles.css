@@ -165,7 +165,7 @@ audio {
 
 .nowInfo p:first-child {
   font-size: 0.85rem;
-  font-weight: 400;
+  font-weight: 800;
 }
 
 .nowInfo p:last-child {
@@ -312,6 +312,7 @@ footer {
     padding: 8px 5px;
   }
 }
+
 
 
 
