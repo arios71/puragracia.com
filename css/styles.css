@@ -486,5 +486,29 @@ html, body {
   text-align: center;
   font-size: 0.8rem;       /* ligeramente más pequeño */
   white-space: nowrap;      /* evita que el texto se parta */
+
+/* ===== MENÚ CON SEPARADORES | ===== */
+
+.nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 10px;
 }
 
+.nav a {
+  flex: 0;              /* ya no necesita ocupar todo el ancho */
+  font-size: 0.85rem;
+  text-decoration: none;
+  position: relative;
+  padding: 0 6px;
+  white-space: nowrap;
+}
+
+/* Agrega el | automáticamente */
+.nav a:not(:last-child)::after {
+  content: "|";
+  margin-left: 10px;
+  opacity: 0.6;
+}
