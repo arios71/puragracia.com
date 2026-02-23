@@ -484,6 +484,7 @@ html, body {
 .nav a {
   flex: 1;                  /* distribuye los 4 evenly */
   text-align: center;
-  font-size: 0.85rem;       /* ligeramente más pequeño */
+  font-size: 0.8rem;       /* ligeramente más pequeño */
   white-space: nowrap;      /* evita que el texto se parta */
 }
+
