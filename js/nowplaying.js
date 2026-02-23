@@ -1,21 +1,16 @@
-// js/nowplaying.js
+// puragracia.com/js/nowplaying.js
 
-// Selecciona el contenedor donde se mostrará la metadata
 const nowPlayingBox = document.getElementById("nowPlayingBox");
 
-// Función que actualiza la metadata en el recuadro
 function updateNowPlaying(metadata) {
   if (!metadata) return;
 
-  // Limpiar contenido previo
   nowPlayingBox.innerHTML = "";
 
-  // Imagen del álbum
   const coverImg = document.createElement("img");
-  coverImg.src = metadata.coverArt;  // usa la URL que envía el webhook
+  coverImg.src = metadata.coverArt;
   coverImg.alt = metadata.album || "Álbum";
 
-  // Contenedor de info textual
   const infoDiv = document.createElement("div");
   infoDiv.classList.add("nowInfo");
 
@@ -32,12 +27,10 @@ function updateNowPlaying(metadata) {
   infoDiv.appendChild(titleP);
   infoDiv.appendChild(albumP);
 
-  // Agregar imagen y texto al recuadro
   nowPlayingBox.appendChild(coverImg);
   nowPlayingBox.appendChild(infoDiv);
 }
 
-// Función que hace fetch a tu webhook y actualiza la metadata
 async function fetchNowPlaying() {
   try {
     const res = await fetch(
@@ -51,6 +44,5 @@ async function fetchNowPlaying() {
   }
 }
 
-// Llamada inicial y actualización periódica cada 15 segundos
 fetchNowPlaying();
 setInterval(fetchNowPlaying, 15000);
