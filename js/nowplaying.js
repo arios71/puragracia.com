@@ -1,16 +1,18 @@
+// js/nowplaying.js
+
 // Selecciona el contenedor donde se mostrará la metadata
 const nowPlayingBox = document.getElementById("nowPlayingBox");
 
-// Función para actualizar la metadata
+// Función que actualiza la metadata en el recuadro
 function updateNowPlaying(metadata) {
   if (!metadata) return;
 
   // Limpiar contenido previo
   nowPlayingBox.innerHTML = "";
 
-  // Imagen del álbum: fallback a local placeholder
+  // Imagen del álbum
   const coverImg = document.createElement("img");
-  coverImg.src = metadata.coverArt || "assets/placeholder.png"; // <-- placeholder local
+  coverImg.src = metadata.coverArt;  // usa la URL que envía el webhook
   coverImg.alt = metadata.album || "Álbum";
 
   // Contenedor de info textual
@@ -18,24 +20,24 @@ function updateNowPlaying(metadata) {
   infoDiv.classList.add("nowInfo");
 
   const artistP = document.createElement("p");
-  artistP.textContent = `🎤 ${metadata.artist || "Cargando..."}`;
+  artistP.textContent = `🎤 ${metadata.artist}`;
 
   const titleP = document.createElement("p");
-  titleP.textContent = `🎵 ${metadata.title || "Sin título"}`;
+  titleP.textContent = `🎵 ${metadata.title}`;
 
   const albumP = document.createElement("p");
-  albumP.textContent = `💿 ${metadata.album || "Sin álbum"}`;
+  albumP.textContent = `💿 ${metadata.album}`;
 
   infoDiv.appendChild(artistP);
   infoDiv.appendChild(titleP);
   infoDiv.appendChild(albumP);
 
-  // Añadir imagen y texto al recuadro
+  // Agregar imagen y texto al recuadro
   nowPlayingBox.appendChild(coverImg);
   nowPlayingBox.appendChild(infoDiv);
 }
 
-// Fetch desde el webhook en Vercel
+// Función que hace fetch a tu webhook y actualiza la metadata
 async function fetchNowPlaying() {
   try {
     const res = await fetch(
@@ -46,16 +48,9 @@ async function fetchNowPlaying() {
     updateNowPlaying(data);
   } catch (err) {
     console.error("Error cargando Now Playing:", err);
-    // Fallback a placeholders locales si falla fetch
-    updateNowPlaying({
-      title: "Cargando...",
-      artist: "",
-      album: "",
-      coverArt: "assets/placeholder.png"
-    });
   }
 }
 
-// Llamada inicial y actualización cada 15 segundos
+// Llamada inicial y actualización periódica cada 15 segundos
 fetchNowPlaying();
 setInterval(fetchNowPlaying, 15000);
