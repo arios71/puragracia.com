@@ -44,7 +44,7 @@ function updateNowPlaying(metadata) {
 
 async function fetchNowPlaying() {
   try {
-    const res = await fetch("/nowplaying.json?_=" + new Date().getTime());
+    const res = await fetch("https://pg-radio-webhook.vercel.app/api/nowplaying?_=" + new Date().getTime());
     if (!res.ok) throw new Error("No se pudo obtener metadata");
     const data = await res.json();
     updateNowPlaying(data);
@@ -59,4 +59,5 @@ setInterval(fetchNowPlaying, 15000);
 
 // ==== OPCIÓN 2: WebSocket o Server-Sent Events ====
 // Si quieres que la metadata se actualice instantáneamente al cambiar la canción,
+
 // lo ideal es implementar SSE o WebSocket desde tu endpoint del webhook.
