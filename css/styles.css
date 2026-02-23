@@ -13,16 +13,17 @@ body {
   min-height: 100vh;
 }
 
-/* HEADER */
+/* HEADER / NAV */
 .nav {
   display: flex;
-  justify-content: center;
-  gap: 30px;
-  padding: 20px 0;
+  justify-content: space-around; /* distribuye links equitativamente */
+  gap: 15px;
+  padding: 10px 20px;
   background: rgba(0,0,0,0.5);
   position: sticky;
   top: 0;
   z-index: 100;
+  flex-wrap: wrap; /* evita que los links se corten en móvil */
 }
 
 .nav a {
@@ -30,6 +31,8 @@ body {
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s;
+  text-align: center;
+  flex: 1;
 }
 
 .nav a:hover {
@@ -54,8 +57,9 @@ body {
   font-weight: 600;
 }
 
-.radio {
-  color: #4da3ff;
+.main-title .radio {
+  font-style: italic;
+  color: #4da3ff; /* azul botón radio */
 }
 
 .sub-title {
@@ -169,6 +173,42 @@ footer {
   border-top: 1px solid rgba(255,255,255,0.05);
 }
 
+/* SECCIONES OCULTAS / ACTIVA */
+.section {
+  display: none;
+}
+
+.section.active {
+  display: block;
+}
+
+/* WHATSAPP FLOTANTE */
+.whatsapp-float {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #25D366; /* verde por defecto, cambia si quieres azul */
+  border-radius: 50%;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease;
+}
+
+.whatsapp-float:hover {
+  transform: scale(1.1);
+}
+
+.whatsapp-float img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
 /* RESPONSIVE */
 @media (max-width: 768px) {
   .logo {
@@ -192,44 +232,10 @@ footer {
     height: 60px;
   }
 
-/* ===== WhatsApp flotante ===== */
-.whatsapp-float {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 60px;
-  height: 60px;
-  z-index: 9999;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #25D366;
-  border-radius: 50%;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-  transition: transform 0.2s ease;
-}
-
-.whatsapp-float:hover {
-  transform: scale(1.1);
-}
-
-.whatsapp-float img {
-  width: 32px;
-  height: 32px;
-  object-fit: contain;
-}
-
-/* ===== Secciones ocultas por defecto ===== */
-.section {
-  display: none;
-}
-
-.section.active {
-  display: block;
-}
-
-/* ===== Título “Radio” itálico y color verde-azulado ===== */
-.main-title .radio {
-  font-style: italic;
-  color: #00bfa5;
+  /* Menú móvil ajustado */
+  .nav {
+    padding: 10px;
+    justify-content: space-around;
+    flex-wrap: wrap;
+  }
 }
