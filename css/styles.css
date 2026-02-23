@@ -1,49 +1,70 @@
+/* ============================= */
 /* RESET */
+/* ============================= */
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* ============================= */
 /* BODY */
+/* ============================= */
+
 body {
   font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(135deg, #0a0f1a, #111c2e);
   color: #ffffff;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
-/* HEADER / NAV */
+/* ============================= */
+/* NAVBAR */
+/* ============================= */
+
 .nav {
   display: flex;
-  justify-content: space-around; /* distribuye links equitativamente */
-  gap: 15px;
-  padding: 10px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 10px;
   background: rgba(0,0,0,0.5);
   position: sticky;
   top: 0;
   z-index: 100;
-  flex-wrap: wrap; /* evita que los links se corten en móvil */
+  flex-wrap: nowrap;
 }
 
 .nav a {
   color: #fff;
   text-decoration: none;
   font-weight: 500;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  position: relative;
+  padding: 0 6px;
   transition: color 0.3s;
-  text-align: center;
-  flex: 1;
+}
+
+.nav a:not(:last-child)::after {
+  content: "|";
+  margin-left: 8px;
+  opacity: 0.6;
 }
 
 .nav a:hover {
   color: #4da3ff;
 }
 
+/* ============================= */
 /* LOGO */
+/* ============================= */
+
 .logo-container {
   text-align: center;
-  margin-top: 40px;
-  margin-bottom: 20px;
+  margin: 40px 0 20px;
 }
 
 .logo {
@@ -59,7 +80,7 @@ body {
 
 .main-title .radio {
   font-style: italic;
-  color: #4da3ff; /* azul botón radio */
+  color: #4da3ff;
 }
 
 .sub-title {
@@ -67,7 +88,10 @@ body {
   color: #9aa7c0;
 }
 
+/* ============================= */
 /* PLAYER */
+/* ============================= */
+
 .player-section {
   display: flex;
   justify-content: center;
@@ -95,11 +119,16 @@ button#playRadio {
   cursor: pointer;
   margin-bottom: 15px;
   font-size: 1rem;
+  transition: background 0.3s;
 }
 
 button#playRadio:hover {
   background: #3a8bd8;
 }
+
+/* ============================= */
+/* WAVES */
+/* ============================= */
 
 .waves-container {
   display: flex;
@@ -120,13 +149,19 @@ button#playRadio:hover {
   50% { transform: scaleY(2.2); }
 }
 
+/* ============================= */
 /* AUDIO */
+/* ============================= */
+
 audio {
   width: 100%;
   margin-bottom: 20px;
 }
 
-/* NOW PLAYING BOX */
+/* ============================= */
+/* NOW PLAYING */
+/* ============================= */
+
 .now-playing-box {
   display: flex;
   align-items: center;
@@ -135,6 +170,8 @@ audio {
   border-radius: 12px;
   color: #fff;
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .now-playing-box img {
@@ -150,21 +187,53 @@ audio {
   font-weight: 500;
 }
 
-/* IFRAME WRAPPERS */
+/* ============================= */
+/* SECCIONES SPA */
+/* ============================= */
+
+.section {
+  display: none;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 30px 20px;
+  text-align: center;
+}
+
+.section.active {
+  display: block;
+}
+
+/* ============================= */
+/* IFRAME WRAPPER */
+/* ============================= */
+
 .iframe-wrapper {
+  width: 100%;
   max-width: 900px;
   margin: 20px auto;
-  overflow-x: auto;
+  padding: 0 10px;
 }
 
 .iframe-wrapper iframe {
   width: 100%;
   height: 600px;
-  display: block;
   border: 0;
 }
 
+/* ============================= */
+/* CONTACTO */
+/* ============================= */
+
+#contacto p,
+#contacto a {
+  text-align: center;
+  word-break: break-word;
+}
+
+/* ============================= */
 /* FOOTER */
+/* ============================= */
+
 footer {
   text-align: center;
   padding: 40px 20px;
@@ -173,16 +242,10 @@ footer {
   border-top: 1px solid rgba(255,255,255,0.05);
 }
 
-/* SECCIONES OCULTAS / ACTIVA */
-.section {
-  display: none;
-}
+/* ============================= */
+/* WHATSAPP FLOAT */
+/* ============================= */
 
-.section.active {
-  display: block;
-}
-
-/* WHATSAPP FLOTANTE */
 .whatsapp-float {
   position: fixed;
   bottom: 20px;
@@ -193,7 +256,7 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #25D366; /* verde por defecto, cambia si quieres azul */
+  background: #25D366;
   border-radius: 50%;
   box-shadow: 0 4px 6px rgba(0,0,0,0.3);
   transition: transform 0.2s ease;
@@ -209,8 +272,12 @@ footer {
   object-fit: contain;
 }
 
+/* ============================= */
 /* RESPONSIVE */
+/* ============================= */
+
 @media (max-width: 768px) {
+
   .logo {
     max-width: 140px;
   }
@@ -232,284 +299,8 @@ footer {
     height: 60px;
   }
 
-  /* Menú móvil ajustado */
-  .nav {
-    padding: 10px;
-    justify-content: space-around;
-    flex-wrap: wrap;
-  }
-  
-/* Evitar overflow horizontal */
-body, html {
-  overflow-x: hidden;
-}
-
-/* Ajuste general para secciones */
-.section {
-  padding: 20px 15px; /* márgenes internos consistentes */
-  box-sizing: border-box;
-}
-
-/* Centrar encabezados y contenido en desktop */
-.section h2 {
-  text-align: center;
-  margin-bottom: 15px;
-  font-size: 1.6rem;
-}
-
-/* Centralizar los iframes dentro de sus wrappers */
-.iframe-wrapper {
-  display: flex;
-  justify-content: center;
-  margin: 20px auto;
-  padding: 0 10px; /* margen interno para no pegar al borde */
-  overflow-x: hidden;
-}
-
-.iframe-wrapper iframe {
-  max-width: 100%;
-  width: 100%;
-  border: 0;
-}
-
-/* Contacto: centrar contenido */
-#contacto p, #contacto a {
-  text-align: center;
-  word-break: break-word;
-}
-
-/* Ajuste para móvil */
-@media (max-width: 768px) {
-  .section {
-    padding: 15px 12px;
-  }
-
-  .iframe-wrapper {
-    padding: 0 10px;
-  }
-
-  #contacto p {
-    font-size: 0.95rem;
-  }
-
-  .section h2 {
-    font-size: 1.4rem;
-  }
-
-  /* Menú centrado en desktop y móvil */
-.nav {
-  display: flex;
-  justify-content: center; /* centra los enlaces */
-  flex-wrap: wrap; /* permite que se ajusten en pantallas pequeñas */
-  gap: 20px; /* espacio entre enlaces */
-  padding: 15px 10px; /* padding interno para no pegar a los bordes */
-}
-
-/* Ajuste de enlaces del menú */
-.nav a {
-  flex: 1 1 auto; /* permiten que se adapten */
-  text-align: center;
-  min-width: 80px; /* evita que se compriman demasiado */
-}
-
-/* Ajuste específico para móviles */
-@media (max-width: 768px) {
-  .nav {
-    flex-direction: row;
-    gap: 10px;
-    padding: 10px 5px;
-  }
   .nav a {
-    font-size: 0.9rem;
-    padding: 8px 5px;
+    font-size: 0.8rem;
   }
 
-  /* Centralizar todos los iframes y evitar scroll horizontal */
-.iframe-wrapper {
-  display: flex;
-  justify-content: center;
-  margin: 20px auto;
-  padding: 0 10px; /* margen interno para que no toque bordes */
-  overflow-x: hidden;
 }
-
-.iframe-wrapper iframe {
-  max-width: 100%;
-  width: 100%;
-  border: 0;
-}
-
-/* Secciones y textos centrados */
-.section {
-  text-align: center; /* centra encabezados y párrafos */
-  padding: 20px 15px;
-  box-sizing: border-box;
-}
-
-/* Contacto: email y párrafos centrados */
-#contacto p, #contacto a {
-  text-align: center;
-  word-break: break-word;
-}
-
-/* Ajustes responsivos para móvil */
-@media (max-width: 768px) {
-  .section {
-    padding: 15px 12px;
-  }
-  #contacto p {
-    font-size: 0.95rem;
-  }
-
-/* ===== ELIMINAR SCROLL HORIZONTAL GLOBAL ===== */
-html, body {
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-  max-width: 100vw;
-}
-
-* {
-  box-sizing: border-box;
-
-/* ===== CONTENEDOR CENTRAL UNIVERSAL ===== */
-.section {
-  width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;          /* centra todo el bloque */
-  padding: 20px 20px;
-  text-align: center;      /* centra encabezados y textos */
-}
-
-/* Encabezados forzados al centro (desktop incluido) */
-.section h1,
-.section h2,
-.section h3 {
-  text-align: center !important;
-  margin-left: auto;
-  margin-right: auto;
-
-/* ===== MENÚ CENTRADO Y CONTROLADO ===== */
-.nav {
-  width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 25px;
-  flex-wrap: wrap;
-  padding: 12px 15px;
-}
-
-.nav a {
-  text-align: center;
-  white-space: nowrap;
-
-@media (max-width: 768px) {
-  .nav {
-    gap: 12px;
-    padding: 10px;
-  }
-
-  .nav a {
-    font-size: 0.9rem;
-  }
-
-/* ===== EMBEDS CENTRADOS Y RESPONSIVOS ===== */
-.iframe-wrapper {
-  width: 100%;
-  max-width: 900px;
-  margin: 20px auto;
-  padding: 0 15px;
-  display: flex;
-  justify-content: center;
-}
-
-.iframe-wrapper iframe {
-  width: 100%;
-  max-width: 100%;
-  border: 0;
-
-/* ===== CONTACTO ===== */
-#contacto {
-  text-align: center;
-}
-
-#contacto p,
-#contacto a {
-  text-align: center;
-  word-break: break-word;
-
-/* ===== SPA SIN SCROLL VERTICAL NI HORIZONTAL ===== */
-
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  overflow-x: hidden;
-  overflow-y: hidden;   /* elimina scroll vertical global */
-}
-
-/* Todas las secciones ocultas por defecto */
-.section {
-  display: none;
-  height: 100vh;        /* ocupa exactamente la pantalla */
-  overflow-y: auto;     /* si alguna sección necesita scroll interno */
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-/* Solo la sección activa se muestra */
-.section.active {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;  /* centra vertical */
-  align-items: center;      /* centra horizontal */
-  text-align: center;
-
-/* ===== MENÚ MÓVIL EN UNA SOLA LÍNEA ===== */
-
-.nav {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: nowrap;        /* evita segunda línea */
-  gap: 14px;                /* espacio más compacto */
-  padding: 10px 12px;
-  max-width: 100%;
-}
-
-/* Que cada item se ajuste proporcionalmente */
-.nav a {
-  flex: 1;                  /* distribuye los 4 evenly */
-  text-align: center;
-  font-size: 0.8rem;       /* ligeramente más pequeño */
-  white-space: nowrap;      /* evita que el texto se parta */
-
-/* ===== MENÚ CON SEPARADORES | ===== */
-
-.nav {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: nowrap;
-  gap: 10px;
-}
-
-.nav a {
-  flex: 0;              /* ya no necesita ocupar todo el ancho */
-  font-size: 0.85rem;
-  text-decoration: none;
-  position: relative;
-  padding: 0 6px;
-  white-space: nowrap;
-}
-
-/* Agrega el | automáticamente */
-.nav a:not(:last-child)::after {
-  content: "|";
-  margin-left: 10px;
-  opacity: 0.6;
-}
-
