@@ -238,4 +238,63 @@ footer {
     justify-content: space-around;
     flex-wrap: wrap;
   }
+  
+/* Evitar overflow horizontal */
+body, html {
+  overflow-x: hidden;
 }
+
+/* Ajuste general para secciones */
+.section {
+  padding: 20px 15px; /* márgenes internos consistentes */
+  box-sizing: border-box;
+}
+
+/* Centrar encabezados y contenido en desktop */
+.section h2 {
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 1.6rem;
+}
+
+/* Centralizar los iframes dentro de sus wrappers */
+.iframe-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 20px auto;
+  padding: 0 10px; /* margen interno para no pegar al borde */
+  overflow-x: hidden;
+}
+
+.iframe-wrapper iframe {
+  max-width: 100%;
+  width: 100%;
+  border: 0;
+}
+
+/* Contacto: centrar contenido */
+#contacto p, #contacto a {
+  text-align: center;
+  word-break: break-word;
+}
+
+/* Ajuste para móvil */
+@media (max-width: 768px) {
+  .section {
+    padding: 15px 12px;
+  }
+
+  .iframe-wrapper {
+    padding: 0 10px;
+  }
+
+  #contacto p {
+    font-size: 0.95rem;
+  }
+
+  .section h2 {
+    font-size: 1.4rem;
+  }
+}
+}
+
