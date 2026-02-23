@@ -1,56 +1,48 @@
-/* ============================= */
-/* RESET */
-/* ============================= */
-
+/* ================= RESET ================= */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* ============================= */
-/* BODY */
-/* ============================= */
-
+/* ================= BODY ================= */
 body {
   font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(135deg, #0a0f1a, #111c2e);
   color: #ffffff;
   min-height: 100vh;
-  overflow-x: hidden;
+  overflow-x: hidden; /* evita scroll horizontal global */
 }
 
-/* ============================= */
-/* NAVBAR */
-/* ============================= */
-
+/* ================= HEADER / NAV ================= */
 .nav {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 12px;
-  padding: 14px 10px;
-  background: rgba(0,0,0,0.5);
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  gap: 20px;
+  padding: 12px 15px;
   flex-wrap: nowrap;
 }
 
 .nav a {
-  color: #fff;
-  text-decoration: none;
-  font-weight: 500;
+  text-align: center;
   font-size: 0.85rem;
+  text-decoration: none;
+  color: #fff;
+  font-weight: 500;
   white-space: nowrap;
   position: relative;
   padding: 0 6px;
   transition: color 0.3s;
 }
 
+/* Separador | para todos menos el último */
 .nav a:not(:last-child)::after {
   content: "|";
-  margin-left: 8px;
+  margin-left: 10px;
   opacity: 0.6;
 }
 
@@ -58,13 +50,10 @@ body {
   color: #4da3ff;
 }
 
-/* ============================= */
-/* LOGO */
-/* ============================= */
-
+/* ================= LOGO ================= */
 .logo-container {
   text-align: center;
-  margin: 40px 0 20px;
+  margin: 40px 0 20px 0;
 }
 
 .logo {
@@ -76,22 +65,21 @@ body {
 .main-title {
   font-size: 2rem;
   font-weight: 600;
+  text-align: center;
 }
 
 .main-title .radio {
   font-style: italic;
-  color: #4da3ff;
+  color: #4da3ff; /* azul del botón de radio */
 }
 
 .sub-title {
   font-size: 1rem;
   color: #9aa7c0;
+  text-align: center;
 }
 
-/* ============================= */
-/* PLAYER */
-/* ============================= */
-
+/* ================= PLAYER ================= */
 .player-section {
   display: flex;
   justify-content: center;
@@ -119,16 +107,11 @@ button#playRadio {
   cursor: pointer;
   margin-bottom: 15px;
   font-size: 1rem;
-  transition: background 0.3s;
 }
 
 button#playRadio:hover {
   background: #3a8bd8;
 }
-
-/* ============================= */
-/* WAVES */
-/* ============================= */
 
 .waves-container {
   display: flex;
@@ -149,19 +132,12 @@ button#playRadio:hover {
   50% { transform: scaleY(2.2); }
 }
 
-/* ============================= */
-/* AUDIO */
-/* ============================= */
-
 audio {
   width: 100%;
   margin-bottom: 20px;
 }
 
-/* ============================= */
-/* NOW PLAYING */
-/* ============================= */
-
+/* ================= NOW PLAYING BOX ================= */
 .now-playing-box {
   display: flex;
   align-items: center;
@@ -170,8 +146,7 @@ audio {
   border-radius: 12px;
   color: #fff;
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  max-width: 600px;
-  margin: 0 auto;
+  justify-content: center;
 }
 
 .now-playing-box img {
@@ -185,55 +160,28 @@ audio {
 .nowInfo p {
   margin: 2px 0;
   font-weight: 500;
+  text-align: left;
 }
 
-/* ============================= */
-/* SECCIONES SPA */
-/* ============================= */
-
-.section {
-  display: none;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 30px 20px;
-  text-align: center;
-}
-
-.section.active {
-  display: block;
-}
-
-/* ============================= */
-/* IFRAME WRAPPER */
-/* ============================= */
-
+/* ================= IFRAME WRAPPERS ================= */
 .iframe-wrapper {
   width: 100%;
   max-width: 900px;
   margin: 20px auto;
-  padding: 0 10px;
+  padding: 0 15px;
+  display: flex;
+  justify-content: center;
+  overflow-x: hidden;
 }
 
 .iframe-wrapper iframe {
   width: 100%;
+  max-width: 100%;
   height: 600px;
   border: 0;
 }
 
-/* ============================= */
-/* CONTACTO */
-/* ============================= */
-
-#contacto p,
-#contacto a {
-  text-align: center;
-  word-break: break-word;
-}
-
-/* ============================= */
-/* FOOTER */
-/* ============================= */
-
+/* ================= FOOTER ================= */
 footer {
   text-align: center;
   padding: 40px 20px;
@@ -242,10 +190,43 @@ footer {
   border-top: 1px solid rgba(255,255,255,0.05);
 }
 
-/* ============================= */
-/* WHATSAPP FLOAT */
-/* ============================= */
+/* ================= SECCIONES ================= */
+.section {
+  display: none;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+  text-align: center;
+}
 
+.section.active {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.section h1,
+.section h2,
+.section h3 {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+/* ================= CONTACTO ================= */
+#contacto {
+  text-align: center;
+}
+
+#contacto p,
+#contacto a {
+  text-align: center;
+  word-break: break-word;
+}
+
+/* ================= WHATSAPP FLOTANTE ================= */
 .whatsapp-float {
   position: fixed;
   bottom: 20px;
@@ -272,10 +253,7 @@ footer {
   object-fit: contain;
 }
 
-/* ============================= */
-/* RESPONSIVE */
-/* ============================= */
-
+/* ================= RESPONSIVE ================= */
 @media (max-width: 768px) {
 
   .logo {
@@ -299,8 +277,27 @@ footer {
     height: 60px;
   }
 
-  .nav a {
-    font-size: 0.8rem;
+  .section {
+    padding: 15px 12px;
   }
 
+  #contacto p {
+    font-size: 0.95rem;
+  }
+
+  .section h2 {
+    font-size: 1.4rem;
+  }
+
+  /* Menú móvil en una línea, sin segunda línea */
+  .nav {
+    flex-wrap: nowrap;
+    gap: 12px;
+    padding: 10px 5px;
+  }
+
+  .nav a {
+    font-size: 0.8rem;
+    padding: 8px 5px;
+  }
 }
