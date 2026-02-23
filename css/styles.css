@@ -360,7 +360,94 @@ body, html {
   #contacto p {
     font-size: 0.95rem;
   }
+
+/* ===== ELIMINAR SCROLL HORIZONTAL GLOBAL ===== */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  max-width: 100vw;
 }
+
+* {
+  box-sizing: border-box;
+
+/* ===== CONTENEDOR CENTRAL UNIVERSAL ===== */
+.section {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;          /* centra todo el bloque */
+  padding: 20px 20px;
+  text-align: center;      /* centra encabezados y textos */
+}
+
+/* Encabezados forzados al centro (desktop incluido) */
+.section h1,
+.section h2,
+.section h3 {
+  text-align: center !important;
+  margin-left: auto;
+  margin-right: auto;
+
+/* ===== MENÚ CENTRADO Y CONTROLADO ===== */
+.nav {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  flex-wrap: wrap;
+  padding: 12px 15px;
+}
+
+.nav a {
+  text-align: center;
+  white-space: nowrap;
+
+@media (max-width: 768px) {
+  .nav {
+    gap: 12px;
+    padding: 10px;
+  }
+
+  .nav a {
+    font-size: 0.9rem;
+  }
+
+/* ===== EMBEDS CENTRADOS Y RESPONSIVOS ===== */
+.iframe-wrapper {
+  width: 100%;
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 0 15px;
+  display: flex;
+  justify-content: center;
+}
+
+.iframe-wrapper iframe {
+  width: 100%;
+  max-width: 100%;
+  border: 0;
+
+/* ===== CONTACTO ===== */
+#contacto {
+  text-align: center;
+}
+
+#contacto p,
+#contacto a {
+  text-align: center;
+  word-break: break-word;
+
+
+}
+
+
+
+
+
 
 
 
