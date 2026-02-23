@@ -1,14 +1,14 @@
-// js/nowplaying.js
-
+// Selecciona el contenedor donde se mostrará la metadata
 const nowPlayingBox = document.getElementById("nowPlayingBox");
 
+// Función para actualizar la metadata
 function updateNowPlaying(metadata) {
   if (!metadata) return;
 
   nowPlayingBox.innerHTML = "";
 
   const coverImg = document.createElement("img");
-  coverImg.src = metadata.coverArt || "https://via.placeholder.com/80"; // <-- adaptado
+  coverImg.src = metadata.coverArt || "https://via.placeholder.com/80";
   coverImg.alt = metadata.album || "Álbum";
 
   const infoDiv = document.createElement("div");
@@ -31,6 +31,7 @@ function updateNowPlaying(metadata) {
   nowPlayingBox.appendChild(infoDiv);
 }
 
+// Fetch desde webhook en Vercel
 async function fetchNowPlaying() {
   try {
     const res = await fetch("https://pg-radio-webhook.vercel.app/api/nowplaying?_=" + new Date().getTime());
@@ -42,5 +43,6 @@ async function fetchNowPlaying() {
   }
 }
 
+// Llamada inicial y actualización cada 15 segundos
 fetchNowPlaying();
 setInterval(fetchNowPlaying, 15000);
