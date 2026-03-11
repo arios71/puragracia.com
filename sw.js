@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pgr-v26';
+const CACHE_NAME = 'pgr-v27';
 
 const urlsToCache = [
   '/',
@@ -46,20 +46,23 @@ self.addEventListener('activate', event => {
 // FETCH DESDE CACHE, SI NO EXISTE USA RED
 self.addEventListener('fetch', event => {
 
-  // no interferir con streaming de radio ni APIs externas
-  if (event.request.url.includes('streamtheworld.com') ||
-      event.request.url.includes('vercel.app')) {
+  const url = new URL(event.request.url);
+
+  // NO cachear streaming ni APIs externas
+  if (
+    url.hostname.includes('streamtheworld.com') ||
+    url.hostname.includes('vercel.app') ||
+    url.pathname.includes('.mp3') ||
+    url.pathname.includes('.aac') ||
+    url.pathname.includes('.m3u8')
+  ) {
     return;
   }
 
   event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        return response || fetch(event.request);
-      })
+    caches.match(event.request).then(response => {
+      return response || fetch(event.request);
+    })
   );
 
 });
-
-
-
