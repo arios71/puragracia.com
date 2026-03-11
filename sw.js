@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pgr-v32';
+const CACHE_NAME = 'pgr-v33';
 
 const urlsToCache = [
   '/',
@@ -66,6 +66,7 @@ self.addEventListener('fetch', event => {
   );
 
 });
+
 
 
 
