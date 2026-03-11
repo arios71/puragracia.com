@@ -51,19 +51,21 @@ body {
 }
 
 /* ================= LOGO ================= */
-.logo-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 40px 0 20px 0;
+.logo-container{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  margin-top:50px;
+  margin-bottom:10px;
 }
 
-.logo {
-  width: clamp(260px, 40vw, 420px);
-  height: auto;
-  margin-bottom: 20px;
-  display: block;
+/* LOGO PRINCIPAL */
+.logo{
+  width:clamp(280px,40vw,440px);
+  height:auto;
+  margin-bottom:10px;
+  filter: drop-shadow(0 8px 25px rgba(0,0,0,0.6));
 }
 
 .main-title {
@@ -330,5 +332,6 @@ footer {
   white-space:nowrap;
   border:0;
 }
+
 
 
