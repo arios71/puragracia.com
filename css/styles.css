@@ -57,9 +57,12 @@ body {
 }
 
 .logo {
-  max-width: 180px;
+  max-width: 250px; /* AJUSTE LOGO: aumentar tamaño máximo */
   height: auto;
   margin-bottom: 12px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .main-title {
@@ -150,8 +153,8 @@ audio {
 }
 
 .now-playing-box img {
-  width: 80px;
-  height: 80px;
+  width: 90px; /* AJUSTE LOGO: aumentar un poco tamaño del artwork para equilibrar */
+  height: 90px;
   border-radius: 8px;
   margin-right: 12px;
   object-fit: cover;
@@ -268,7 +271,7 @@ footer {
 @media (max-width: 768px) {
 
   .logo {
-    max-width: 140px;
+    max-width: 180px; /* AJUSTE LOGO: más grande que el original para móvil */
   }
 
   .main-title {
@@ -284,8 +287,8 @@ footer {
   }
 
   .now-playing-box img {
-    width: 60px;
-    height: 60px;
+    width: 70px; /* AJUSTE LOGO: equilibrar tamaño en móvil */
+    height: 70px;
   }
 
   .section {
@@ -316,17 +319,13 @@ footer {
 /* Oculto visualmente pero visible para Google */
 .seo-title,
 .seo-subtitle{
-position:absolute;
-width:1px;
-height:1px;
-padding:0;
-margin:-1px;
-overflow:hidden;
-clip:rect(0,0,0,0);
-white-space:nowrap;
-border:0;
+  position:absolute;
+  width:1px;
+  height:1px;
+  padding:0;
+  margin:-1px;
+  overflow:hidden;
+  clip:rect(0,0,0,0);
+  white-space:nowrap;
+  border:0;
 }
-
-
-
-
