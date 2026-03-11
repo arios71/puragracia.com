@@ -99,8 +99,7 @@ body {
   border-radius: 18px;
   padding: 25px;
   width: 100%;
-  max-width: 600px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  max-width: 520px 40px rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(77, 163, 255, 0.2);
   text-align: center;
 }
@@ -274,8 +273,8 @@ footer {
 /* ================= RESPONSIVE ================= */
 @media (max-width: 768px) {
 
-  .logo {
-  width: clamp(220px, 55vw, 320px);
+  .logo{
+  width:clamp(240px,65vw,340px);
 }
 
   .main-title {
@@ -332,6 +331,7 @@ footer {
   white-space:nowrap;
   border:0;
 }
+
 
 
 
