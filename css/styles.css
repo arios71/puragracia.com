@@ -273,8 +273,8 @@ footer {
 @media (max-width: 768px) {
 
   .logo {
-    max-width: 180px; /* tamaño equilibrado para móvil */
-  }
+  width: clamp(220px, 55vw, 320px);
+}
 
   .main-title {
     font-size: 1.6rem;
@@ -330,4 +330,5 @@ footer {
   white-space:nowrap;
   border:0;
 }
+
 
