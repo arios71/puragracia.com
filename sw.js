@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pgr-v25';
+const CACHE_NAME = 'pgr-v26';
 
 const urlsToCache = [
   '/',
@@ -11,10 +11,11 @@ const urlsToCache = [
   '/js/menu.js',
   '/js/nowplaying.js',
   '/manifest.json',
-  '/assets/logo.png',
-  '/assets/logo-192.png',
-  '/assets/logo-512.png',
-  '/assets/favicon.ico'
+  '/assets/icons/logo-32.png',
+  '/assets/icons/logo-192.png',
+  '/assets/icons/logo-512.png',
+  '/assets/icons/apple-touch-icon.png',
+  '/assets/icons/whatsapp.png'
 ];
 
 // INSTALAR SERVICE WORKER
@@ -59,5 +60,6 @@ self.addEventListener('fetch', event => {
   );
 
 });
+
 
 
