@@ -154,27 +154,39 @@ margin-bottom:20px;
 
 .now-playing-box{
 display:flex;
+flex-direction:column;
 align-items:center;
+justify-content:center;
 background:linear-gradient(135deg,#121212,#1f1f1f);
-padding:12px;
+padding:15px;
 border-radius:12px;
 color:#fff;
 box-shadow:0 4px 10px rgba(0,0,0,.3);
-justify-content:center;
+max-width:320px;
+margin:15px auto 0 auto;
+text-align:center;
 }
 
 .now-playing-box img{
-width:90px;
-height:90px;
-border-radius:8px;
-margin-right:12px;
+width:110px;
+height:110px;
+border-radius:10px;
 object-fit:cover;
+margin-bottom:10px;
 }
 
 .nowInfo p{
 margin:2px 0;
 font-weight:500;
 text-align:left;
+}
+
+.nowInfo{
+text-align:center;
+}
+
+.nowInfo p{
+text-align:center;
 }
 
 .nowInfo p:first-child{
