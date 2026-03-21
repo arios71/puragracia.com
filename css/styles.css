@@ -90,9 +90,9 @@ text-align:center;
 
 .player-section{
 display:flex;
-flex-direction:column;
+flex-direction:column;   /* 🔥 ESTO ES LO QUE ARREGLA TODO */
 align-items:center;
-gap:15px; /* espacio entre player y nowplaying */
+gap:15px;                /* espacio entre player y nowplaying */
 padding:10px 20px 30px 20px;
 }
 
