@@ -24,14 +24,13 @@ radio cristiana 24/7
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://www.puragracia.com/">
 
-<!-- Open Graph (Facebook, WhatsApp, etc) -->
+<!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.puragracia.com/">
 <meta property="og:title" content="WRPG-DB Pura Gracia | Radio Cristiana">
 <meta property="og:description" content="Escucha Pura Gracia Radio en vivo. Predicación expositiva, sana doctrina y música cristiana que expone fielmente la Palabra de Dios.">
 <meta property="og:image" content="https://www.puragracia.com/assets/icons/logo-512.png">
 
-<!-- Open Graph para audio -->
 <meta property="og:audio" content="https://playerservices.streamtheworld.com/api/livestream-redirect/SAM05AAC459_SC">
 <meta property="og:audio:type" content="audio/mpeg">
 
@@ -45,8 +44,72 @@ radio cristiana 24/7
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#121212">
 
-<!-- Styles -->
 <link rel="stylesheet" href="/css/styles.css">
+
+<!-- NUEVOS ESTILOS UI UNIFICADA -->
+<style>
+.player-section {
+  margin-top: 20px;
+}
+
+.radio-wrapper {
+  background: rgba(255,255,255,0.05);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  backdrop-filter: blur(10px);
+}
+
+.player {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#playRadio {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 999px;
+  background: #22c55e;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.waves-container {
+  display: none; /* opcional: oculto si no lo necesitas visualmente */
+}
+
+.divider {
+  height: 1px;
+  background: rgba(255,255,255,0.1);
+}
+
+.now-playing {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.now-playing-box {
+  display: none; /* se reemplaza por now-playing visual */
+}
+
+.now-playing .label {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.now-playing .title {
+  font-weight: bold;
+}
+
+.now-playing .artist {
+  opacity: 0.85;
+}
+</style>
 
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-GX4KQ87HQC"></script>
@@ -57,48 +120,8 @@ gtag('js', new Date());
 gtag('config', 'G-GX4KQ87HQC');
 </script>
 
-<!-- Structured Data SEO -->
-<script type="application/ld+json">
-{
-"@context": "https://schema.org",
-"@type": "RadioStation",
-"name": "Pura Gracia Radio",
-"alternateName": "WRPG-DB",
-"url": "https://www.puragracia.com",
-"logo": "https://www.puragracia.com/assets/icons/logo-512.png",
-"description": "Radio cristiana reformada online 24/7 con predicación expositiva y música centrada en el evangelio.",
-"broadcastDisplayName": "Pura Gracia Radio",
-"slogan": "Radio Cristiana Online 24/7",
-"inLanguage": "es",
-"areaServed": {
-  "@type": "Place",
-  "name": "Mundo"
-},
-"broadcastAffiliateOf": {
-  "@type": "Organization",
-  "name": "Iglesia Bíblica Gracia Verdadera"
-},
-"potentialAction": {
-  "@type": "ListenAction",
-  "target": {
-    "@type": "EntryPoint",
-    "urlTemplate": "https://playerservices.streamtheworld.com/api/livestream-redirect/SAM05AAC459_SC",
-    "actionPlatform": [
-      "http://schema.org/DesktopWebPlatform",
-      "http://schema.org/MobileWebPlatform"
-    ]
-  }
-},
-"sameAs": [
-"https://www.puragracia.com"
-]
-}
-</script>
-
-<link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/logo-32.png">
-<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
-
 </head>
+
 <body>
 
 <header>
@@ -112,73 +135,79 @@ gtag('config', 'G-GX4KQ87HQC');
 
 <main class="app">
 
-  <!-- INICIO -->
-  <section id="inicio" class="section active">
-    <div class="logo-container">
-      <!-- LOGO VISIBLE EN PÁGINA -->
-      <img class="logo" src="/assets/branding/logo.webp" alt="Pura Gracia Radio">
-      <!-- TEXTOS SEO -->
-      <h1 class="seo-title">Pura Gracia Radio</h1>
-      <h2 class="seo-subtitle">WRPG-DB</h2>
-    </div>
+<section id="inicio" class="section active">
 
-    <!-- PLAYER -->
-    <section class="player-section">
-     <div class="player-card">
-  <button id="playRadio">▶ Reproducir Radio</button>
-
-  <div class="waves-container">
-    <div class="wave"></div>
-    <div class="wave"></div>
-    <div class="wave"></div>
-    <div class="wave"></div>
-    <div class="wave"></div>
+  <div class="logo-container">
+    <img class="logo" src="/assets/branding/logo.webp" alt="Pura Gracia Radio">
+    <h1 class="seo-title">Pura Gracia Radio</h1>
+    <h2 class="seo-subtitle">WRPG-DB</h2>
   </div>
 
-  <audio id="radioAudio" preload="none">
-    <source src="https://playerservices.streamtheworld.com/api/livestream-redirect/SAM05AAC459_SC" type="audio/mpeg">
-  </audio>
-</div>
+  <!-- PLAYER UNIFICADO -->
+  <section class="player-section">
 
-<!-- NOW PLAYING SEPARADO -->
-<div id="nowPlayingBox" class="now-playing-box"></div>
-    </section>
+    <div class="radio-wrapper">
 
-    <!-- WhatsApp flotante -->
-    <a href="https://www.whatsapp.com/channel/0029VaAFdiO60eBjjXuyei1U"
-       class="whatsapp-float"
-       target="_blank"
-       rel="noopener"
-       aria-label="WhatsApp">
-      <img src="/assets/icons/whatsapp.png" alt="WhatsApp">
-    </a>
-  </section>
+      <!-- PLAYER -->
+      <div class="player">
+        <button id="playRadio">▶ Reproducir Radio</button>
+        <div>En vivo</div>
+      </div>
 
-  <!-- PROGRAMACION -->
-  <section id="programacion" class="section">
-    <h2>🗓️ Programación</h2>
-    <div class="iframe-wrapper">
-      <iframe src="https://teamup.com/ksqyre4rtx15nnfei3?view=d&showViewHeader=0&showTitle=0&showLogo=0&showMenu=0&disableSidepanel=1" loading="lazy"></iframe>
+      <div class="divider"></div>
+
+      <!-- NOW PLAYING -->
+      <div id="nowPlayingBox" class="now-playing">
+        <div class="label">Now Playing</div>
+        <div class="title">Cargando...</div>
+        <div class="artist"></div>
+      </div>
+
+      <!-- AUDIO -->
+      <audio id="radioAudio" preload="none">
+        <source src="https://playerservices.streamtheworld.com/api/livestream-redirect/SAM05AAC459_SC" type="audio/mpeg">
+      </audio>
+
     </div>
+
   </section>
 
-  <!-- SERMONES -->
-  <section id="sermones" class="section">
-    <h2>🎙️ Sermones</h2>
-    <div class="iframe-wrapper pg-spotify-wrapper">
-      <iframe src="https://open.spotify.com/embed/show/7bCzhWNjuVzSWeTLXvk9vt" allow="autoplay; encrypted-media"></iframe>
-    </div>
-  </section>
+  <!-- WhatsApp flotante -->
+  <a href="https://www.whatsapp.com/channel/0029VaAFdiO60eBjjXuyei1U"
+     class="whatsapp-float"
+     target="_blank"
+     rel="noopener"
+     aria-label="WhatsApp">
+    <img src="/assets/icons/whatsapp.png" alt="WhatsApp">
+  </a>
 
-  <!-- CONTACTO -->
-  <section id="contacto" class="section">
-    <h2>📬 Contacto</h2>
-    <p>Escríbenos a: <a href="mailto:radio@puragracia.com" style="color:#ffffff;">radio@puragracia.com</a></p>
-  </section>
+</section>
 
-  <footer>
-    © 2026 Iglesia Bíblica Gracia Verdadera
-  </footer>
+<!-- PROGRAMACION -->
+<section id="programacion" class="section">
+  <h2>🗓️ Programación</h2>
+  <div class="iframe-wrapper">
+    <iframe src="https://teamup.com/ksqyre4rtx15nnfei3?view=d&showViewHeader=0&showTitle=0&showLogo=0&showMenu=0&disableSidepanel=1" loading="lazy"></iframe>
+  </div>
+</section>
+
+<!-- SERMONES -->
+<section id="sermones" class="section">
+  <h2>🎙️ Sermones</h2>
+  <div class="iframe-wrapper pg-spotify-wrapper">
+    <iframe src="https://open.spotify.com/embed/show/7bCzhWNjuVzSWeTLXvk9vt" allow="autoplay; encrypted-media"></iframe>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto" class="section">
+  <h2>📬 Contacto</h2>
+  <p>Escríbenos a: <a href="mailto:radio@puragracia.com" style="color:#ffffff;">radio@puragracia.com</a></p>
+</section>
+
+<footer>
+  © 2026 Iglesia Bíblica Gracia Verdadera
+</footer>
 
 </main>
 
