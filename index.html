@@ -124,24 +124,24 @@ gtag('config', 'G-GX4KQ87HQC');
 
     <!-- PLAYER -->
     <section class="player-section">
-      <div class="player-card">
-        <button id="playRadio">▶ Reproducir Radio</button>
-        <div class="waves-container">
-          <div class="wave"></div>
-          <div class="wave"></div>
-          <div class="wave"></div>
-          <div class="wave"></div>
-          <div class="wave"></div>
-        </div>
-        <audio id="radioAudio" preload="none">
-          <source src="https://playerservices.streamtheworld.com/api/livestream-redirect/SAM05AAC459_SC" type="audio/mpeg">
-        </audio>
+     <div class="player-card">
+  <button id="playRadio">▶ Reproducir Radio</button>
 
-        <!-- NOW PLAYING BOX -->
-        <div id="nowPlayingBox" class="now-playing-box">
-          <!-- Metadata del webhook se carga aquí -->
-        </div>
-      </div>
+  <div class="waves-container">
+    <div class="wave"></div>
+    <div class="wave"></div>
+    <div class="wave"></div>
+    <div class="wave"></div>
+    <div class="wave"></div>
+  </div>
+
+  <audio id="radioAudio" preload="none">
+    <source src="https://playerservices.streamtheworld.com/api/livestream-redirect/SAM05AAC459_SC" type="audio/mpeg">
+  </audio>
+</div>
+
+<!-- NOW PLAYING SEPARADO -->
+<div id="nowPlayingBox" class="now-playing-box"></div>
     </section>
 
     <!-- WhatsApp flotante -->
