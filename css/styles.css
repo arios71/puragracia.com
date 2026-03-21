@@ -56,8 +56,8 @@ display:flex;
 flex-direction:column;
 align-items:center;
 justify-content:center;
-margin-top:50px;
-margin-bottom:10px;
+margin-top:25px;
+margin-bottom:5px;
 }
 
 .logo{
@@ -93,7 +93,7 @@ display:flex;
 flex-direction:column;   /* 🔥 ESTO ES LO QUE ARREGLA TODO */
 align-items:center;
 gap:15px;                /* espacio entre player y nowplaying */
-padding:10px 20px 30px 20px;
+padding:10px 15px 20px 15px;
 }
 
 .player-card{
