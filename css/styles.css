@@ -362,3 +362,25 @@ clip:rect(0,0,0,0);
 white-space:nowrap;
 border:0;
 }
+
+/* ================= FIX PWA MOBILE OVERFLOW ================= */
+
+/* Evita cualquier desbordamiento horizontal */
+html, body {
+  overflow-x: hidden;
+}
+
+/* Imágenes siempre contenidas */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Ajuste fino del logo en móvil */
+@media (max-width: 480px) {
+  .logo {
+    width: 85%;
+    max-width: 320px;
+  }
+}
