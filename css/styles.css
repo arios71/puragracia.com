@@ -467,3 +467,11 @@ box-shadow:
 .radio-status:empty{
 display:none;
 }
+
+#nowPlayingBox{
+transition:opacity .3s ease;
+}
+
+#nowPlayingBox.fade-out{
+opacity:0;
+}
