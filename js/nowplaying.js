@@ -62,7 +62,7 @@ function updateNowPlaying(metadata) {
     // LABEL
     const label = document.createElement("div");
     label.classList.add("now-label");
-    label.textContent = "Ahora Suena:";
+    label.textContent = "Ahora:";
 
     // TITLE
     const title = document.createElement("div");
