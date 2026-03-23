@@ -1,4 +1,3 @@
-
 // -------------------------
 // SPA Navigation
 // -------------------------
@@ -23,11 +22,26 @@ const playBtn = document.getElementById('playRadio');
 const audio = document.getElementById('radioAudio');
 const waves = document.querySelectorAll('.wave');
 const body = document.body;
+const radioStatus = document.getElementById('radioStatus');
 
 const STREAM_URL = "https://playerservices.streamtheworld.com/api/livestream-redirect/SAM05AAC459_SC";
 
-// Estado interno (source of truth)
+// Estado interno
 let isPlaying = false;
+
+// -------------------------
+// STATUS UI
+// -------------------------
+function setStatus(text, type = ""){
+  if (!radioStatus) return;
+
+  radioStatus.textContent = text;
+  radioStatus.className = "radio-status";
+
+  if(type){
+    radioStatus.classList.add(type);
+  }
+}
 
 // -------------------------
 // UI UPDATE
@@ -50,6 +64,8 @@ function updateUIPlayingState(state){
 // PLAY
 // -------------------------
 function playLive() {
+  setStatus("Conectando...", "loading");
+
   audio.src = STREAM_URL;
   audio.load();
 
@@ -58,7 +74,7 @@ function playLive() {
   if (playPromise !== undefined) {
     playPromise.catch(err => {
       console.error('Error al reproducir:', err);
-      alert('No se pudo reproducir el audio. Verifica conexión o permisos del navegador.');
+      setStatus("No se pudo reproducir", "error");
       updateUIPlayingState(false);
     });
   }
@@ -84,37 +100,31 @@ playBtn.addEventListener('click', () => {
 });
 
 // -------------------------
-// AUDIO EVENTS (SOURCE OF TRUTH)
+// AUDIO EVENTS
 // -------------------------
 
-// Cuando realmente empieza a reproducir
 audio.addEventListener('play', () => {
   updateUIPlayingState(true);
+  setStatus("🔴 En vivo", "live");
 });
 
-// Cuando se pausa
 audio.addEventListener('pause', () => {
   updateUIPlayingState(false);
+  setStatus("Pausado");
 });
 
-// Cuando termina (por seguridad)
 audio.addEventListener('ended', () => {
   updateUIPlayingState(false);
+  setStatus("Pausado");
 });
 
-// Cuando puede reproducir (buffer listo)
-audio.addEventListener('canplay', () => {
-  // opcional: podrías usar esto para indicadores
-});
-
-// Error en stream
+// Error en stream (evitar falso positivo al hacer stop)
 audio.addEventListener('error', () => {
-  // Si no hay src, fue un stop manual → ignorar error
   if (!audio.src) return;
 
   console.error("Error en el stream");
   updateUIPlayingState(false);
-  alert("Error en el stream. Intenta nuevamente.");
+  setStatus("Error de conexión", "error");
 });
 
 // -------------------------
@@ -122,3 +132,4 @@ audio.addEventListener('error', () => {
 // -------------------------
 updateUIPlayingState(false);
 waves.forEach(w => w.style.animationPlayState = 'paused');
+setStatus("Listo para reproducir");
