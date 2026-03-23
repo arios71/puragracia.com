@@ -365,4 +365,22 @@ font-size:.8rem;
 padding:8px 5px;
 }
 
+.radio-status{
+  margin-top:10px;
+  font-size:.9rem;
+  opacity:.8;
+  text-align:center;
+}
+
+.radio-status.error{
+  color:#ff4d4d;
+}
+
+.radio-status.loading{
+  color:#4da3ff;
+}
+
+.radio-status.live{
+  color:#22c55e;
+  font-weight:600;
 }
