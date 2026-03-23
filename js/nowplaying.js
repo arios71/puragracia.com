@@ -5,42 +5,78 @@ const nowPlayingBox = document.getElementById("nowPlayingBox");
 function updateNowPlaying(metadata) {
   if (!metadata) return;
 
-  nowPlayingBox.innerHTML = "";
+  // Fade out (transición suave)
+  nowPlayingBox.style.opacity = 0;
 
-  const coverImg = document.createElement("img");
-  coverImg.src = metadata.coverArt || "https://via.placeholder.com/80"; // <-- adaptado
-  coverImg.alt = metadata.album || "Álbum";
+  setTimeout(() => {
 
-  const infoDiv = document.createElement("div");
-  infoDiv.classList.add("nowInfo");
+    nowPlayingBox.innerHTML = "";
 
-  const artistP = document.createElement("p");
-  artistP.textContent = `🎤 ${metadata.artist || "Desconocido"}`;
+    // IMAGEN
+    const coverImg = document.createElement("img");
+    coverImg.src = metadata.coverArt || "https://via.placeholder.com/150";
+    coverImg.alt = metadata.album || "Álbum";
 
-  const titleP = document.createElement("p");
-  titleP.textContent = `🎵 ${metadata.title || "Sin título"}`;
+    // CONTENEDOR INFO
+    const infoDiv = document.createElement("div");
+    infoDiv.classList.add("now-info");
 
-  const albumP = document.createElement("p");
-  albumP.textContent = `💿 ${metadata.album || "Sin álbum"}`;
+    // LABEL
+    const label = document.createElement("div");
+    label.classList.add("now-label");
+    label.textContent = "Ahora Suena:";
 
-  infoDiv.appendChild(artistP);
-  infoDiv.appendChild(titleP);
-  infoDiv.appendChild(albumP);
+    // TITLE
+    const title = document.createElement("div");
+    title.classList.add("now-title");
+    title.textContent = metadata.title || "Sin título";
 
-  nowPlayingBox.appendChild(coverImg);
-  nowPlayingBox.appendChild(infoDiv);
+    // ARTIST
+    const artist = document.createElement("div");
+    artist.classList.add("now-artist");
+    artist.textContent = metadata.artist || "Desconocido";
+
+    // 🎚️ EQUALIZER (BARRAS)
+    const equalizer = document.createElement("div");
+    equalizer.classList.add("equalizer");
+
+    for (let i = 0; i < 5; i++) {
+      const bar = document.createElement("span");
+      equalizer.appendChild(bar);
+    }
+
+    // ARMAR TODO
+    infoDiv.appendChild(label);
+    infoDiv.appendChild(title);
+    infoDiv.appendChild(artist);
+    infoDiv.appendChild(equalizer);
+
+    nowPlayingBox.appendChild(coverImg);
+    nowPlayingBox.appendChild(infoDiv);
+
+    // Fade in
+    nowPlayingBox.style.opacity = 1;
+
+  }, 200);
 }
 
+// FETCH
 async function fetchNowPlaying() {
   try {
-    const res = await fetch("https://pg-radio-webhook.vercel.app/api/nowplaying?_=" + new Date().getTime());
+    const res = await fetch(
+      "https://pg-radio-webhook.vercel.app/api/nowplaying?_=" + new Date().getTime()
+    );
+
     if (!res.ok) throw new Error("No se pudo obtener metadata");
+
     const data = await res.json();
     updateNowPlaying(data);
+
   } catch (err) {
     console.error("Error cargando Now Playing:", err);
   }
 }
 
+// INIT
 fetchNowPlaying();
 setInterval(fetchNowPlaying, 15000);
