@@ -222,6 +222,14 @@ box-shadow:
 transition:all .4s ease;
 }
 
+.playing .equalizer span{
+  animation-play-state: running;
+}
+
+.equalizer span{
+  animation-play-state: paused;
+}
+
 /* ================= IFRAME WRAPPERS ================= */
 
 .iframe-wrapper{
