@@ -47,31 +47,6 @@ radio cristiana 24/7
 <!-- Styles -->
 <link rel="stylesheet" href="/css/styles.css">
 
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-GX4KQ87HQC"></script>
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'G-GX4KQ87HQC');
-</script>
-
-<!-- Structured Data -->
-<script type="application/ld+json">
-{
-"@context": "https://schema.org",
-"@type": "RadioStation",
-"name": "Pura Gracia Radio",
-"url": "https://www.puragracia.com",
-"logo": "https://www.puragracia.com/assets/icons/logo-512.png",
-"description": "Radio cristiana reformada online 24/7 con predicación expositiva y música centrada en el evangelio.",
-"inLanguage": "es"
-}
-</script>
-
-<link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/logo-32.png">
-<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
-
 </head>
 
 <body>
@@ -101,10 +76,11 @@ gtag('config', 'G-GX4KQ87HQC');
 
       <div class="radio-wrapper">
 
-       <!-- BOTÓN -->
-<button id="playRadio">▶ Reproducir Radio</button>
+        <!-- BOTÓN -->
+        <button id="playRadio" class="play-btn">▶ Reproducir Radio</button>
 
-<p id="radioStatus" class="radio-status">Listo para reproducir</p>
+        <!-- STATUS -->
+        <p id="radioStatus" class="radio-status" style="display:none;"></p>
 
         <!-- EN VIVO -->
         <div class="live-row">
@@ -114,9 +90,7 @@ gtag('config', 'G-GX4KQ87HQC');
         </div>
 
         <!-- NOW PLAYING -->
-        <div id="nowPlayingBox">
-          <!-- JS lo llena -->
-        </div>
+        <div id="nowPlayingBox"></div>
 
         <!-- AUDIO -->
         <audio id="radioAudio" preload="none"></audio>
