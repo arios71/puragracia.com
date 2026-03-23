@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pgr-v41';
+const CACHE_NAME = 'pgr-v42';
 
 const urlsToCache = [
   '/',
