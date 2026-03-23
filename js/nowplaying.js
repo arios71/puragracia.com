@@ -5,17 +5,17 @@ const nowPlayingBox = document.getElementById("nowPlayingBox");
 function updateNowPlaying(metadata) {
   if (!metadata) return;
 
-  // Fade out (transición suave)
+  // Fade out
   nowPlayingBox.style.opacity = 0;
 
   setTimeout(() => {
 
-    nowPlayingBox.style.opacity = 0;
+    // Limpiar contenido anterior
+    nowPlayingBox.innerHTML = "";
 
-setTimeout(() => {
-  nowPlayingBox.innerHTML = html;
-  nowPlayingBox.style.opacity = 1;
-}, 200);
+    // CONTENEDOR PRINCIPAL
+    const card = document.createElement("div");
+    card.classList.add("now-card");
 
     // IMAGEN
     const coverImg = document.createElement("img");
@@ -50,14 +50,18 @@ setTimeout(() => {
       equalizer.appendChild(bar);
     }
 
-    // ARMAR TODO
+    // ENSAMBLAR INFO
     infoDiv.appendChild(label);
     infoDiv.appendChild(title);
     infoDiv.appendChild(artist);
     infoDiv.appendChild(equalizer);
 
-    nowPlayingBox.appendChild(coverImg);
-    nowPlayingBox.appendChild(infoDiv);
+    // ENSAMBLAR CARD
+    card.appendChild(coverImg);
+    card.appendChild(infoDiv);
+
+    // INSERTAR EN DOM
+    nowPlayingBox.appendChild(card);
 
     // Fade in
     nowPlayingBox.style.opacity = 1;
