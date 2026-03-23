@@ -28,6 +28,7 @@ const STREAM_URL = "https://playerservices.streamtheworld.com/api/livestream-red
 
 // Estado interno
 let isPlaying = false;
+let isUserStopping = false;
 
 // -------------------------
 // STATUS UI
@@ -64,6 +65,8 @@ function updateUIPlayingState(state){
 // PLAY
 // -------------------------
 function playLive() {
+  isUserStopping = false;
+
   setStatus("Conectando...", "loading");
 
   audio.src = STREAM_URL;
@@ -84,8 +87,12 @@ function playLive() {
 // PAUSE / STOP
 // -------------------------
 function stopLive() {
+  isUserStopping = true;
+
   audio.pause();
-  audio.src = "";
+
+  // IMPORTANTE: no limpiar src para evitar error falso del stream
+  // audio.src = "";  ❌ esto causaba el error
 }
 
 // -------------------------
@@ -109,8 +116,11 @@ audio.addEventListener('play', () => {
 });
 
 audio.addEventListener('pause', () => {
-  updateUIPlayingState(false);
-  setStatus("Pausado");
+  // Si el usuario pausó manualmente → no mostrar error
+  if (isUserStopping) {
+    updateUIPlayingState(false);
+    setStatus("Pausado");
+  }
 });
 
 audio.addEventListener('ended', () => {
@@ -118,9 +128,9 @@ audio.addEventListener('ended', () => {
   setStatus("Pausado");
 });
 
-// Error en stream (evitar falso positivo al hacer stop)
+// Error en stream (solo si NO fue pausa manual)
 audio.addEventListener('error', () => {
-  if (!audio.src) return;
+  if (isUserStopping) return;
 
   console.error("Error en el stream");
   updateUIPlayingState(false);
@@ -131,5 +141,6 @@ audio.addEventListener('error', () => {
 // INIT
 // -------------------------
 updateUIPlayingState(false);
-waves.forEach(w => w.style.animationPlayState = 'paused');
-setStatus("Listo para reproducir");
+
+// NO mostrar texto permanente
+setStatus("");
