@@ -124,25 +124,34 @@ gtag('config', 'G-GX4KQ87HQC');
 
     <!-- PLAYER -->
     <section class="player-section">
-      <div class="player-card">
-        <button id="playRadio">▶ Reproducir Radio</button>
-        <div class="waves-container">
-          <div class="wave"></div>
-          <div class="wave"></div>
-          <div class="wave"></div>
-          <div class="wave"></div>
-          <div class="wave"></div>
-        </div>
-        <audio id="radioAudio" preload="none">
-          <source src="https://playerservices.streamtheworld.com/api/livestream-redirect/SAM05AAC459_SC" type="audio/mpeg">
-        </audio>
 
-        <!-- NOW PLAYING BOX -->
-        <div id="nowPlayingBox" class="now-playing-box">
-          <!-- Metadata del webhook se carga aquí -->
-        </div>
-      </div>
-    </section>
+  <div class="radio-wrapper">
+
+    <!-- BOTÓN -->
+    <button id="playRadio" class="play-btn">
+      ▶ Reproducir Radio
+    </button>
+
+    <!-- EN VIVO -->
+    <div class="live-row">
+      <div class="line"></div>
+      <span class="live-text">En vivo</span>
+      <div class="line"></div>
+    </div>
+
+    <!-- NOW PLAYING -->
+    <div id="nowPlayingBox" class="now-card">
+      <!-- JS lo llena -->
+    </div>
+
+    <!-- AUDIO -->
+    <audio id="radioAudio" preload="none">
+      <source src="https://playerservices.streamtheworld.com/api/livestream-redirect/SAM05AAC459_SC">
+    </audio>
+
+  </div>
+
+</section>
 
     <!-- WhatsApp flotante -->
     <a href="https://www.whatsapp.com/channel/0029VaAFdiO60eBjjXuyei1U"
