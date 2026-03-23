@@ -477,3 +477,7 @@ border:0;
     0 20px 60px rgba(0,0,0,.6);
   transition:all .4s ease;
 }
+
+.now-card{
+  transition: opacity .3s ease;
+}
