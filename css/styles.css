@@ -56,8 +56,8 @@ display:flex;
 flex-direction:column;
 align-items:center;
 justify-content:center;
-margin-top:25px;
-margin-bottom:5px;
+margin-top:50px;
+margin-bottom:10px;
 }
 
 .logo{
@@ -90,10 +90,9 @@ text-align:center;
 
 .player-section{
 display:flex;
-flex-direction:column;   /* 🔥 ESTO ES LO QUE ARREGLA TODO */
+justify-content:center;
 align-items:center;
-gap:15px;                /* espacio entre player y nowplaying */
-padding:10px 15px 20px 15px;
+padding:10px 20px 30px 20px;
 }
 
 .player-card{
@@ -155,41 +154,27 @@ margin-bottom:20px;
 
 .now-playing-box{
 display:flex;
-flex-direction:column;
 align-items:center;
+background:linear-gradient(135deg,#121212,#1f1f1f);
+padding:12px;
+border-radius:12px;
+color:#fff;
+box-shadow:0 4px 10px rgba(0,0,0,.3);
 justify-content:center;
-background:rgba(255,255,255,.05);
-backdrop-filter:blur(12px);
-border-radius:18px;
-padding:20px;
-width:100%;
-max-width:520px; /* MISMO ancho que player */
-margin:15px auto 0 auto;
-box-shadow:0 10px 40px rgba(0,0,0,.5);
-border:1px solid rgba(77,163,255,.2);
-text-align:center;
 }
 
 .now-playing-box img{
-width:110px;
-height:110px;
-border-radius:10px;
+width:90px;
+height:90px;
+border-radius:8px;
+margin-right:12px;
 object-fit:cover;
-margin-bottom:10px;
 }
 
 .nowInfo p{
 margin:2px 0;
 font-weight:500;
 text-align:left;
-}
-
-.nowInfo{
-text-align:center;
-}
-
-.nowInfo p{
-text-align:center;
 }
 
 .nowInfo p:first-child{
@@ -361,32 +346,4 @@ overflow:hidden;
 clip:rect(0,0,0,0);
 white-space:nowrap;
 border:0;
-}
-
-/* ================= FIX PWA MOBILE OVERFLOW ================= */
-
-/* Evita cualquier desbordamiento horizontal */
-html, body {
-  overflow-x: hidden;
-}
-
-/* Imágenes siempre contenidas */
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* Ajuste fino del logo en móvil */
-@media (max-width: 480px) {
-  .logo {
-    width: 85%;
-    max-width: 320px;
-  }
-}
-
-.live-status {
-  text-align: center;
-  font-size: 0.9rem;
-  opacity: 0.8;
 }
