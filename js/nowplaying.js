@@ -7,8 +7,36 @@ let currentTrack = null;
 let trackStartTime = 0;
 let trackDuration = 0;
 
+// Normalizador para evitar falsos cambios
+const normalize = (str) => (str || "").trim().toLowerCase();
+
 function updateNowPlaying(metadata) {
   if (!metadata) return;
+
+  const newTitle = metadata.title || "";
+  const newArtist = metadata.artist || "";
+
+  const newTrackId = normalize(newTitle) + "_" + normalize(newArtist);
+
+  const duration = metadata.duration || metadata.length || 0;
+  const now = Date.now();
+
+  // Si es la misma pista → no hacer nada
+  if (currentTrack === newTrackId) return;
+
+  // Si hay una pista actual, validar si debe cambiar
+  if (currentTrack && trackDuration > 0) {
+    const elapsed = (now - trackStartTime) / 1000;
+
+    if (elapsed < trackDuration - 5) {
+      return; // 🔥 bloquea metadata adelantada
+    }
+  }
+
+  // Aceptar cambio
+  currentTrack = newTrackId;
+  trackStartTime = now;
+  trackDuration = duration;
 
   // Fade out
   nowPlayingBox.style.opacity = 0;
