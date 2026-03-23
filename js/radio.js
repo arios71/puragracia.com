@@ -24,17 +24,23 @@ navLinks.forEach(link => {
 const playBtn = document.getElementById('playRadio');
 const audio = document.getElementById('radioAudio');
 const waves = document.querySelectorAll('.wave');
+const body = document.body;
 
 function playLive() {
   // Siempre reproducir desde el vivo
   audio.src = "https://playerservices.streamtheworld.com/api/livestream-redirect/SAM05AAC459_SC";
   audio.currentTime = 0;
+
   audio.play().catch(err => {
     console.error('Error al reproducir el audio:', err);
     alert('No se pudo reproducir el audio. Intenta otro navegador o revisa tu conexión.');
   });
+
   playBtn.textContent = '⏸ Pausar Radio';
   waves.forEach(w => w.style.animationPlayState = 'running');
+
+  // Glow activo
+  body.classList.add('playing');
 }
 
 function stopLive() {
@@ -42,6 +48,9 @@ function stopLive() {
   audio.src = "";
   playBtn.textContent = '▶ Reproducir Radio';
   waves.forEach(w => w.style.animationPlayState = 'paused');
+
+  // Glow desactivado
+  body.classList.remove('playing');
 }
 
 playBtn.addEventListener('click', () => {
