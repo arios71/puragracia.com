@@ -38,8 +38,8 @@ function updateNowPlaying(metadata) {
   trackStartTime = now;
   trackDuration = duration;
 
-  // Fade out
-  nowPlayingBox.style.opacity = 0;
+  // ✅ FADE OUT (con clase)
+  nowPlayingBox.classList.add("fade-out");
 
   setTimeout(() => {
 
@@ -74,7 +74,7 @@ function updateNowPlaying(metadata) {
     artist.classList.add("now-artist");
     artist.textContent = metadata.artist || "Desconocido";
 
-    // 🎚️ EQUALIZER (BARRAS)
+    // 🎚️ EQUALIZER
     const equalizer = document.createElement("div");
     equalizer.classList.add("equalizer");
 
@@ -96,7 +96,7 @@ function updateNowPlaying(metadata) {
     // INSERTAR EN DOM
     nowPlayingBox.appendChild(card);
 
-    // ================= MEDIA SESSION (LOCK SCREEN) =================
+    // ================= MEDIA SESSION =================
     if ('mediaSession' in navigator) {
       navigator.mediaSession.metadata = new MediaMetadata({
         title: metadata.title || "Pura Gracia Radio",
@@ -112,8 +112,10 @@ function updateNowPlaying(metadata) {
       });
     }
 
-    // Fade in
-    nowPlayingBox.style.opacity = 1;
+    // ✅ FADE IN
+    requestAnimationFrame(() => {
+      nowPlayingBox.classList.remove("fade-out");
+    });
 
   }, 200);
 }
