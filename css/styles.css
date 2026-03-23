@@ -384,3 +384,36 @@ padding:8px 5px;
   color:#22c55e;
   font-weight:600;
 }
+
+/* ================= BOTÓN COMO CLASE (IMPORTANTE) ================= */
+
+#playRadio{
+width:100%;
+padding:16px;
+border:none;
+border-radius:14px;
+font-size:1.1rem;
+font-weight:600;
+color:#fff;
+cursor:pointer;
+background:linear-gradient(180deg,#3b82f6,#1e3a8a);
+box-shadow:0 8px 20px rgba(0,0,0,.4);
+transition:all .3s ease;
+}
+
+#playRadio:hover{
+background:linear-gradient(180deg,#4b8df7,#243f9c);
+transform:translateY(-1px);
+}
+
+/* Glow cuando está reproduciendo */
+.playing #playRadio{
+box-shadow:
+0 0 18px rgba(59,130,246,.7),
+0 8px 20px rgba(0,0,0,.4);
+}
+
+/* Ocultar status si está vacío */
+.radio-status:empty{
+display:none;
+}
