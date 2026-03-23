@@ -63,6 +63,22 @@ function updateNowPlaying(metadata) {
     // INSERTAR EN DOM
     nowPlayingBox.appendChild(card);
 
+    // ================= MEDIA SESSION (LOCK SCREEN) =================
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: metadata.title || "Pura Gracia Radio",
+        artist: metadata.artist || "En vivo",
+        album: "Pura Gracia Radio",
+        artwork: [
+          {
+            src: metadata.coverArt || "/assets/icons/logo-512.png",
+            sizes: "512x512",
+            type: "image/png"
+          }
+        ]
+      });
+    }
+
     // Fade in
     nowPlayingBox.style.opacity = 1;
 
