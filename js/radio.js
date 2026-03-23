@@ -109,6 +109,9 @@ audio.addEventListener('canplay', () => {
 
 // Error en stream
 audio.addEventListener('error', () => {
+  // Si no hay src, fue un stop manual → ignorar error
+  if (!audio.src) return;
+
   console.error("Error en el stream");
   updateUIPlayingState(false);
   alert("Error en el stream. Intenta nuevamente.");
