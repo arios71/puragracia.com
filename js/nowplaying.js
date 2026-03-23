@@ -10,7 +10,12 @@ function updateNowPlaying(metadata) {
 
   setTimeout(() => {
 
-    nowPlayingBox.innerHTML = "";
+    nowPlayingBox.style.opacity = 0;
+
+setTimeout(() => {
+  nowPlayingBox.innerHTML = html;
+  nowPlayingBox.style.opacity = 1;
+}, 200);
 
     // IMAGEN
     const coverImg = document.createElement("img");
