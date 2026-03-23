@@ -24,14 +24,13 @@ radio cristiana 24/7
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://www.puragracia.com/">
 
-<!-- Open Graph (Facebook, WhatsApp, etc) -->
+<!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.puragracia.com/">
 <meta property="og:title" content="WRPG-DB Pura Gracia | Radio Cristiana">
 <meta property="og:description" content="Escucha Pura Gracia Radio en vivo. Predicación expositiva, sana doctrina y música cristiana que expone fielmente la Palabra de Dios.">
 <meta property="og:image" content="https://www.puragracia.com/assets/icons/logo-512.png">
 
-<!-- Open Graph para audio -->
 <meta property="og:audio" content="https://playerservices.streamtheworld.com/api/livestream-redirect/SAM05AAC459_SC">
 <meta property="og:audio:type" content="audio/mpeg">
 
@@ -57,41 +56,16 @@ gtag('js', new Date());
 gtag('config', 'G-GX4KQ87HQC');
 </script>
 
-<!-- Structured Data SEO -->
+<!-- Structured Data -->
 <script type="application/ld+json">
 {
 "@context": "https://schema.org",
 "@type": "RadioStation",
 "name": "Pura Gracia Radio",
-"alternateName": "WRPG-DB",
 "url": "https://www.puragracia.com",
 "logo": "https://www.puragracia.com/assets/icons/logo-512.png",
 "description": "Radio cristiana reformada online 24/7 con predicación expositiva y música centrada en el evangelio.",
-"broadcastDisplayName": "Pura Gracia Radio",
-"slogan": "Radio Cristiana Online 24/7",
-"inLanguage": "es",
-"areaServed": {
-  "@type": "Place",
-  "name": "Mundo"
-},
-"broadcastAffiliateOf": {
-  "@type": "Organization",
-  "name": "Iglesia Bíblica Gracia Verdadera"
-},
-"potentialAction": {
-  "@type": "ListenAction",
-  "target": {
-    "@type": "EntryPoint",
-    "urlTemplate": "https://playerservices.streamtheworld.com/api/livestream-redirect/SAM05AAC459_SC",
-    "actionPlatform": [
-      "http://schema.org/DesktopWebPlatform",
-      "http://schema.org/MobileWebPlatform"
-    ]
-  }
-},
-"sameAs": [
-"https://www.puragracia.com"
-]
+"inLanguage": "es"
 }
 </script>
 
@@ -99,6 +73,7 @@ gtag('config', 'G-GX4KQ87HQC');
 <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
 
 </head>
+
 <body>
 
 <header>
@@ -114,10 +89,9 @@ gtag('config', 'G-GX4KQ87HQC');
 
   <!-- INICIO -->
   <section id="inicio" class="section active">
+
     <div class="logo-container">
-      <!-- LOGO VISIBLE EN PÁGINA -->
-      <img class="logo" src="/assets/branding/logo.webp" alt="Pura Gracia Radio">
-      <!-- TEXTOS SEO -->
+      <img class="logo" src="/assets/branding/logo.webp" alt="Logo de Pura Gracia Radio">
       <h1 class="seo-title">Pura Gracia Radio</h1>
       <h2 class="seo-subtitle">WRPG-DB</h2>
     </div>
@@ -125,33 +99,31 @@ gtag('config', 'G-GX4KQ87HQC');
     <!-- PLAYER -->
     <section class="player-section">
 
-  <div class="radio-wrapper">
+      <div class="radio-wrapper">
 
-    <!-- BOTÓN -->
-    <button id="playRadio" class="play-btn">
-      ▶ Reproducir Radio
-    </button>
+        <!-- BOTÓN -->
+        <button id="playRadio" class="play-btn">
+          ▶ Reproducir Radio
+        </button>
 
-    <!-- EN VIVO -->
-    <div class="live-row">
-      <div class="line"></div>
-      <span class="live-text">En vivo</span>
-      <div class="line"></div>
-    </div>
+        <!-- EN VIVO -->
+        <div class="live-row">
+          <div class="line"></div>
+          <span class="live-text">En vivo</span>
+          <div class="line"></div>
+        </div>
 
-    <!-- NOW PLAYING -->
-    <div id="nowPlayingBox" class="now-card">
-      <!-- JS lo llena -->
-    </div>
+        <!-- NOW PLAYING -->
+        <div id="nowPlayingBox">
+          <!-- JS lo llena -->
+        </div>
 
-    <!-- AUDIO -->
-    <audio id="radioAudio" preload="none">
-      <source src="https://playerservices.streamtheworld.com/api/livestream-redirect/SAM05AAC459_SC">
-    </audio>
+        <!-- AUDIO -->
+        <audio id="radioAudio" preload="none"></audio>
 
-  </div>
+      </div>
 
-</section>
+    </section>
 
     <!-- WhatsApp flotante -->
     <a href="https://www.whatsapp.com/channel/0029VaAFdiO60eBjjXuyei1U"
@@ -161,6 +133,7 @@ gtag('config', 'G-GX4KQ87HQC');
        aria-label="WhatsApp">
       <img src="/assets/icons/whatsapp.png" alt="WhatsApp">
     </a>
+
   </section>
 
   <!-- PROGRAMACION -->
