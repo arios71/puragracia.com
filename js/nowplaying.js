@@ -2,6 +2,11 @@
 
 const nowPlayingBox = document.getElementById("nowPlayingBox");
 
+// 🔒 CONTROL DE TRACK (ANTI-METADATA ADELANTADA)
+let currentTrack = null;
+let trackStartTime = 0;
+let trackDuration = 0;
+
 function updateNowPlaying(metadata) {
   if (!metadata) return;
 
