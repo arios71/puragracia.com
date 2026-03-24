@@ -1,3 +1,5 @@
+// js/schedule.js
+
 const scheduleContainer = document.getElementById("scheduleContainer");
 
 async function loadAndRenderSchedule() {
