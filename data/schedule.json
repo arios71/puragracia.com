@@ -13,7 +13,7 @@
     { "name": "Iglesia Ev. de la Gracia", "start": "14:00", "end": "15:00" },
     { "name": "Deleite en la Palabra", "start": "15:00", "end": "15:30" },
     { "name": "Aviva Nuestros Corazones", "start": "15:30", "end": "16:00" },
-    { "name": "Entendiendo los Tiempos", "start": "16:00", "end": "16:30" },
+    { "name": "Entendiendo los Tiempos", "start": "16:00", "end": "16:45" },
     { "name": "Ruta 66", "start": "17:00", "end": "17:30" },
     { "name": "Jungla Semántica", "start": "18:00", "end": "18:30" },
     { "name": "Abre la Biblia", "start": "19:00", "end": "19:30" },
@@ -24,22 +24,42 @@
   ],
   "martes": [
     { "name": "Lectura Pública Biblia", "start": "21:00", "end": "21:20" },
-    { "name": "Programa 2", "start": "08:00", "end": "10:00" },
-    { "name": "Programa 3", "start": "10:00", "end": "12:00" }
+    { "name": "Por anunciar", "start": "08:00", "end": "10:00" },
+    { "name": "Por anunciar", "start": "10:00", "end": "12:00" }
   ],
   "miercoles": [
-    { "name": "Estudio Bíblico", "start": "19:00", "end": "21:00" }
+    { "name": "Jungla Semántica", "start": "05:00", "end": "05:30" }
+    { "name": "A Través de la Biblia", "start": "06:00", "end": "06:30" },
+    { "name": "Deleite en la Palabra", "start": "07:00", "end": "07:30" },
+    { "name": "Aviva Nuestros Corazones", "start": "07:30", "end": "08:00" },
+    { "name": "Gracia a Vosotros", "start": "08:00", "end": "08:30" },
+    { "name": "Jungla Semántica", "start": "09:00", "end": "09:30" },
+    { "name": "Abre la Biblia", "start": "10:00", "end": "10:30" },
+    { "name": "Entendiendo los Tiempos", "start": "11:00", "end": "11:45" },
+    { "name": "Ig. Gracia sobre Gracia", "start": "12:00", "end": "13:00" },
+    { "name": "Lectura Pública Biblia", "start": "13:00", "end": "13:20" },
+    { "name": "Ig. Gracia y Verdad", "start": "14:00", "end": "15:00" },
+    { "name": "Deleite en la Palabra", "start": "15:00", "end": "15:30" },
+    { "name": "Aviva Nuestros Corazones", "start": "15:30", "end": "16:00" },
+    { "name": "Oye la Biblia", "start": "16:00", "end": "16:30" },
+    { "name": "Ruta 66", "start": "17:00", "end": "17:30" },
+    { "name": "Abre la Biblia", "start": "19:00", "end": "19:30" },
+    { "name": "Gracia a Vosotros", "start": "20:00", "end": "20:30" },
+    { "name": "Lectura Pública Biblia", "start": "21:00", "end": "21:20" },
+    { "name": "A Través de la Biblia", "start": "22:00", "end": "22:30" },
+    { "name": "Deleite en la Palabra", "start": "23:00", "end": "23:30" }
+
   ],
   "jueves": [
-    { "name": "Reflexión Diaria", "start": "10:00", "end": "12:00" }
+    { "name": "Por anunciar", "start": "10:00", "end": "12:00" }
   ],
   "viernes": [
-    { "name": "Noche de Gloria", "start": "20:00", "end": "22:00" }
+    { "name": "Por anunciar", "start": "20:00", "end": "22:00" }
   ],
   "sabado": [
-    { "name": "Especial Juvenil", "start": "18:00", "end": "20:00" }
+    { "name": "Por anunciar", "start": "18:00", "end": "20:00" }
   ],
   "domingo": [
-    { "name": "Servicio en Vivo", "start": "09:00", "end": "12:00" }
+    { "name": "Por anunciar", "start": "09:00", "end": "12:00" }
   ]
 }
