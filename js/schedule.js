@@ -16,13 +16,26 @@ async function loadAndRenderSchedule() {
 function renderSchedule(data) {
   const days = ["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"];
 
+  // Mapeo de nombres visibles → keys del JSON
+  const keyMap = {
+    "Domingo": "domingo",
+    "Lunes": "lunes",
+    "Martes": "martes",
+    "Miércoles": "miércoles",
+    "Jueves": "jueves",
+    "Viernes": "viernes",
+    "Sábado": "sábado"
+  };
+
   scheduleContainer.innerHTML = "";
 
-  // 🔁 Forzar los 7 días siempre
   for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
 
     const dayName = days[dayIndex];
-    const programs = data[dayIndex] || [];
+    const key = keyMap[dayName];
+
+    // 🔥 aquí está el cambio clave
+    const programs = data[key] || [];
 
     const dayBlock = document.createElement("div");
     dayBlock.classList.add("day-block");
@@ -32,7 +45,6 @@ function renderSchedule(data) {
 
     dayBlock.appendChild(title);
 
-    // Si no hay programas
     if (programs.length === 0) {
       const empty = document.createElement("div");
       empty.classList.add("schedule-item");
