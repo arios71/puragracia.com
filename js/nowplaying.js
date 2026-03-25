@@ -7,57 +7,11 @@ let currentTrack = null;
 let trackStartTime = 0;
 let trackDuration = 0;
 
-// 📅 SCHEDULE
-let scheduleData = null;
-
 // 🖼️ FALLBACK GLOBAL
 const DEFAULT_COVER = "/default-cover.png";
 
 // Normalizador
 const normalize = (str) => (str || "").trim().toLowerCase();
-
-/* =========================
-   CARGAR SCHEDULE
-========================= */
-async function loadSchedule() {
-  try {
-    const res = await fetch('/data/schedule.json');
-    scheduleData = await res.json();
-  } catch (err) {
-    console.error("Error cargando schedule:", err);
-  }
-}
-
-/* =========================
-   DETECTAR PROGRAMA ACTUAL
-========================= */
-function getCurrentProgram() {
-  if (!scheduleData) return null;
-
-  const now = new Date();
-
-  const dayIndex = now.getDay();
-  const dayKeys = ["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
-  const dayKey = dayKeys[dayIndex];
-
-  const programs = scheduleData[dayKey] || [];
-
-  const currentTime = now.toTimeString().slice(0,5); // HH:MM
-
-  return programs.find(program => {
-    return currentTime >= program.start && currentTime < program.end;
-  }) || null;
-}
-
-/* =========================
-   VALIDAR METADATA VS SCHEDULE
-========================= */
-function isMetadataAligned(metadata, currentProgram) {
-  if (!currentProgram) return true;
-  if (!metadata.album) return true;
-
-  return normalize(metadata.album) === normalize(currentProgram.name);
-}
 
 /* =========================
    UPDATE NOW PLAYING
@@ -73,24 +27,16 @@ function updateNowPlaying(metadata) {
   const duration = metadata.duration || metadata.length || 0;
   const now = Date.now();
 
-  const currentProgram = getCurrentProgram();
-
-  // 🔥 VALIDACIÓN CONTRA SCHEDULE
-  if (!isMetadataAligned(metadata, currentProgram)) {
-    console.warn("Metadata no alineada con el programa actual:", metadata.album);
-    return;
-  }
-
-  if (currentTrack === newTrackId) return;
-
   // Anti metadata adelantada
   if (currentTrack && trackDuration > 0) {
     const elapsed = (now - trackStartTime) / 1000;
-
     if (elapsed < trackDuration - 5) {
       return;
     }
   }
+
+  // Evitar duplicación
+  if (currentTrack === newTrackId) return;
 
   // Aceptar cambio
   currentTrack = newTrackId;
@@ -101,7 +47,6 @@ function updateNowPlaying(metadata) {
   nowPlayingBox.style.opacity = 0;
 
   setTimeout(() => {
-
     nowPlayingBox.innerHTML = "";
 
     // CONTENEDOR PRINCIPAL
@@ -110,10 +55,7 @@ function updateNowPlaying(metadata) {
 
     // IMAGEN
     const coverImg = document.createElement("img");
-
-    const fallbackCover = metadata.coverArt || null;
-
-    coverImg.src = fallbackCover || DEFAULT_COVER;
+    coverImg.src = metadata.coverArt || DEFAULT_COVER;
     coverImg.alt = metadata.album || "Álbum";
 
     // INFO
@@ -125,36 +67,25 @@ function updateNowPlaying(metadata) {
     label.classList.add("now-label");
     label.textContent = "Ahora";
 
-    // 🎯 PROGRAMA ACTUAL
-    const currentProgram = getCurrentProgram();
-
     // TEXTO CANCIÓN
-    const titleText = metadata.title || "Sin título";
-    const artistText = metadata.artist || "Desconocido";
-    const trackText = `${artistText} - ${titleText}`;
+    const titleText = metadata.title || "";
+    const artistText = metadata.artist || "";
+    const trackText = (artistText || titleText) ? `${artistText}${artistText && titleText ? " - " : ""}${titleText}` : "";
 
-    // 🎯 TÍTULO PRINCIPAL (programa o canción)
+    // 🎯 TÍTULO PRINCIPAL
     const title = document.createElement("div");
     title.classList.add("now-title");
-    title.textContent = currentProgram?.name || trackText;
+    title.textContent = trackText || "En vivo";
 
-    // 🎧 SUBTÍTULO (solo si hay programa)
+    // 🎧 SUBTÍTULO
     const artist = document.createElement("div");
     artist.classList.add("now-artist");
-
-    if (currentProgram) {
-      artist.textContent = trackText;
-      artist.style.display = "block";
-    } else {
-      // si no hay programa, ocultamos duplicación
-      artist.textContent = "";
-      artist.style.display = "none";
-    }
+    artist.textContent = ""; // oculto, ya no depende de schedule
+    artist.style.display = "none";
 
     // EQUALIZER
     const equalizer = document.createElement("div");
     equalizer.classList.add("equalizer");
-
     for (let i = 0; i < 5; i++) {
       const bar = document.createElement("span");
       equalizer.appendChild(bar);
@@ -214,6 +145,5 @@ async function fetchNowPlaying() {
 /* =========================
    INIT
 ========================= */
-loadSchedule();
 fetchNowPlaying();
 setInterval(fetchNowPlaying, 15000);
