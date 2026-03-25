@@ -7,9 +7,48 @@ let currentTrack = null;
 let trackStartTime = 0;
 let trackDuration = 0;
 
-// Normalizador para evitar falsos cambios
+// 📅 SCHEDULE
+let scheduleData = null;
+
+// Normalizador
 const normalize = (str) => (str || "").trim().toLowerCase();
 
+/* =========================
+   CARGAR SCHEDULE
+========================= */
+async function loadSchedule() {
+  try {
+    const res = await fetch('/data/schedule.json');
+    scheduleData = await res.json();
+  } catch (err) {
+    console.error("Error cargando schedule:", err);
+  }
+}
+
+/* =========================
+   DETECTAR PROGRAMA ACTUAL
+========================= */
+function getCurrentProgram() {
+  if (!scheduleData) return null;
+
+  const now = new Date();
+
+  const dayIndex = now.getDay();
+  const dayKeys = ["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+  const dayKey = dayKeys[dayIndex];
+
+  const programs = scheduleData[dayKey] || [];
+
+  const currentTime = now.toTimeString().slice(0,5); // HH:MM
+
+  return programs.find(program => {
+    return currentTime >= program.start && currentTime < program.end;
+  }) || null;
+}
+
+/* =========================
+   UPDATE NOW PLAYING
+========================= */
 function updateNowPlaying(metadata) {
   if (!metadata) return;
 
@@ -24,12 +63,12 @@ function updateNowPlaying(metadata) {
   // Si es la misma pista → no hacer nada
   if (currentTrack === newTrackId) return;
 
-  // Si hay una pista actual, validar si debe cambiar
+  // Anti metadata adelantada
   if (currentTrack && trackDuration > 0) {
     const elapsed = (now - trackStartTime) / 1000;
 
     if (elapsed < trackDuration - 5) {
-      return; // 🔥 bloquea metadata adelantada
+      return;
     }
   }
 
@@ -38,12 +77,14 @@ function updateNowPlaying(metadata) {
   trackStartTime = now;
   trackDuration = duration;
 
+  // Obtener programa actual
+  const currentProgram = getCurrentProgram();
+
   // Fade out
   nowPlayingBox.style.opacity = 0;
 
   setTimeout(() => {
 
-    // Limpiar contenido anterior
     nowPlayingBox.innerHTML = "";
 
     // CONTENEDOR PRINCIPAL
@@ -55,14 +96,22 @@ function updateNowPlaying(metadata) {
     coverImg.src = metadata.coverArt || "https://via.placeholder.com/150";
     coverImg.alt = metadata.album || "Álbum";
 
-    // CONTENEDOR INFO
+    // INFO
     const infoDiv = document.createElement("div");
     infoDiv.classList.add("now-info");
 
-    // LABEL
+    // LABEL PRINCIPAL
     const label = document.createElement("div");
     label.classList.add("now-label");
     label.textContent = "Ahora:";
+
+    // PROGRAMA (nuevo)
+    if (currentProgram) {
+      const programLabel = document.createElement("div");
+      programLabel.classList.add("now-program");
+      programLabel.textContent = "Programa: " + currentProgram.name;
+      infoDiv.appendChild(programLabel);
+    }
 
     // TITLE
     const title = document.createElement("div");
@@ -74,7 +123,7 @@ function updateNowPlaying(metadata) {
     artist.classList.add("now-artist");
     artist.textContent = metadata.artist || "Desconocido";
 
-    // 🎚️ EQUALIZER (BARRAS)
+    // EQUALIZER
     const equalizer = document.createElement("div");
     equalizer.classList.add("equalizer");
 
@@ -83,25 +132,23 @@ function updateNowPlaying(metadata) {
       equalizer.appendChild(bar);
     }
 
-    // ENSAMBLAR INFO
+    // ENSAMBLAR
     infoDiv.appendChild(label);
     infoDiv.appendChild(title);
     infoDiv.appendChild(artist);
     infoDiv.appendChild(equalizer);
 
-    // ENSAMBLAR CARD
     card.appendChild(coverImg);
     card.appendChild(infoDiv);
 
-    // INSERTAR EN DOM
     nowPlayingBox.appendChild(card);
 
-    // ================= MEDIA SESSION (LOCK SCREEN) =================
+    // MEDIA SESSION
     if ('mediaSession' in navigator) {
       navigator.mediaSession.metadata = new MediaMetadata({
         title: metadata.title || "Pura Gracia Radio",
         artist: metadata.artist || "En vivo",
-        album: "Pura Gracia Radio",
+        album: currentProgram ? currentProgram.name : "Pura Gracia Radio",
         artwork: [
           {
             src: metadata.coverArt || "/assets/icons/logo-512.png",
@@ -112,13 +159,14 @@ function updateNowPlaying(metadata) {
       });
     }
 
-    // Fade in
     nowPlayingBox.style.opacity = 1;
 
   }, 200);
 }
 
-// FETCH
+/* =========================
+   FETCH METADATA
+========================= */
 async function fetchNowPlaying() {
   try {
     const res = await fetch(
@@ -135,6 +183,9 @@ async function fetchNowPlaying() {
   }
 }
 
-// INIT
+/* =========================
+   INIT
+========================= */
+loadSchedule();
 fetchNowPlaying();
 setInterval(fetchNowPlaying, 15000);
