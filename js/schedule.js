@@ -18,9 +18,11 @@ function renderSchedule(data) {
 
   scheduleContainer.innerHTML = "";
 
-  Object.keys(data).forEach(dayIndex => {
+  // 🔁 Forzar los 7 días siempre
+  for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
+
     const dayName = days[dayIndex];
-    const programs = data[dayIndex];
+    const programs = data[dayIndex] || [];
 
     const dayBlock = document.createElement("div");
     dayBlock.classList.add("day-block");
@@ -30,20 +32,28 @@ function renderSchedule(data) {
 
     dayBlock.appendChild(title);
 
-    programs.forEach(program => {
-      const item = document.createElement("div");
-      item.classList.add("schedule-item");
+    // Si no hay programas
+    if (programs.length === 0) {
+      const empty = document.createElement("div");
+      empty.classList.add("schedule-item");
+      empty.textContent = "Sin programación";
+      dayBlock.appendChild(empty);
+    } else {
+      programs.forEach(program => {
+        const item = document.createElement("div");
+        item.classList.add("schedule-item");
 
-      item.innerHTML = `
-        <strong>${program.name}</strong><br>
-        ${program.start} - ${program.end}
-      `;
+        item.innerHTML = `
+          <strong>${program.name}</strong><br>
+          ${program.start} - ${program.end}
+        `;
 
-      dayBlock.appendChild(item);
-    });
+        dayBlock.appendChild(item);
+      });
+    }
 
     scheduleContainer.appendChild(dayBlock);
-  });
+  }
 }
 
 loadAndRenderSchedule();
