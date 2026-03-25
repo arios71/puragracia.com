@@ -47,6 +47,16 @@ function getCurrentProgram() {
 }
 
 /* =========================
+   VALIDAR METADATA VS SCHEDULE
+========================= */
+function isMetadataAligned(metadata, currentProgram) {
+  if (!currentProgram) return true; // si no hay programa, no bloqueamos
+  if (!metadata.album) return true; // si no hay album, no validamos
+
+  return normalize(metadata.album) === normalize(currentProgram.name);
+}
+
+/* =========================
    UPDATE NOW PLAYING
 ========================= */
 function updateNowPlaying(metadata) {
@@ -60,10 +70,19 @@ function updateNowPlaying(metadata) {
   const duration = metadata.duration || metadata.length || 0;
   const now = Date.now();
 
+  // Obtener programa actual ANTES de validar
+  const currentProgram = getCurrentProgram();
+
+  // 🔥 VALIDACIÓN PRINCIPAL CONTRA SCHEDULE + ALBUM
+  if (!isMetadataAligned(metadata, currentProgram)) {
+    console.warn("Metadata no alineada con el programa actual:", metadata.album);
+    return;
+  }
+
   // Si es la misma pista → no hacer nada
   if (currentTrack === newTrackId) return;
 
-  // Anti metadata adelantada
+  // Anti metadata adelantada (tu lógica existente)
   if (currentTrack && trackDuration > 0) {
     const elapsed = (now - trackStartTime) / 1000;
 
@@ -77,9 +96,6 @@ function updateNowPlaying(metadata) {
   trackStartTime = now;
   trackDuration = duration;
 
-  // Obtener programa actual
-  const currentProgram = getCurrentProgram();
-
   // Fade out
   nowPlayingBox.style.opacity = 0;
 
@@ -91,9 +107,12 @@ function updateNowPlaying(metadata) {
     const card = document.createElement("div");
     card.classList.add("now-card");
 
-    // IMAGEN
+    // IMAGEN (fallback por album/programa)
     const coverImg = document.createElement("img");
-    coverImg.src = metadata.coverArt || "https://via.placeholder.com/150";
+
+    const fallbackCover = metadata.coverArt || null;
+
+    coverImg.src = fallbackCover || "/assets/icons/logo-512.png";
     coverImg.alt = metadata.album || "Álbum";
 
     // INFO
@@ -105,11 +124,11 @@ function updateNowPlaying(metadata) {
     label.classList.add("now-label");
     label.textContent = "Ahora:";
 
-    // PROGRAMA (nuevo)
-    if (currentProgram) {
+    // PROGRAMA (desde schedule + album)
+    if (metadata.album) {
       const programLabel = document.createElement("div");
       programLabel.classList.add("now-program");
-      programLabel.textContent = "Programa: " + currentProgram.name;
+      programLabel.textContent = "Programa: " + metadata.album;
       infoDiv.appendChild(programLabel);
     }
 
@@ -148,7 +167,7 @@ function updateNowPlaying(metadata) {
       navigator.mediaSession.metadata = new MediaMetadata({
         title: metadata.title || "Pura Gracia Radio",
         artist: metadata.artist || "En vivo",
-        album: currentProgram ? currentProgram.name : "Pura Gracia Radio",
+        album: metadata.album || "Pura Gracia Radio",
         artwork: [
           {
             src: metadata.coverArt || "/assets/icons/logo-512.png",
