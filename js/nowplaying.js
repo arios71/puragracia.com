@@ -56,6 +56,9 @@ function updateNowPlaying(metadata) {
     // IMAGEN
     const coverImg = document.createElement("img");
     coverImg.src = metadata.coverArt || DEFAULT_COVER;
+    if (!metadata.coverArt) {
+      coverImg.classList.add("default-cover");
+    }
     coverImg.alt = metadata.album || "Álbum";
 
     // INFO
