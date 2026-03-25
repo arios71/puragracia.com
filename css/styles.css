@@ -50,7 +50,6 @@ color:#4da3ff;
 }
 
 /* ================= LOGO ================= */
-
 .logo-container{
 display:flex;
 flex-direction:column;
@@ -68,7 +67,6 @@ filter:drop-shadow(0 8px 25px rgba(0,0,0,.6));
 }
 
 /* ================= SEO TITLES ================= */
-
 .seo-title,
 .seo-subtitle{
 position:absolute;
@@ -83,7 +81,6 @@ border:0;
 }
 
 /* ================= PLAYER ================= */
-
 .player-section{
 display:flex;
 justify-content:center;
@@ -92,7 +89,6 @@ padding:10px 20px 30px 20px;
 }
 
 /* ================= RADIO WRAPPER ================= */
-
 .radio-wrapper{
 background:rgba(255,255,255,.05);
 backdrop-filter:blur(18px);
@@ -105,7 +101,6 @@ border:1px solid rgba(255,255,255,.08);
 }
 
 /* ================= PLAY BUTTON ================= */
-
 .play-btn{
 width:100%;
 padding:16px;
@@ -124,7 +119,6 @@ background:linear-gradient(180deg,#4b8df7,#243f9c);
 }
 
 /* ================= EN VIVO ================= */
-
 .live-row{
 display:flex;
 align-items:center;
@@ -145,7 +139,6 @@ font-weight:bold;
 }
 
 /* ================= NOW CARD ================= */
-
 .now-card{
 display:flex;
 gap:14px;
@@ -154,6 +147,8 @@ background:rgba(0,0,0,.25);
 border-radius:18px;
 padding:14px;
 box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);
+position:relative;
+overflow:hidden;
 }
 
 .now-card img{
@@ -161,6 +156,7 @@ width:110px;
 height:110px;
 border-radius:14px;
 object-fit:cover;
+transition:all .3s ease;
 }
 
 .now-info{
@@ -184,8 +180,24 @@ font-size:.9rem;
 opacity:.8;
 }
 
-/* ================= EQUALIZER ================= */
+/* ================= DEFAULT COVER ================= */
+.now-card img.default-cover {
+filter: blur(2px);
+opacity:0.85;
+border-radius:14px;
+border:2px dashed rgba(255,255,255,0.3);
+box-shadow: 0 8px 25px rgba(59,130,246,0.25);
+transition: all 0.3s ease;
+}
 
+.now-card img.default-cover:hover {
+filter: blur(0);
+opacity:1;
+border-color: rgba(255,255,255,0.6);
+box-shadow: 0 12px 35px rgba(59,130,246,0.45);
+}
+
+/* ================= EQUALIZER ================= */
 .equalizer{
 display:flex;
 align-items:flex-end;
@@ -214,7 +226,6 @@ animation:equalize 1s infinite ease-in-out;
 }
 
 /* ================= GLOW PLAYING ================= */
-
 .playing .radio-wrapper{
 box-shadow:
 0 0 25px rgba(59,130,246,.4),
@@ -223,15 +234,14 @@ transition:all .4s ease;
 }
 
 .playing .equalizer span{
-  animation-play-state: running;
+animation-play-state: running;
 }
 
 .equalizer span{
-  animation-play-state: paused;
+animation-play-state: paused;
 }
 
 /* ================= IFRAME WRAPPERS ================= */
-
 .iframe-wrapper{
 width:100%;
 max-width:900px;
@@ -250,7 +260,6 @@ border:0;
 }
 
 /* ================= FOOTER ================= */
-
 footer{
 text-align:center;
 padding:40px 20px;
@@ -260,7 +269,6 @@ border-top:1px solid rgba(255,255,255,.05);
 }
 
 /* ================= SECTIONS ================= */
-
 .section{
 display:none;
 width:100%;
@@ -286,7 +294,6 @@ margin-bottom:15px;
 }
 
 /* ================= CONTACT ================= */
-
 #contacto{
 text-align:center;
 }
@@ -298,7 +305,6 @@ word-break:break-word;
 }
 
 /* ================= WHATSAPP ================= */
-
 .whatsapp-float{
 position:fixed;
 bottom:20px;
@@ -326,7 +332,6 @@ object-fit:contain;
 }
 
 /* ================= RESPONSIVE ================= */
-
 @media(max-width:768px){
 
 .logo{
@@ -374,27 +379,26 @@ padding:8px 5px;
 }
 
 .radio-status{
-  margin-top:10px;
-  font-size:.9rem;
-  opacity:.8;
-  text-align:center;
+margin-top:10px;
+font-size:.9rem;
+opacity:.8;
+text-align:center;
 }
 
 .radio-status.error{
-  color:#ff4d4d;
+color:#ff4d4d;
 }
 
 .radio-status.loading{
-  color:#4da3ff;
+color:#4da3ff;
 }
 
 .radio-status.live{
-  color:#22c55e;
-  font-weight:600;
+color:#22c55e;
+font-weight:600;
 }
 
 /* ================= BOTÓN COMO CLASE (IMPORTANTE) ================= */
-
 #playRadio{
 width:100%;
 padding:16px;
