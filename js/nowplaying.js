@@ -120,28 +120,36 @@ function updateNowPlaying(metadata) {
     const infoDiv = document.createElement("div");
     infoDiv.classList.add("now-info");
 
-    // LABEL
+    // LABEL GENERAL
     const label = document.createElement("div");
     label.classList.add("now-label");
-    label.textContent = "Ahora:";
+    label.textContent = "Ahora";
 
-    // PROGRAMA
-    if (metadata.album) {
-      const programLabel = document.createElement("div");
-      programLabel.classList.add("now-program");
-      programLabel.textContent = "Programa: " + metadata.album;
-      infoDiv.appendChild(programLabel);
-    }
+    // 🎯 PROGRAMA ACTUAL
+    const currentProgram = getCurrentProgram();
 
-    // TITLE
+    // TEXTO CANCIÓN
+    const titleText = metadata.title || "Sin título";
+    const artistText = metadata.artist || "Desconocido";
+    const trackText = `${artistText} - ${titleText}`;
+
+    // 🎯 TÍTULO PRINCIPAL (programa o canción)
     const title = document.createElement("div");
     title.classList.add("now-title");
-    title.textContent = metadata.title || "Sin título";
+    title.textContent = currentProgram?.name || trackText;
 
-    // ARTIST
+    // 🎧 SUBTÍTULO (solo si hay programa)
     const artist = document.createElement("div");
     artist.classList.add("now-artist");
-    artist.textContent = metadata.artist || "Desconocido";
+
+    if (currentProgram) {
+      artist.textContent = trackText;
+      artist.style.display = "block";
+    } else {
+      // si no hay programa, ocultamos duplicación
+      artist.textContent = "";
+      artist.style.display = "none";
+    }
 
     // EQUALIZER
     const equalizer = document.createElement("div");
@@ -163,7 +171,7 @@ function updateNowPlaying(metadata) {
 
     nowPlayingBox.appendChild(card);
 
-    // 🎧 MEDIA SESSION (también corregido)
+    // 🎧 MEDIA SESSION
     if ('mediaSession' in navigator) {
       navigator.mediaSession.metadata = new MediaMetadata({
         title: metadata.title || "Pura Gracia Radio",
