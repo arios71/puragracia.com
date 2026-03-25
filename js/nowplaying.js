@@ -10,6 +10,9 @@ let trackDuration = 0;
 // 📅 SCHEDULE
 let scheduleData = null;
 
+// 🖼️ FALLBACK GLOBAL
+const DEFAULT_COVER = "/default-cover.png";
+
 // Normalizador
 const normalize = (str) => (str || "").trim().toLowerCase();
 
@@ -50,8 +53,8 @@ function getCurrentProgram() {
    VALIDAR METADATA VS SCHEDULE
 ========================= */
 function isMetadataAligned(metadata, currentProgram) {
-  if (!currentProgram) return true; // si no hay programa, no bloqueamos
-  if (!metadata.album) return true; // si no hay album, no validamos
+  if (!currentProgram) return true;
+  if (!metadata.album) return true;
 
   return normalize(metadata.album) === normalize(currentProgram.name);
 }
@@ -70,19 +73,17 @@ function updateNowPlaying(metadata) {
   const duration = metadata.duration || metadata.length || 0;
   const now = Date.now();
 
-  // Obtener programa actual ANTES de validar
   const currentProgram = getCurrentProgram();
 
-  // 🔥 VALIDACIÓN PRINCIPAL CONTRA SCHEDULE + ALBUM
+  // 🔥 VALIDACIÓN CONTRA SCHEDULE
   if (!isMetadataAligned(metadata, currentProgram)) {
     console.warn("Metadata no alineada con el programa actual:", metadata.album);
     return;
   }
 
-  // Si es la misma pista → no hacer nada
   if (currentTrack === newTrackId) return;
 
-  // Anti metadata adelantada (tu lógica existente)
+  // Anti metadata adelantada
   if (currentTrack && trackDuration > 0) {
     const elapsed = (now - trackStartTime) / 1000;
 
@@ -107,24 +108,24 @@ function updateNowPlaying(metadata) {
     const card = document.createElement("div");
     card.classList.add("now-card");
 
-    // IMAGEN (fallback por album/programa)
+    // IMAGEN
     const coverImg = document.createElement("img");
 
     const fallbackCover = metadata.coverArt || null;
 
-    coverImg.src = fallbackCover || "/assets/icons/logo-512.png";
+    coverImg.src = fallbackCover || DEFAULT_COVER;
     coverImg.alt = metadata.album || "Álbum";
 
     // INFO
     const infoDiv = document.createElement("div");
     infoDiv.classList.add("now-info");
 
-    // LABEL PRINCIPAL
+    // LABEL
     const label = document.createElement("div");
     label.classList.add("now-label");
     label.textContent = "Ahora:";
 
-    // PROGRAMA (desde schedule + album)
+    // PROGRAMA
     if (metadata.album) {
       const programLabel = document.createElement("div");
       programLabel.classList.add("now-program");
@@ -162,7 +163,7 @@ function updateNowPlaying(metadata) {
 
     nowPlayingBox.appendChild(card);
 
-    // MEDIA SESSION
+    // 🎧 MEDIA SESSION (también corregido)
     if ('mediaSession' in navigator) {
       navigator.mediaSession.metadata = new MediaMetadata({
         title: metadata.title || "Pura Gracia Radio",
@@ -170,7 +171,7 @@ function updateNowPlaying(metadata) {
         album: metadata.album || "Pura Gracia Radio",
         artwork: [
           {
-            src: metadata.coverArt || "/assets/icons/logo-512.png",
+            src: metadata.coverArt || DEFAULT_COVER,
             sizes: "512x512",
             type: "image/png"
           }
