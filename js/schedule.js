@@ -7,16 +7,16 @@ async function loadAndRenderSchedule() {
     const res = await fetch('/data/schedule.json');
     const data = await res.json();
 
-    renderSchedule(data);
+    renderScheduleCards(data);
   } catch (err) {
     console.error("Error cargando schedule:", err);
   }
 }
 
-function renderSchedule(data) {
+function renderScheduleCards(data) {
   const days = ["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"];
 
-  // Mapeo de nombres visibles → keys del JSON
+  // Map de nombres visibles → keys del JSON
   const keyMap = {
     "Domingo": "domingo",
     "Lunes": "lunes",
@@ -30,42 +30,45 @@ function renderSchedule(data) {
   scheduleContainer.innerHTML = "";
 
   for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
-
     const dayName = days[dayIndex];
     const key = keyMap[dayName];
-
-    // 🔥 aquí está el cambio clave
     const programs = data[key] || [];
 
+    // BLOQUE DEL DÍA
     const dayBlock = document.createElement("div");
     dayBlock.classList.add("day-block");
 
     const title = document.createElement("h3");
     title.textContent = dayName;
-
     dayBlock.appendChild(title);
+
+    // CONTENEDOR DE CARDS
+    const cardsContainer = document.createElement("div");
+    cardsContainer.classList.add("cards-container");
 
     if (programs.length === 0) {
       const empty = document.createElement("div");
-      empty.classList.add("schedule-item");
+      empty.classList.add("schedule-card", "empty-card");
       empty.textContent = "Sin programación";
-      dayBlock.appendChild(empty);
+      cardsContainer.appendChild(empty);
     } else {
       programs.forEach(program => {
-        const item = document.createElement("div");
-        item.classList.add("schedule-item");
+        const card = document.createElement("div");
+        card.classList.add("schedule-card");
 
-        item.innerHTML = `
-          <strong>${program.name}</strong><br>
-          ${program.start} - ${program.end}
+        card.innerHTML = `
+          <div class="card-title">${program.name}</div>
+          <div class="card-time">${program.start} - ${program.end}</div>
         `;
 
-        dayBlock.appendChild(item);
+        cardsContainer.appendChild(card);
       });
     }
 
+    dayBlock.appendChild(cardsContainer);
     scheduleContainer.appendChild(dayBlock);
   }
 }
 
+// INIT
 loadAndRenderSchedule();
