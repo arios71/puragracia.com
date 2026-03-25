@@ -27,7 +27,7 @@
     { "name": "Por anunciar", "start": "08:00", "end": "10:00" },
     { "name": "Por anunciar", "start": "10:00", "end": "12:00" }
   ],
-  "miercoles": [
+  "miércoles": [
     { "name": "Jungla Semántica", "start": "05:00", "end": "05:30" },
     { "name": "A Través de la Biblia", "start": "06:00", "end": "06:30" },
     { "name": "Deleite en la Palabra", "start": "07:00", "end": "07:30" },
