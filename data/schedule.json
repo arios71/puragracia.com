@@ -23,9 +23,27 @@
     { "name": "Deleite en la Palabra", "start": "23:00", "end": "23:30" }
   ],
   "martes": [
+    { "name": "Renovando tu Mente", "start": "05:00", "end": "05:30" },
+    { "name": "A Través de la Biblia", "start": "06:00", "end": "06:30" },
+    { "name": "Deleite en la Palabra", "start": "07:00", "end": "07:30" },
+    { "name": "Aviva Nuestros Corazones", "start": "07:30", "end": "08:00" },
+    { "name": "Gracia a Vosotros", "start": "08:00", "end": "08:30" },
+    { "name": "Abre la Biblia", "start": "10:00", "end": "10:30" },
+    { "name": "Contexto Bíblico", "start": "11:00", "end": "11:30" },
+    { "name": "Ig. Bautista Internacional", "start": "12:00", "end": "13:00" },
+    { "name": "Lectura Pública Biblia", "start": "13:00", "end": "13:20" },
+    { "name": "Ig. Bíb. del Señor Jesucristo", "start": "14:00", "end": "15:00" },
+    { "name": "Deleite en la Palabra", "start": "15:00", "end": "15:30" },
+    { "name": "Aviva Nuestros Corazones", "start": "15:30", "end": "16:00" },
+    { "name": "Renovando tu Mente", "start": "16:00", "end": "16:30" },
+    { "name": "Ruta 66", "start": "17:00", "end": "17:30" },
+    { "name": "Contexto Bíblico", "start": "18:00", "end": "18:30" },
+    { "name": "Bite Project", "start": "18:30", "end": "18:45" },
+    { "name": "Abre la Biblia", "start": "19:00", "end": "19:30" },
+    { "name": "Gracia a Vosotros", "start": "20:00", "end": "20:30" },
     { "name": "Lectura Pública Biblia", "start": "21:00", "end": "21:20" },
-    { "name": "Por anunciar", "start": "08:00", "end": "10:00" },
-    { "name": "Por anunciar", "start": "10:00", "end": "12:00" }
+    { "name": "A Través de la Biblia", "start": "22:00", "end": "22:30" },
+    { "name": "Deleite en la Palabra", "start": "23:00", "end": "23:30" }
   ],
   "miércoles": [
     { "name": "Jungla Semántica", "start": "05:00", "end": "05:30" },
@@ -93,9 +111,26 @@
     { "name": "Deleite en la Palabra", "start": "23:00", "end": "23:30" }
   ],
   "sabado": [
-    { "name": "Por anunciar", "start": "18:00", "end": "20:00" }
+    { "name": "Cursos Third Mill", "start": "07:00", "end": "08:30" },
+    { "name": "Ig. Bautista Internacional", "start": "09:00", "end": "10:00" },
+    { "name": "Crianza Reverente", "start": "11:00", "end": "11:30" },
+    { "name": "Bite Project", "start": "11:30", "end": "12:00" },
+    { "name": "Entendiendo los Tiempos", "start": "12:00", "end": "12:45" },
+    { "name": "Lectura Pública Biblia", "start": "13:00", "end": "13:20" },
+    { "name": "La Verdad en el Tubo de Ensayo", "start": "17:30", "end": "17:45" },
+    { "name": "Lectura Pública Biblia", "start": "21:00", "end": "21:20" }
   ],
   "domingo": [
-    { "name": "Por anunciar", "start": "09:00", "end": "12:00" }
+    { "name": "Trazando la Palabra", "start": "06:00", "end": "06:30" },
+    { "name": "Cursos Third Mill", "start": "07:00", "end": "08:30" },
+    { "name": "Escuela Bíblica", "start": "09:00", "end": "09:30" },
+    { "name": "Ig. Bib. Gracia Verdadera", "start": "10:00", "end": "11:20" },
+    { "name": "Trazando la Palabra", "start": "12:00", "end": "12:30" },
+    { "name": "La Verdad en el Tubo de Ensayo", "start": "12:30", "end": "12:45" },
+    { "name": "Lectura Pública Biblia", "start": "13:00", "end": "13:20" },
+    { "name": "Escuela Bíblica", "start": "14:00", "end": "14:30" },
+    { "name": "Jungla Semántica", "start": "16:00", "end": "16:30" },
+    { "name": "Lectura Pública Biblia", "start": "21:00", "end": "21:20" },
+    { "name": "Trazando la Palabra", "start": "22:00", "end": "22:30" }
   ]
 }
