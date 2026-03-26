@@ -208,6 +208,8 @@ function updateLiveStatus(forceScroll = false) {
   lastLiveCard = currentLiveCard;
 }
 
+}
+
 /* =========================
    MODAL
 ========================= */
@@ -281,4 +283,3 @@ loadAndRenderSchedule();
 setInterval(() => {
   updateLiveStatus();
 }, 30000);
-)
