@@ -353,3 +353,19 @@ body {
 body {
   overflow-x: hidden !important;
 }
+
+/* ================= FOOTER FIX ================= */
+footer {
+  text-align: center !important;
+  padding: 40px 20px;
+  font-size: 0.85rem;
+  color: #9aa7c0;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  width: 100%;
+}
+
+footer p {
+  margin: 0 auto;
+  max-width: 900px;
+  text-align: center;
+}
