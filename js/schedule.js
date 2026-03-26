@@ -281,4 +281,4 @@ loadAndRenderSchedule();
 setInterval(() => {
   updateLiveStatus();
 }, 30000);
-}
+)
