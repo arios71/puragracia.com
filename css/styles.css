@@ -12,6 +12,7 @@ body {
   color: #fff;
   min-height: 100vh;
   overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 /* ================= HEADER / NAV ================= */
@@ -368,6 +369,7 @@ footer {
   overflow-x: auto;
   padding-bottom: 8px;
   scroll-behavior: smooth;
+  scroll-snap-type: x mandatory; /* para scroll fluido en móvil/desktop */
 }
 .day-row::-webkit-scrollbar { height: 6px; }
 .day-row::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
@@ -382,6 +384,7 @@ footer {
   transition: all 0.3s ease;
   border: 1px solid rgba(255,255,255,0.05);
   position: relative;
+  scroll-snap-align: center; /* centra la tarjeta al hacer scroll */
 }
 .schedule-card:hover {
   transform: translateY(-4px) scale(1.02);
@@ -418,7 +421,7 @@ footer {
     grid-template-columns: repeat(2,1fr);
     gap: 20px;
   }
-  .day-row { overflow-x: auto; flex-wrap: wrap; } /* <-- scroll horizontal activo */
+  .day-row { overflow-x: auto; flex-wrap: wrap; }
   .schedule-card { min-width: auto; width: 100%; }
 }
 
