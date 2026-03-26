@@ -7,16 +7,33 @@ async function loadAndRenderSchedule() {
     const res = await fetch('/data/schedule.json');
     const data = await res.json();
 
-    renderScheduleCards(data);
+    renderSchedule(data);
   } catch (err) {
     console.error("Error cargando schedule:", err);
   }
 }
 
-function renderScheduleCards(data) {
+function isLiveNow(start, end, dayIndex) {
+  const now = new Date();
+
+  const currentDay = now.getDay(); // 0 = domingo
+  if (currentDay !== dayIndex) return false;
+
+  const [startH, startM] = start.split(":").map(Number);
+  const [endH, endM] = end.split(":").map(Number);
+
+  const startTime = new Date();
+  startTime.setHours(startH, startM, 0);
+
+  const endTime = new Date();
+  endTime.setHours(endH, endM, 0);
+
+  return now >= startTime && now <= endTime;
+}
+
+function renderSchedule(data) {
   const days = ["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"];
 
-  // Map de nombres visibles → keys del JSON
   const keyMap = {
     "Domingo": "domingo",
     "Lunes": "lunes",
@@ -29,20 +46,20 @@ function renderScheduleCards(data) {
 
   scheduleContainer.innerHTML = "";
 
-  for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
-    const dayName = days[dayIndex];
+  days.forEach((dayName, index) => {
     const key = keyMap[dayName];
     const programs = data[key] || [];
 
-    // BLOQUE DEL DÍA
     const dayBlock = document.createElement("div");
     dayBlock.classList.add("day-block");
 
-    const title = document.createElement("h3");
+    // 🔹 TÍTULO DEL DÍA (SEPARADOR VISUAL)
+    const title = document.createElement("div");
+    title.classList.add("day-title");
     title.textContent = dayName;
+
     dayBlock.appendChild(title);
 
-    // CONTENEDOR DE CARDS
     const cardsContainer = document.createElement("div");
     cardsContainer.classList.add("cards-container");
 
@@ -53,12 +70,20 @@ function renderScheduleCards(data) {
       cardsContainer.appendChild(empty);
     } else {
       programs.forEach(program => {
+
+        const isLive = isLiveNow(program.start, program.end, index);
+
         const card = document.createElement("div");
         card.classList.add("schedule-card");
 
+        if (isLive) {
+          card.classList.add("live-now");
+        }
+
         card.innerHTML = `
-          <div class="card-title">${program.name}</div>
           <div class="card-time">${program.start} - ${program.end}</div>
+          <div class="card-title">${program.name}</div>
+          ${isLive ? `<div class="live-badge">EN VIVO AHORA</div>` : ""}
         `;
 
         cardsContainer.appendChild(card);
@@ -67,7 +92,7 @@ function renderScheduleCards(data) {
 
     dayBlock.appendChild(cardsContainer);
     scheduleContainer.appendChild(dayBlock);
-  }
+  });
 }
 
 // INIT
