@@ -115,16 +115,18 @@ function scrollToLiveCard() {
 
   requestAnimationFrame(() => {
 
-    // 🔽 Scroll vertical al día
-    const dayBlock = currentLiveCard.closest(".day-block");
-    if (dayBlock) {
-      dayBlock.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-      });
-    }
+    // 🔽 SCROLL VERTICAL REAL (window)
+    const rect = currentLiveCard.getBoundingClientRect();
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-    // 👉 Scroll horizontal dentro del row
+    const offset = rect.top + scrollTop - (window.innerHeight / 2);
+
+    window.scrollTo({
+      top: offset,
+      behavior: "smooth"
+    });
+
+    // 👉 SCROLL HORIZONTAL (row)
     const row = currentLiveCard.closest(".day-row");
     if (row) {
 
