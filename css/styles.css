@@ -478,3 +478,103 @@ footer{
   font-size:.9rem;
   opacity:.8;
 }
+
+/* ================= DAY BLOCK ================= */
+
+.day-block{
+  width:100%;
+  margin-bottom:30px;
+}
+
+/* 🔥 TÍTULO DEL DÍA (lo que querías destacar) */
+.day-title{
+  font-size:1.2rem;
+  font-weight:700;
+  text-align:left;
+  margin-bottom:12px;
+  padding:10px 14px;
+  border-left:4px solid #3b82f6;
+  background:rgba(255,255,255,0.05);
+  border-radius:10px;
+  letter-spacing:.5px;
+}
+
+/* ================= CARDS CONTAINER ================= */
+
+.cards-container{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+/* ================= CARD ================= */
+
+.schedule-card{
+  position:relative;
+  background:rgba(255,255,255,0.05);
+  border-radius:16px;
+  padding:14px;
+  text-align:left;
+  box-shadow:0 10px 25px rgba(0,0,0,.4);
+  transition:all .3s ease;
+  border:1px solid rgba(255,255,255,0.05);
+}
+
+.schedule-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 15px 35px rgba(0,0,0,.6);
+}
+
+/* ================= TEXTO ================= */
+
+.card-time{
+  font-size:.85rem;
+  opacity:.7;
+}
+
+.card-title{
+  font-size:1rem;
+  font-weight:600;
+  margin-top:4px;
+}
+
+/* ================= EN VIVO ================= */
+
+.schedule-card.live-now{
+  background:linear-gradient(135deg,#f59e0b,#b45309);
+  color:#000;
+  box-shadow:0 10px 30px rgba(245,158,11,.5);
+}
+
+.live-badge{
+  margin-top:8px;
+  font-size:.7rem;
+  font-weight:700;
+  background:#000;
+  color:#f59e0b;
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:6px;
+}
+
+/* ================= EMPTY ================= */
+
+.empty-card{
+  opacity:.5;
+  text-align:center;
+}
+
+/* ================= DESKTOP GRID ================= */
+
+@media(min-width:900px){
+
+  #scheduleContainer{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+  }
+
+  .day-block{
+    margin-bottom:0;
+  }
+}
