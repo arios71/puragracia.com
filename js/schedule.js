@@ -8,19 +8,16 @@ let currentLiveCard = null;
    HELPERS
 ========================= */
 
-// Convierte "14:30" → minutos
 function timeToMinutes(time) {
   const [h, m] = time.split(":").map(Number);
   return h * 60 + m;
 }
 
-// Obtiene hora actual en minutos
 function getCurrentMinutes() {
   const now = new Date();
   return now.getHours() * 60 + now.getMinutes();
 }
 
-// Día actual en español
 function getTodayName() {
   const days = ["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
   return days[new Date().getDay()];
@@ -36,6 +33,12 @@ async function loadAndRenderSchedule() {
     const data = await res.json();
 
     renderSchedule(data);
+
+    // 🔥 aplicar estado y scroll después de render
+    setTimeout(() => {
+      updateLiveStatus();
+      scrollToLiveCard();
+    }, 600);
 
   } catch (err) {
     console.error("Error cargando schedule:", err);
@@ -56,9 +59,6 @@ function renderSchedule(data) {
     "Sábado": "sábado"
   };
 
-  const todayKey = getTodayName();
-  const nowMinutes = getCurrentMinutes();
-
   scheduleContainer.innerHTML = "";
 
   days.forEach(dayName => {
@@ -66,23 +66,15 @@ function renderSchedule(data) {
     const key = keyMap[dayName];
     const programs = data[key] || [];
 
-    // ===== DAY BLOCK =====
     const dayBlock = document.createElement("div");
     dayBlock.classList.add("day-block");
 
-    // Título
     const title = document.createElement("div");
     title.classList.add("day-title");
     title.textContent = dayName;
 
-    // Highlight día actual
-    if (key === todayKey) {
-      title.classList.add("today");
-    }
-
     dayBlock.appendChild(title);
 
-    // Row horizontal
     const row = document.createElement("div");
     row.classList.add("day-row");
 
@@ -95,51 +87,111 @@ function renderSchedule(data) {
 
       programs.forEach(program => {
 
-        const start = timeToMinutes(program.start);
-        const end = timeToMinutes(program.end);
-
         const card = document.createElement("div");
         card.classList.add("schedule-card");
 
-        // Detectar EN VIVO
-        if (key === todayKey && nowMinutes >= start && nowMinutes < end) {
-          card.classList.add("live-now");
-
-          currentLiveCard = card;
-
-          const badge = document.createElement("div");
-          badge.classList.add("live-badge");
-          badge.textContent = "EN VIVO";
-          card.appendChild(badge);
-        }
-
-        card.innerHTML += `
+        card.innerHTML = `
           <div class="card-time">${program.start} - ${program.end}</div>
           <div class="card-title">${program.name}</div>
         `;
 
-        // 🪟 MODAL
         card.addEventListener("click", () => openModal(program));
 
         row.appendChild(card);
-
       });
     }
 
     dayBlock.appendChild(row);
     scheduleContainer.appendChild(dayBlock);
   });
+}
 
-  // ⚡ AUTO-SCROLL
-  setTimeout(() => {
-    if (currentLiveCard) {
-      currentLiveCard.scrollIntoView({
+/* =========================
+   AUTO-SCROLL PRO
+========================= */
+
+function scrollToLiveCard() {
+  if (!currentLiveCard) return;
+
+  requestAnimationFrame(() => {
+
+    // 🔽 vertical
+    const dayBlock = currentLiveCard.closest(".day-block");
+    if (dayBlock) {
+      dayBlock.scrollIntoView({
         behavior: "smooth",
-        block: "center",
-        inline: "center"
+        block: "start"
       });
     }
-  }, 400);
+
+    // 👉 horizontal
+    const row = currentLiveCard.closest(".day-row");
+    if (row) {
+
+      const cardCenter = currentLiveCard.offsetLeft + (currentLiveCard.offsetWidth / 2);
+      const containerCenter = row.offsetWidth / 2;
+
+      row.scrollTo({
+        left: cardCenter - containerCenter,
+        behavior: "smooth"
+      });
+    }
+
+  });
+}
+
+/* =========================
+   UPDATE LIVE (SIN RELOAD)
+========================= */
+
+function updateLiveStatus() {
+
+  const todayKey = getTodayName();
+  const nowMinutes = getCurrentMinutes();
+
+  currentLiveCard = null;
+
+  document.querySelectorAll(".day-block").forEach(block => {
+
+    const title = block.querySelector(".day-title");
+    const dayName = title.textContent.toLowerCase();
+
+    const cards = block.querySelectorAll(".schedule-card");
+
+    cards.forEach(card => {
+
+      card.classList.remove("live-now");
+
+      const timeText = card.querySelector(".card-time")?.textContent;
+      if (!timeText) return;
+
+      const [start, end] = timeText.split(" - ");
+
+      const startMin = timeToMinutes(start);
+      const endMin = timeToMinutes(end);
+
+      if (dayName === todayKey && nowMinutes >= startMin && nowMinutes < endMin) {
+
+        card.classList.add("live-now");
+
+        currentLiveCard = card;
+
+        // badge
+        if (!card.querySelector(".live-badge")) {
+          const badge = document.createElement("div");
+          badge.classList.add("live-badge");
+          badge.textContent = "EN VIVO";
+          card.appendChild(badge);
+        }
+
+      } else {
+        const badge = card.querySelector(".live-badge");
+        if (badge) badge.remove();
+      }
+
+    });
+
+  });
 }
 
 /* =========================
@@ -184,7 +236,7 @@ function openModal(program) {
 }
 
 /* =========================
-   SYNC CON NOWPLAYING
+   SYNC NOWPLAYING
 ========================= */
 
 function syncNowPlaying(title) {
@@ -203,7 +255,6 @@ function syncNowPlaying(title) {
   });
 }
 
-// Hook global (lo usas desde nowplaying.js)
 window.syncNowPlaying = syncNowPlaying;
 
 /* =========================
@@ -212,3 +263,6 @@ window.syncNowPlaying = syncNowPlaying;
 
 createModal();
 loadAndRenderSchedule();
+
+// 🔄 actualización dinámica cada minuto
+setInterval(updateLiveStatus, 60000);
