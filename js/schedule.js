@@ -202,9 +202,15 @@ function updateLiveStatus(forceScroll = false) {
   });
 
   if (currentLiveCard && (forceScroll || currentLiveCard !== lastLiveCard)) {
-    scrollToLiveCard();
-    lastLiveCard = currentLiveCard;
-  }
+
+  // 🔥 esperar a que el DOM termine de pintar
+  setTimeout(() => {
+    requestAnimationFrame(() => {
+      scrollToLiveCard();
+    });
+  }, 300);
+
+  lastLiveCard = currentLiveCard;
 }
 
 /* =========================
