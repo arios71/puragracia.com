@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pgr-v46';
+const CACHE_NAME = 'pgr-v47';
 
 // Archivos estáticos principales
 const STATIC_ASSETS = [
