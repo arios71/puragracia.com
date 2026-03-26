@@ -164,16 +164,14 @@ body{
 
 /* ================= DEFAULT COVER ================= */
 .now-card img.default-cover {
-  filter: blur(2px);
-  opacity:0.85;
-  border-radius:14px;
-  border:2px dashed rgba(255,255,255,0.3);
-  box-shadow: 0 8px 25px rgba(59,130,246,0.25);
-  transition: all 0.3s ease;
+opacity:0.95;
+border-radius:14px;
+border:2px solid rgba(255,255,255,0.25);
+box-shadow: 0 8px 25px rgba(59,130,246,0.25);
+transition: all 0.3s ease;
 }
 
 .now-card img.default-cover:hover {
-  filter: blur(0);
   opacity:1;
   border-color: rgba(255,255,255,0.6);
   box-shadow: 0 12px 35px rgba(59,130,246,0.45);
