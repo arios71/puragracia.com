@@ -1,3 +1,5 @@
+// js/schedule.js
+
 const scheduleContainer = document.getElementById("scheduleContainer");
 
 let currentLiveCard = null;
@@ -20,12 +22,6 @@ function getCurrentMinutes() {
 function getTodayName() {
   const days = ["domingo","lunes","martes","miércoles","jueves","viernes","sábado"]; 
   return days[new Date().getDay()];
-}
-
-function normalizeDay(str) {
-  return str.toLowerCase()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "");
 }
 
 /* =========================
@@ -110,20 +106,40 @@ function renderSchedule(data) {
 }
 
 /* =========================
-   AUTO-SCROLL PRO REAL
+   AUTO-SCROLL LIVE CARD
 ========================= */
 
 function scrollToLiveCard() {
   if (!currentLiveCard) return;
 
-  // 🔹 Delay para asegurar que DOM y layout estén listos
-  setTimeout(() => {
-    currentLiveCard.scrollIntoView({
-      behavior: "smooth",
-      block: "center",   // centra verticalmente
-      inline: "center"   // centra horizontalmente
+  // SCROLL VERTICAL
+  const rect = currentLiveCard.getBoundingClientRect();
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  const offsetTop = rect.top + scrollTop - window.innerHeight / 2 + rect.height / 2;
+
+  window.scrollTo({
+    top: offsetTop,
+    behavior: "smooth"
+  });
+
+  // SCROLL HORIZONTAL
+  const row = currentLiveCard.closest(".day-row");
+  if (row) {
+    const cardOffset = currentLiveCard.offsetLeft;
+    const cardWidth = currentLiveCard.offsetWidth;
+    const rowWidth = row.scrollWidth;
+    const rowVisibleWidth = row.clientWidth;
+
+    const scrollLeft = Math.min(
+      Math.max(cardOffset - rowVisibleWidth / 2 + cardWidth / 2, 0),
+      rowWidth - rowVisibleWidth
+    );
+
+    row.scrollTo({
+      left: scrollLeft,
+      behavior: "smooth"
     });
-  }, 100); // 100ms suele ser suficiente
+  }
 }
 
 /* =========================
@@ -132,17 +148,20 @@ function scrollToLiveCard() {
 
 function updateLiveStatus(forceScroll = false) {
 
-  const todayKey = normalizeDay(getTodayName());
-  console.log("Hoy:", todayKey);
-
+  const todayKey = getTodayName();
   const nowMinutes = getCurrentMinutes();
+
+  console.log("Hoy:", todayKey);
 
   currentLiveCard = null;
 
   document.querySelectorAll(".day-block").forEach(block => {
 
     const title = block.querySelector(".day-title");
-    const dayNameNormalized = normalizeDay(title.textContent);
+    const dayName = title.textContent
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
 
     const cards = block.querySelectorAll(".schedule-card");
 
@@ -158,21 +177,20 @@ function updateLiveStatus(forceScroll = false) {
       const startMin = timeToMinutes(start);
       const endMin = timeToMinutes(end);
 
-      if (dayNameNormalized === todayKey && nowMinutes >= startMin && nowMinutes < endMin) {
+      if (dayName === todayKey && nowMinutes >= startMin && nowMinutes < endMin) {
 
         card.classList.add("live-now");
-
         currentLiveCard = card;
 
-        console.log("LIVE DETECTED:", card.innerText);
-
-        // badge
+        // badge EN VIVO
         if (!card.querySelector(".live-badge")) {
           const badge = document.createElement("div");
           badge.classList.add("live-badge");
           badge.textContent = "EN VIVO";
           card.appendChild(badge);
         }
+
+        console.log("LIVE DETECTED:", card.innerText);
 
       } else {
         const badge = card.querySelector(".live-badge");
@@ -183,9 +201,6 @@ function updateLiveStatus(forceScroll = false) {
 
   });
 
-  // 🔥 SOLO hacer scroll si:
-  // 1. es la primera vez
-  // 2. cambió el programa en vivo
   if (currentLiveCard && (forceScroll || currentLiveCard !== lastLiveCard)) {
     scrollToLiveCard();
     lastLiveCard = currentLiveCard;
@@ -262,7 +277,6 @@ window.syncNowPlaying = syncNowPlaying;
 createModal();
 loadAndRenderSchedule();
 
-// 🔄 actualizar cada 30s (NO 60s)
 setInterval(() => {
   updateLiveStatus();
 }, 30000);
