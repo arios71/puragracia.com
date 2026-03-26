@@ -35,10 +35,12 @@ async function loadAndRenderSchedule() {
 
     renderSchedule(data);
 
-    setTimeout(() => {
-      updateLiveStatus(true);
-    }, 1000);
-
+    requestAnimationFrame(() => {
+  setTimeout(() => {
+    updateLiveStatus(true);
+  }, 300);
+});
+     
   } catch (err) {
     console.error("Error cargando schedule:", err);
   }
@@ -202,14 +204,7 @@ function updateLiveStatus(forceScroll = false) {
   });
 
   if (currentLiveCard && (forceScroll || currentLiveCard !== lastLiveCard)) {
-
-  // 🔥 esperar a que el DOM termine de pintar
-  setTimeout(() => {
-    requestAnimationFrame(() => {
-      scrollToLiveCard();
-    });
-  }, 300);
-
+  scrollToLiveCard();
   lastLiveCard = currentLiveCard;
 }
 
