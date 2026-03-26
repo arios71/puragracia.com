@@ -1,5 +1,3 @@
-// js/schedule.js
-
 const scheduleContainer = document.getElementById("scheduleContainer");
 
 let currentLiveCard = null;
@@ -20,8 +18,14 @@ function getCurrentMinutes() {
 }
 
 function getTodayName() {
-  const days = ["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+  const days = ["domingo","lunes","martes","miércoles","jueves","viernes","sábado"]; 
   return days[new Date().getDay()];
+}
+
+function normalizeDay(str) {
+  return str.toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "");
 }
 
 /* =========================
@@ -36,8 +40,8 @@ async function loadAndRenderSchedule() {
     renderSchedule(data);
 
     setTimeout(() => {
-  updateLiveStatus(true);
-}, 1000);
+      updateLiveStatus(true);
+    }, 1000);
 
   } catch (err) {
     console.error("Error cargando schedule:", err);
@@ -148,7 +152,9 @@ function scrollToLiveCard() {
 
 function updateLiveStatus(forceScroll = false) {
 
-  const todayKey = getTodayName();
+  const todayKey = normalizeDay(getTodayName());
+  console.log("Hoy:", todayKey); // ✅ depuración
+
   const nowMinutes = getCurrentMinutes();
 
   currentLiveCard = null;
@@ -156,10 +162,7 @@ function updateLiveStatus(forceScroll = false) {
   document.querySelectorAll(".day-block").forEach(block => {
 
     const title = block.querySelector(".day-title");
-    const dayName = title.textContent
-  .toLowerCase()
-  .normalize("NFD")
-  .replace(/[\u0300-\u036f]/g, "");
+    const dayNameNormalized = normalizeDay(title.textContent);
 
     const cards = block.querySelectorAll(".schedule-card");
 
@@ -175,11 +178,13 @@ function updateLiveStatus(forceScroll = false) {
       const startMin = timeToMinutes(start);
       const endMin = timeToMinutes(end);
 
-      if (dayName === todayKey && nowMinutes >= startMin && nowMinutes < endMin) {
+      if (dayNameNormalized === todayKey && nowMinutes >= startMin && nowMinutes < endMin) {
 
         card.classList.add("live-now");
 
         currentLiveCard = card;
+
+        console.log("LIVE DETECTED:", card.innerText); // ✅ depuración
 
         // badge
         if (!card.querySelector(".live-badge")) {
