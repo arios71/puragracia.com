@@ -36,11 +36,13 @@ async function loadAndRenderSchedule() {
     renderSchedule(data);
 
     requestAnimationFrame(() => {
-  setTimeout(() => {
-    updateLiveStatus(true);
-  }, 300);
-});
-     
+      setTimeout(() => {
+        highlightToday();
+        scrollToTodayBlock();
+        updateLiveStatus(true);
+      }, 300);
+    });
+
   } catch (err) {
     console.error("Error cargando schedule:", err);
   }
@@ -108,13 +110,57 @@ function renderSchedule(data) {
 }
 
 /* =========================
+   AUTO SCROLL TODAY
+========================= */
+
+function scrollToTodayBlock() {
+  const todayKey = getTodayName();
+
+  document.querySelectorAll(".day-block").forEach(block => {
+    const title = block.querySelector(".day-title");
+
+    const dayName = title.textContent
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+
+    if (dayName === todayKey) {
+      block.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+  });
+}
+
+/* =========================
+   HIGHLIGHT TODAY
+========================= */
+
+function highlightToday() {
+  const todayKey = getTodayName();
+
+  document.querySelectorAll(".day-block").forEach(block => {
+    const title = block.querySelector(".day-title");
+
+    const dayName = title.textContent
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+
+    if (dayName === todayKey) {
+      title.classList.add("today-highlight");
+    }
+  });
+}
+
+/* =========================
    AUTO-SCROLL LIVE CARD
 ========================= */
 
 function scrollToLiveCard() {
   if (!currentLiveCard) return;
 
-  // SCROLL VERTICAL
   const rect = currentLiveCard.getBoundingClientRect();
   const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
   const offsetTop = rect.top + scrollTop - window.innerHeight / 2 + rect.height / 2;
@@ -124,7 +170,6 @@ function scrollToLiveCard() {
     behavior: "smooth"
   });
 
-  // SCROLL HORIZONTAL
   const row = currentLiveCard.closest(".day-row");
   if (row) {
     const cardOffset = currentLiveCard.offsetLeft;
@@ -145,7 +190,7 @@ function scrollToLiveCard() {
 }
 
 /* =========================
-   UPDATE LIVE (INTELIGENTE)
+   UPDATE LIVE
 ========================= */
 
 function updateLiveStatus(forceScroll = false) {
@@ -153,13 +198,12 @@ function updateLiveStatus(forceScroll = false) {
   const todayKey = getTodayName();
   const nowMinutes = getCurrentMinutes();
 
-  console.log("Hoy:", todayKey);
-
   currentLiveCard = null;
 
   document.querySelectorAll(".day-block").forEach(block => {
 
     const title = block.querySelector(".day-title");
+
     const dayName = title.textContent
       .toLowerCase()
       .normalize("NFD")
@@ -184,15 +228,12 @@ function updateLiveStatus(forceScroll = false) {
         card.classList.add("live-now");
         currentLiveCard = card;
 
-        // badge EN VIVO
         if (!card.querySelector(".live-badge")) {
           const badge = document.createElement("div");
           badge.classList.add("live-badge");
           badge.textContent = "EN VIVO";
           card.appendChild(badge);
         }
-
-        console.log("LIVE DETECTED:", card.innerText);
 
       } else {
         const badge = card.querySelector(".live-badge");
@@ -204,10 +245,9 @@ function updateLiveStatus(forceScroll = false) {
   });
 
   if (currentLiveCard && (forceScroll || currentLiveCard !== lastLiveCard)) {
-  scrollToLiveCard();
-  lastLiveCard = currentLiveCard;
-}
-
+    scrollToLiveCard();
+    lastLiveCard = currentLiveCard;
+  }
 }
 
 /* =========================
@@ -252,7 +292,7 @@ function openModal(program) {
 }
 
 /* =========================
-   SYNC NOWPLAYING
+   SYNC NOW PLAYING
 ========================= */
 
 function syncNowPlaying(title) {
