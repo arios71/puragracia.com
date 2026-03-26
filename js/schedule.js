@@ -203,6 +203,11 @@ function updateLiveStatus(forceScroll = false) {
 
   });
 
+  // 🔥 LOG si no hay ningún programa en vivo
+  if (!currentLiveCard) {
+    console.log("No hay programas en vivo en este momento.");
+  }
+
   // 🔥 SOLO hacer scroll si:
   // 1. es la primera vez
   // 2. cambió el programa en vivo
