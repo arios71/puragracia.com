@@ -35,10 +35,9 @@ async function loadAndRenderSchedule() {
 
     renderSchedule(data);
 
-    // 🔥 esperar a que DOM esté listo de verdad
     setTimeout(() => {
-      updateLiveStatus(true); // 👈 fuerza scroll inicial
-    }, 700);
+  updateLiveStatus(true);
+}, 1000);
 
   } catch (err) {
     console.error("Error cargando schedule:", err);
