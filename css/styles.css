@@ -369,3 +369,30 @@ footer p {
   max-width: 900px;
   text-align: center;
 }
+
+/* ================= SERMONES FIX ================= */
+#sermones iframe {
+  width: 100% !important;
+  min-height: 500px;
+  border-radius: 12px;
+}
+
+/* contenedor seguro para embeds */
+.iframe-wrapper {
+  width: 100%;
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 0 15px;
+  display: flex;
+  justify-content: center;
+  overflow: visible;
+}
+
+/* evita que se “aplane” el embed */
+#sermones {
+  width: 100%;
+}
+
+#sermones .section {
+  align-items: center;
+}
