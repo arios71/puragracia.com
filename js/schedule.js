@@ -16,17 +16,16 @@ async function loadAndRenderSchedule() {
 function isLiveNow(start, end, dayIndex) {
   const now = new Date();
 
-  const currentDay = now.getDay(); // 0 = domingo
-  if (currentDay !== dayIndex) return false;
+  if (now.getDay() !== dayIndex) return false;
 
-  const [startH, startM] = start.split(":").map(Number);
-  const [endH, endM] = end.split(":").map(Number);
+  const [sh, sm] = start.split(":").map(Number);
+  const [eh, em] = end.split(":").map(Number);
 
   const startTime = new Date();
-  startTime.setHours(startH, startM, 0);
+  startTime.setHours(sh, sm, 0);
 
   const endTime = new Date();
-  endTime.setHours(endH, endM, 0);
+  endTime.setHours(eh, em, 0);
 
   return now >= startTime && now <= endTime;
 }
@@ -53,21 +52,18 @@ function renderSchedule(data) {
     const dayBlock = document.createElement("div");
     dayBlock.classList.add("day-block");
 
-    // 🔹 TÍTULO DEL DÍA (SEPARADOR VISUAL)
     const title = document.createElement("div");
     title.classList.add("day-title");
     title.textContent = dayName;
 
-    dayBlock.appendChild(title);
-
-    const cardsContainer = document.createElement("div");
-    cardsContainer.classList.add("cards-container");
+    const row = document.createElement("div");
+    row.classList.add("day-row");
 
     if (programs.length === 0) {
       const empty = document.createElement("div");
       empty.classList.add("schedule-card", "empty-card");
       empty.textContent = "Sin programación";
-      cardsContainer.appendChild(empty);
+      row.appendChild(empty);
     } else {
       programs.forEach(program => {
 
@@ -76,9 +72,7 @@ function renderSchedule(data) {
         const card = document.createElement("div");
         card.classList.add("schedule-card");
 
-        if (isLive) {
-          card.classList.add("live-now");
-        }
+        if (isLive) card.classList.add("live-now");
 
         card.innerHTML = `
           <div class="card-time">${program.start} - ${program.end}</div>
@@ -86,11 +80,13 @@ function renderSchedule(data) {
           ${isLive ? `<div class="live-badge">EN VIVO AHORA</div>` : ""}
         `;
 
-        cardsContainer.appendChild(card);
+        row.appendChild(card);
       });
     }
 
-    dayBlock.appendChild(cardsContainer);
+    dayBlock.appendChild(title);
+    dayBlock.appendChild(row);
+
     scheduleContainer.appendChild(dayBlock);
   });
 }
