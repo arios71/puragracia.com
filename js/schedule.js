@@ -3,6 +3,7 @@
 const scheduleContainer = document.getElementById("scheduleContainer");
 
 let currentLiveCard = null;
+let lastLiveCard = null;
 
 /* =========================
    HELPERS
@@ -24,7 +25,7 @@ function getTodayName() {
 }
 
 /* =========================
-   RENDER
+   LOAD + RENDER
 ========================= */
 
 async function loadAndRenderSchedule() {
@@ -34,11 +35,10 @@ async function loadAndRenderSchedule() {
 
     renderSchedule(data);
 
-    // 🔥 aplicar estado y scroll después de render
+    // 🔥 esperar a que DOM esté listo de verdad
     setTimeout(() => {
-      updateLiveStatus();
-      scrollToLiveCard();
-    }, 600);
+      updateLiveStatus(true); // 👈 fuerza scroll inicial
+    }, 700);
 
   } catch (err) {
     console.error("Error cargando schedule:", err);
@@ -107,7 +107,7 @@ function renderSchedule(data) {
 }
 
 /* =========================
-   AUTO-SCROLL PRO
+   AUTO-SCROLL PRO REAL
 ========================= */
 
 function scrollToLiveCard() {
@@ -115,24 +115,25 @@ function scrollToLiveCard() {
 
   requestAnimationFrame(() => {
 
-    // 🔽 vertical
+    // 🔽 Scroll vertical al día
     const dayBlock = currentLiveCard.closest(".day-block");
     if (dayBlock) {
       dayBlock.scrollIntoView({
         behavior: "smooth",
-        block: "start"
+        block: "center"
       });
     }
 
-    // 👉 horizontal
+    // 👉 Scroll horizontal dentro del row
     const row = currentLiveCard.closest(".day-row");
     if (row) {
 
-      const cardCenter = currentLiveCard.offsetLeft + (currentLiveCard.offsetWidth / 2);
-      const containerCenter = row.offsetWidth / 2;
+      const cardOffset = currentLiveCard.offsetLeft;
+      const cardWidth = currentLiveCard.offsetWidth;
+      const rowWidth = row.offsetWidth;
 
       row.scrollTo({
-        left: cardCenter - containerCenter,
+        left: cardOffset - (rowWidth / 2) + (cardWidth / 2),
         behavior: "smooth"
       });
     }
@@ -141,10 +142,10 @@ function scrollToLiveCard() {
 }
 
 /* =========================
-   UPDATE LIVE (SIN RELOAD)
+   UPDATE LIVE (INTELIGENTE)
 ========================= */
 
-function updateLiveStatus() {
+function updateLiveStatus(forceScroll = false) {
 
   const todayKey = getTodayName();
   const nowMinutes = getCurrentMinutes();
@@ -192,6 +193,14 @@ function updateLiveStatus() {
     });
 
   });
+
+  // 🔥 SOLO hacer scroll si:
+  // 1. es la primera vez
+  // 2. cambió el programa en vivo
+  if (currentLiveCard && (forceScroll || currentLiveCard !== lastLiveCard)) {
+    scrollToLiveCard();
+    lastLiveCard = currentLiveCard;
+  }
 }
 
 /* =========================
@@ -264,5 +273,7 @@ window.syncNowPlaying = syncNowPlaying;
 createModal();
 loadAndRenderSchedule();
 
-// 🔄 actualización dinámica cada minuto
-setInterval(updateLiveStatus, 60000);
+// 🔄 actualizar cada 30s (NO 60s)
+setInterval(() => {
+  updateLiveStatus();
+}, 30000);
