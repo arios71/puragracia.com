@@ -25,6 +25,8 @@ body {
   align-items: center;
   gap: 20px;
   padding: 12px 15px;
+  position: relative;
+  z-index: 1000;
 }
 
 .nav a {
@@ -161,14 +163,6 @@ body {
   height: 110px;
   border-radius: 14px;
   object-fit: cover;
-  transition: all 0.3s ease;
-}
-
-.now-card img.default-cover {
-  opacity: 0.95;
-  border-radius: 14px;
-  border: 2px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.25);
 }
 
 /* ================= NOW INFO ================= */
@@ -193,12 +187,32 @@ body {
   opacity: 0.8;
 }
 
+/* ================= SECTIONS FIX ================= */
+.section {
+  display: none;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.section.active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 /* ================= PROGRAMACIÓN ================= */
-#scheduleContainer { width: 100%; }
+#scheduleContainer {
+  width: 100%;
+}
 
-.day-block { margin-bottom: 30px; }
+.day-block {
+  margin-bottom: 30px;
+  animation: fadeInUp 0.6s ease both;
+}
 
-/* 🟢 MODIFICADO: compatible con highlight dinámico */
 .day-title {
   font-size: 1.2rem;
   font-weight: 700;
@@ -212,7 +226,7 @@ body {
   transition: all 0.3s ease;
 }
 
-/* ================= 🔥 NUEVO: TODAY HIGHLIGHT ================= */
+/* ================= TODAY HIGHLIGHT ================= */
 .day-title.today-highlight {
   background: linear-gradient(135deg, #00c853, #64dd17);
   color: white;
@@ -230,7 +244,10 @@ body {
   scroll-snap-type: x mandatory;
 }
 
-.day-row::-webkit-scrollbar { height: 6px; }
+.day-row::-webkit-scrollbar {
+  height: 6px;
+}
+
 .day-row::-webkit-scrollbar-thumb {
   background: rgba(255,255,255,0.2);
   border-radius: 10px;
@@ -244,7 +261,6 @@ body {
   padding: 14px;
   text-align: left;
   box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-  transition: all 0.3s ease;
   border: 1px solid rgba(255,255,255,0.05);
   position: relative;
   scroll-snap-align: center;
@@ -275,8 +291,10 @@ body {
 /* ================= MODAL ================= */
 #scheduleModal {
   position: fixed;
-  top:0; left:0;
-  width:100%; height:100%;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
   background: rgba(0,0,0,0.7);
   display: flex;
   justify-content:center;
@@ -299,27 +317,39 @@ body {
   width: 90%;
   max-width: 400px;
   text-align:center;
+  position: relative;
 }
 
 .close-btn {
   position: absolute;
-  top: 10px; right: 15px;
+  top: 10px;
+  right: 15px;
   font-size: 1.5rem;
   cursor: pointer;
 }
 
 /* ================= ANIMATION ================= */
-.day-block {
-  animation: fadeInUp 0.6s ease both;
-}
-
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(15px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ================= RESPONSIVE ================= */
-@media(max-width:768px) {
-  .logo { width: clamp(240px, 65vw, 340px); }
-  .iframe-wrapper iframe { height: 400px; }
+/* ================= WHATSAPP FIX ================= */
+.whatsapp-float {
+  position: fixed !important;
+  bottom: 20px !important;
+  right: 20px !important;
+  width: 60px !important;
+  height: 60px !important;
+  z-index: 9999 !important;
+}
+
+.whatsapp-float img {
+  width: 32px;
+  height: 32px;
+}
+
+/* ================= EMERGENCY LAYOUT FIX ================= */
+body {
+  overflow-x: hidden !important;
 }
