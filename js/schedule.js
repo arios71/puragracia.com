@@ -116,33 +116,13 @@ function renderSchedule(data) {
 function scrollToLiveCard() {
   if (!currentLiveCard) return;
 
+  // 🔹 scrollIntoView centra la tarjeta vertical y horizontalmente
   requestAnimationFrame(() => {
-
-    // 🔽 SCROLL VERTICAL REAL (window)
-    const rect = currentLiveCard.getBoundingClientRect();
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-    const offset = rect.top + scrollTop - (window.innerHeight / 2);
-
-    window.scrollTo({
-      top: offset,
-      behavior: "smooth"
+    currentLiveCard.scrollIntoView({
+      behavior: "smooth",
+      block: "center",   // centra verticalmente
+      inline: "center"   // centra horizontalmente
     });
-
-    // 👉 SCROLL HORIZONTAL (row)
-    const row = currentLiveCard.closest(".day-row");
-    if (row) {
-
-      const cardOffset = currentLiveCard.offsetLeft;
-      const cardWidth = currentLiveCard.offsetWidth;
-      const rowWidth = row.offsetWidth;
-
-      row.scrollTo({
-        left: cardOffset - (rowWidth / 2) + (cardWidth / 2),
-        behavior: "smooth"
-      });
-    }
-
   });
 }
 
