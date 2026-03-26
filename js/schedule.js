@@ -153,11 +153,15 @@ function scrollToLiveCard() {
 function updateLiveStatus(forceScroll = false) {
 
   const todayKey = normalizeDay(getTodayName());
-  console.log("Hoy:", todayKey); // ✅ depuración
+  console.log("Hoy:", todayKey); // depuración
 
   const nowMinutes = getCurrentMinutes();
 
   currentLiveCard = null;
+
+  // remover mensaje anterior de "no hay live"
+  const prevMessage = document.querySelector(".no-live-message");
+  if (prevMessage) prevMessage.remove();
 
   document.querySelectorAll(".day-block").forEach(block => {
 
@@ -184,7 +188,7 @@ function updateLiveStatus(forceScroll = false) {
 
         currentLiveCard = card;
 
-        console.log("LIVE DETECTED:", card.innerText); // ✅ depuración
+        console.log("LIVE DETECTED:", card.innerText); // depuración
 
         // badge
         if (!card.querySelector(".live-badge")) {
@@ -203,9 +207,14 @@ function updateLiveStatus(forceScroll = false) {
 
   });
 
-  // 🔥 LOG si no hay ningún programa en vivo
+  // 🔥 LOG y mensaje visual si no hay ningún programa en vivo
   if (!currentLiveCard) {
     console.log("No hay programas en vivo en este momento.");
+
+    const noLiveMsg = document.createElement("div");
+    noLiveMsg.classList.add("no-live-message");
+    noLiveMsg.textContent = "No hay programas en vivo actualmente.";
+    scheduleContainer.prepend(noLiveMsg);
   }
 
   // 🔥 SOLO hacer scroll si:
