@@ -116,14 +116,14 @@ function renderSchedule(data) {
 function scrollToLiveCard() {
   if (!currentLiveCard) return;
 
-  // 🔹 scrollIntoView centra la tarjeta vertical y horizontalmente
-  requestAnimationFrame(() => {
+  // 🔹 Delay para asegurar que DOM y layout estén listos
+  setTimeout(() => {
     currentLiveCard.scrollIntoView({
       behavior: "smooth",
       block: "center",   // centra verticalmente
       inline: "center"   // centra horizontalmente
     });
-  });
+  }, 100); // 100ms suele ser suficiente
 }
 
 /* =========================
@@ -133,15 +133,11 @@ function scrollToLiveCard() {
 function updateLiveStatus(forceScroll = false) {
 
   const todayKey = normalizeDay(getTodayName());
-  console.log("Hoy:", todayKey); // depuración
+  console.log("Hoy:", todayKey);
 
   const nowMinutes = getCurrentMinutes();
 
   currentLiveCard = null;
-
-  // remover mensaje anterior de "no hay live"
-  const prevMessage = document.querySelector(".no-live-message");
-  if (prevMessage) prevMessage.remove();
 
   document.querySelectorAll(".day-block").forEach(block => {
 
@@ -168,7 +164,7 @@ function updateLiveStatus(forceScroll = false) {
 
         currentLiveCard = card;
 
-        console.log("LIVE DETECTED:", card.innerText); // depuración
+        console.log("LIVE DETECTED:", card.innerText);
 
         // badge
         if (!card.querySelector(".live-badge")) {
@@ -186,16 +182,6 @@ function updateLiveStatus(forceScroll = false) {
     });
 
   });
-
-  // 🔥 LOG y mensaje visual si no hay ningún programa en vivo
-  if (!currentLiveCard) {
-    console.log("No hay programas en vivo en este momento.");
-
-    const noLiveMsg = document.createElement("div");
-    noLiveMsg.classList.add("no-live-message");
-    noLiveMsg.textContent = "No hay programas en vivo actualmente.";
-    scheduleContainer.prepend(noLiveMsg);
-  }
 
   // 🔥 SOLO hacer scroll si:
   // 1. es la primera vez
