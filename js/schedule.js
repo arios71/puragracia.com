@@ -156,7 +156,10 @@ function updateLiveStatus(forceScroll = false) {
   document.querySelectorAll(".day-block").forEach(block => {
 
     const title = block.querySelector(".day-title");
-    const dayName = title.textContent.toLowerCase();
+    const dayName = title.textContent
+  .toLowerCase()
+  .normalize("NFD")
+  .replace(/[\u0300-\u036f]/g, "");
 
     const cards = block.querySelectorAll(".schedule-card");
 
