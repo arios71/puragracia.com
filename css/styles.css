@@ -629,3 +629,56 @@ footer {
 	padding: 4px 6px;
 	border-radius: 5px;
 }
+
+.menu-principal {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  padding: 12px 0;
+}
+
+.menu-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: #ffffff;
+  position: relative;
+}
+
+.menu-item svg {
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.menu-item:hover svg {
+  transform: scale(1.1);
+  color: #fbac33;
+}
+
+/* Texto oculto por defecto (desktop) */
+.menu-text {
+  font-size: 12px;
+  margin-top: 4px;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: all 0.2s ease;
+}
+
+/* Mostrar en hover */
+.menu-item:hover .menu-text {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ACTIVO (cuando menu.js lo marca) */
+.menu-item.active svg {
+  color: #fbac33;
+}
+
+/* MÓVIL: mostrar siempre el texto */
+@media (max-width: 768px) {
+  .menu-text {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
