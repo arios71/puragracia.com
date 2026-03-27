@@ -161,20 +161,6 @@ body {
   height: 110px;
   border-radius: 14px;
   object-fit: cover;
-  transition: all 0.3s ease;
-}
-
-.now-card img.default-cover {
-  opacity: 0.95;
-  border-radius: 14px;
-  border: 2px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.25);
-}
-
-.now-card img.default-cover:hover {
-  opacity: 1;
-  border-color: rgba(255, 255, 255, 0.6);
-  box-shadow: 0 12px 35px rgba(59, 130, 246, 0.45);
 }
 
 /* ================= NOW INFO ================= */
@@ -199,71 +185,6 @@ body {
   opacity: 0.8;
 }
 
-/* ================= EQUALIZER ================= */
-.equalizer {
-  display: flex;
-  align-items: flex-end;
-  gap: 4px;
-  margin-top: 8px;
-  height: 30px;
-}
-
-.equalizer span {
-  width: 5px;
-  height: 10px;
-  background: linear-gradient(#60a5fa, #1d4ed8);
-  border-radius: 3px;
-  animation: equalize 1s infinite ease-in-out;
-  animation-play-state: paused;
-}
-
-.equalizer span:nth-child(1) { animation-delay: 0s; }
-.equalizer span:nth-child(2) { animation-delay: 0.2s; }
-.equalizer span:nth-child(3) { animation-delay: 0.4s; }
-.equalizer span:nth-child(4) { animation-delay: 0.6s; }
-.equalizer span:nth-child(5) { animation-delay: 0.8s; }
-
-@keyframes equalize {
-  0%,100% { height: 8px; }
-  50% { height: 28px; }
-}
-
-/* ================= PLAYING GLOW ================= */
-.playing .radio-wrapper {
-  box-shadow: 0 0 25px rgba(59,130,246,0.4), 0 20px 60px rgba(0,0,0,0.6);
-}
-
-.playing .equalizer span {
-  animation-play-state: running;
-}
-
-/* ================= IFRAME ================= */
-.iframe-wrapper {
-  width: 100%;
-  max-width: 900px;
-  margin: 20px auto;
-  padding: 0 15px;
-  display: flex;
-  justify-content: center;
-  overflow-x: hidden;
-}
-
-.iframe-wrapper iframe {
-  width: 100%;
-  max-width: 100%;
-  height: 600px;
-  border: 0;
-}
-
-/* ================= FOOTER ================= */
-footer {
-  text-align: center;
-  padding: 40px 20px;
-  font-size: 0.85rem;
-  color: #9aa7c0;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-}
-
 /* ================= SECTIONS ================= */
 .section {
   display: none;
@@ -281,73 +202,11 @@ footer {
   align-items: center;
 }
 
-.section h1,
-.section h2,
-.section h3 {
-  text-align: center;
-  margin-bottom: 15px;
-}
-
-/* ================= CONTACT ================= */
-#contacto {
-  text-align: center;
-}
-
-#contacto p,
-#contacto a {
-  text-align: center;
-  word-break: break-word;
-}
-
-/* ================= WHATSAPP ================= */
-.whatsapp-float {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 60px;
-  height: 60px;
-  z-index: 9999;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #25D366;
-  border-radius: 50%;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-  transition: transform 0.2s ease;
-}
-
-.whatsapp-float:hover {
-  transform: scale(1.1);
-}
-
-.whatsapp-float img {
-  width: 32px;
-  height: 32px;
-  object-fit: contain;
-}
-
-/* ================= RESPONSIVE ================= */
-@media(max-width:768px) {
-  .logo { width: clamp(240px, 65vw, 340px); }
-  .player-section { padding: 10px 15px 25px; }
-  .radio-wrapper { padding: 16px; }
-  .iframe-wrapper iframe { height: 400px; }
-  .now-card img { width: 85px; height: 85px; }
-  .section { padding: 15px 12px; }
-  #contacto p { font-size: 0.95rem; }
-  .section h2 { font-size: 1.4rem; }
-  .nav { gap: 12px; padding: 10px 5px; }
-  .nav a { font-size: 0.8rem; padding: 8px 5px; }
-  .radio-status { margin-top: 10px; font-size: 0.9rem; opacity: 0.8; text-align: center; }
-  .radio-status.error { color: #ff4d4d; }
-  .radio-status.loading { color: #4da3ff; }
-  .radio-status.live { color: #22c55e; font-weight: 600; }
-  .radio-status:empty { display: none; }
-}
-
 /* ================= PROGRAMACIÓN ================= */
 #scheduleContainer { width: 100%; }
+
 .day-block { margin-bottom: 30px; }
+
 .day-title {
   font-size: 1.2rem;
   font-weight: 700;
@@ -359,20 +218,26 @@ footer {
   border-radius: 10px;
   letter-spacing: 0.5px;
 }
+
 .day-title.today {
   border-left-color: #22c55e;
   background: rgba(34,197,94,0.1);
 }
+
 .day-row {
   display: flex;
   gap: 14px;
   overflow-x: auto;
   padding-bottom: 8px;
   scroll-behavior: smooth;
-  scroll-snap-type: x mandatory; /* para scroll fluido en móvil/desktop */
+  scroll-snap-type: x mandatory;
 }
+
 .day-row::-webkit-scrollbar { height: 6px; }
-.day-row::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+.day-row::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
+}
 
 .schedule-card {
   min-width: 220px;
@@ -384,45 +249,16 @@ footer {
   transition: all 0.3s ease;
   border: 1px solid rgba(255,255,255,0.05);
   position: relative;
-  scroll-snap-align: center; /* centra la tarjeta al hacer scroll */
+  scroll-snap-align: center;
 }
+
 .schedule-card:hover {
   transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 15px 40px rgba(0,0,0,0.6);
 }
-.card-time { font-size: 0.85rem; opacity: 0.7; }
-.card-title { font-size: 1rem; font-weight: 600; margin-top: 4px; }
+
 .schedule-card.live-now {
   background: linear-gradient(135deg,#f59e0b,#b45309);
   color: #000;
-  box-shadow: 0 10px 30px rgba(245,158,11,0.6);
-  animation: livePulse 2s infinite;
-}
-@keyframes livePulse {
-  0%,100% { box-shadow:0 0 0 rgba(245,158,11,0.6); }
-  50% { box-shadow:0 0 25px rgba(245,158,11,0.8); }
-}
-.live-badge {
-  margin-top: 8px;
-  font-size: 0.7rem;
-  font-weight: 700;
-  background: #000;
-  color: #f59e0b;
-  display: inline-block;
-  padding: 4px 8px;
-  border-radius: 6px;
-}
-.empty-card { opacity: 0.5; text-align: center; }
-
-/* GRID DESKTOP */
-@media(min-width:900px) {
-  #scheduleContainer {
-    display: grid;
-    grid-template-columns: repeat(2,1fr);
-    gap: 20px;
-  }
-  .day-row { overflow-x: auto; flex-wrap: wrap; }
-  .schedule-card { min-width: auto; width: 100%; }
 }
 
 /* ================= MODAL ================= */
@@ -434,11 +270,17 @@ footer {
   display: flex;
   justify-content:center;
   align-items:center;
-  opacity:0; pointer-events:none;
+  opacity:0;
+  pointer-events:none;
   transition: 0.3s ease;
   z-index: 9999;
 }
-#scheduleModal.show { opacity:1; pointer-events:auto; }
+
+#scheduleModal.show {
+  opacity:1;
+  pointer-events:auto;
+}
+
 .modal-content {
   background: #111c2e;
   padding: 25px;
@@ -446,29 +288,44 @@ footer {
   width: 90%;
   max-width: 400px;
   text-align:center;
-  box-shadow:0 20px 50px rgba(0,0,0,0.6);
-  position: relative;
-}
-.close-btn {
-  position: absolute;
-  top: 10px; right: 15px;
-  font-size: 1.5rem;
-  cursor: pointer;
 }
 
-/* ================= SYNC NOWPLAYING ================= */
-.schedule-card.playing-now {
-  outline: 2px solid #3b82f6;
-  box-shadow: 0 0 20px rgba(59,130,246,0.7);
-  transform: scale(1.03);
+/* ================= WHATSAPP ================= */
+.whatsapp-float {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  z-index: 9999;
 }
-.schedule-card.playing-now::after {
-  content: "SONANDO AHORA";
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  font-size: 0.6rem;
-  background: #3b82f6;
-  padding: 4px 6px;
-  border-radius: 5px;
+
+/* ================= RESPONSIVE (FIX REAL AQUÍ) ================= */
+@media(max-width:768px) {
+
+  .logo { width: clamp(240px, 65vw, 340px); }
+
+  .player-section {
+    padding: 10px 14px 25px;
+  }
+
+  /* 🔥 FIX REAL DEL PROBLEMA QUE REPORTASTE */
+  .radio-wrapper {
+    width: calc(100% - 20px);
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 14px;
+  }
+
+  .now-card img {
+    width: 85px;
+    height: 85px;
+  }
+
+  .section { padding: 15px 12px; }
+
+  .nav { gap: 12px; padding: 10px 5px; }
+  .nav a { font-size: 0.8rem; }
+
+  .iframe-wrapper iframe { height: 400px; }
 }
