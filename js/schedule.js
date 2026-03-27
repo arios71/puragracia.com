@@ -37,11 +37,14 @@ async function loadAndRenderSchedule() {
 
     requestAnimationFrame(() => {
       setTimeout(() => {
-        highlightToday();
-        scrollToTodayBlock();
         updateLiveStatus(true);
       }, 300);
     });
+
+    // ✅ FIX 4: re-evaluate after render (PWA wake fix)
+    setTimeout(() => {
+      updateLiveStatus(true);
+    }, 400);
 
   } catch (err) {
     console.error("Error cargando schedule:", err);
@@ -110,51 +113,6 @@ function renderSchedule(data) {
 }
 
 /* =========================
-   AUTO SCROLL TODAY
-========================= */
-
-function scrollToTodayBlock() {
-  const todayKey = getTodayName();
-
-  document.querySelectorAll(".day-block").forEach(block => {
-    const title = block.querySelector(".day-title");
-
-    const dayName = title.textContent
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "");
-
-    if (dayName === todayKey) {
-      block.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-    }
-  });
-}
-
-/* =========================
-   HIGHLIGHT TODAY
-========================= */
-
-function highlightToday() {
-  const todayKey = getTodayName();
-
-  document.querySelectorAll(".day-block").forEach(block => {
-    const title = block.querySelector(".day-title");
-
-    const dayName = title.textContent
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "");
-
-    if (dayName === todayKey) {
-      title.classList.add("today-highlight");
-    }
-  });
-}
-
-/* =========================
    AUTO-SCROLL LIVE CARD
 ========================= */
 
@@ -190,7 +148,7 @@ function scrollToLiveCard() {
 }
 
 /* =========================
-   UPDATE LIVE
+   UPDATE LIVE (INTELIGENTE)
 ========================= */
 
 function updateLiveStatus(forceScroll = false) {
@@ -203,7 +161,6 @@ function updateLiveStatus(forceScroll = false) {
   document.querySelectorAll(".day-block").forEach(block => {
 
     const title = block.querySelector(".day-title");
-
     const dayName = title.textContent
       .toLowerCase()
       .normalize("NFD")
@@ -292,7 +249,7 @@ function openModal(program) {
 }
 
 /* =========================
-   SYNC NOW PLAYING
+   SYNC NOWPLAYING
 ========================= */
 
 function syncNowPlaying(title) {
@@ -314,7 +271,15 @@ function syncNowPlaying(title) {
 window.syncNowPlaying = syncNowPlaying;
 
 /* =========================
-   INIT
+   FIX 2: REFRESH SYSTEM
+========================= */
+
+function refreshScheduleUI() {
+  updateLiveStatus(true);
+}
+
+/* =========================
+   INIT (FIX 3)
 ========================= */
 
 createModal();
@@ -323,3 +288,13 @@ loadAndRenderSchedule();
 setInterval(() => {
   updateLiveStatus();
 }, 30000);
+
+/* =========================
+   FIX 1: PWA WAKE UP
+========================= */
+
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) {
+    refreshScheduleUI();
+  }
+});
