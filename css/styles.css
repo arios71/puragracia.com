@@ -67,7 +67,7 @@ body {
   filter: drop-shadow(0 8px 25px rgba(0, 0, 0, 0.6));
 }
 
-/* ================= SEO TITLES ================= */
+/* ================= SEO ================= */
 .seo-title,
 .seo-subtitle {
   position: absolute;
@@ -89,7 +89,7 @@ body {
   padding: 10px 20px 30px 20px;
 }
 
-/* ================= RADIO WRAPPER ================= */
+/* ================= RADIO ================= */
 .radio-wrapper {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(18px);
@@ -99,10 +99,9 @@ body {
   margin: 0 auto;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  transition: all 0.3s ease;
 }
 
-/* ================= PLAY BUTTON ================= */
+/* ================= BUTTON ================= */
 .play-btn,
 #playRadio {
   width: 100%;
@@ -114,29 +113,20 @@ body {
   color: #fff;
   cursor: pointer;
   background: linear-gradient(180deg, #3b82f6, #1e3a8a);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-  transition: all 0.3s ease;
 }
 
 .play-btn:hover,
 #playRadio:hover {
-  background: linear-gradient(180deg, #4b8df7, #243f9c);
   transform: translateY(-1px);
 }
 
-/* ================= EN VIVO ================= */
+/* ================= LIVE ================= */
 .live-row {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
   margin: 12px 0;
-}
-
-.live-row .line {
-  flex: 1;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.2);
 }
 
 .live-text {
@@ -152,49 +142,15 @@ body {
   background: rgba(0, 0, 0, 0.25);
   border-radius: 18px;
   padding: 14px;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
 }
 
-.now-card img {
-  width: 110px;
-  height: 110px;
-  border-radius: 14px;
-  object-fit: cover;
-}
-
-/* ================= NOW INFO ================= */
-.now-info {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.now-label {
-  font-size: 0.8rem;
-  opacity: 0.6;
-}
-
-.now-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-}
-
-.now-artist {
-  font-size: 0.9rem;
-  opacity: 0.8;
-}
-
-/* ================= SECTIONS FIX ================= */
+/* ================= SECTIONS ================= */
 .section {
   display: none;
   width: 100%;
   max-width: 1100px;
   margin: 0 auto;
   padding: 20px;
-  text-align: center;
 }
 
 .section.active {
@@ -210,7 +166,6 @@ body {
 
 .day-block {
   margin-bottom: 30px;
-  animation: fadeInUp 0.6s ease both;
 }
 
 .day-title {
@@ -222,92 +177,57 @@ body {
   border-left: 4px solid #3b82f6;
   background: rgba(255,255,255,0.05);
   border-radius: 10px;
-  letter-spacing: 0.5px;
-  transition: all 0.3s ease;
 }
 
-/* ================= TODAY HIGHLIGHT ================= */
+/* TODAY HIGHLIGHT */
 .day-title.today-highlight {
   background: linear-gradient(135deg, #00c853, #64dd17);
   color: white;
-  box-shadow: 0 4px 14px rgba(0, 200, 83, 0.35);
-  transform: scale(1.02);
 }
 
-/* ================= ROW ================= */
+/* ROW */
 .day-row {
   display: flex;
   gap: 14px;
   overflow-x: auto;
-  padding-bottom: 8px;
   scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;
 }
 
-.day-row::-webkit-scrollbar {
-  height: 6px;
-}
-
-.day-row::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.2);
-  border-radius: 10px;
-}
-
-/* ================= CARD ================= */
+/* CARD */
 .schedule-card {
   min-width: 220px;
   background: rgba(255,255,255,0.05);
   border-radius: 16px;
   padding: 14px;
-  text-align: left;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-  border: 1px solid rgba(255,255,255,0.05);
   position: relative;
-  scroll-snap-align: center;
 }
 
-.schedule-card:hover {
-  transform: translateY(-4px) scale(1.02);
-}
-
-/* LIVE */
 .schedule-card.live-now {
   background: linear-gradient(135deg,#f59e0b,#b45309);
   color: #000;
 }
 
-/* LIVE BADGE */
 .live-badge {
   margin-top: 8px;
   font-size: 0.7rem;
-  font-weight: 700;
-  background: #000;
-  color: #f59e0b;
-  display: inline-block;
-  padding: 4px 8px;
-  border-radius: 6px;
+  font-weight: bold;
 }
 
 /* ================= MODAL ================= */
 #scheduleModal {
   position: fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
+  inset: 0;
   background: rgba(0,0,0,0.7);
   display: flex;
-  justify-content:center;
-  align-items:center;
-  opacity:0;
-  pointer-events:none;
-  transition: 0.3s ease;
-  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
 }
 
 #scheduleModal.show {
-  opacity:1;
-  pointer-events:auto;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .modal-content {
@@ -316,25 +236,9 @@ body {
   border-radius: 16px;
   width: 90%;
   max-width: 400px;
-  text-align:center;
-  position: relative;
 }
 
-.close-btn {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
-/* ================= ANIMATION ================= */
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(15px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ================= WHATSAPP FIX ================= */
+/* ================= WHATSAPP ================= */
 .whatsapp-float {
   position: fixed !important;
   bottom: 20px !important;
@@ -344,113 +248,45 @@ body {
   z-index: 9999 !important;
 }
 
-.whatsapp-float img {
-  width: 32px;
-  height: 32px;
-}
-
-/* ================= EMERGENCY LAYOUT FIX ================= */
-body {
-  overflow-x: hidden !important;
-}
-
-/* ================= FOOTER FIX ================= */
+/* ================= FOOTER ================= */
 footer {
-  text-align: center !important;
+  text-align: center;
   padding: 40px 20px;
   font-size: 0.85rem;
   color: #9aa7c0;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  width: 100%;
+  border-top: 1px solid rgba(255,255,255,0.05);
 }
 
-footer p {
-  margin: 0 auto;
-  max-width: 900px;
-  text-align: center;
-}
-
-/* ================= SERMONES FIX ================= */
-#sermones iframe {
-  width: 100% !important;
-  min-height: 500px;
-  border-radius: 12px;
-}
-
-/* contenedor seguro para embeds */
-.iframe-wrapper {
-  width: 100%;
-  max-width: 900px;
-  margin: 20px auto;
-  padding: 0 15px;
-  display: flex;
-  justify-content: center;
-  overflow: visible;
-}
-
-/* evita que se “aplane” el embed */
-#sermones {
-  width: 100%;
-}
-
-#sermones .section {
-  align-items: center;
-}
-
-/* ================= EMBED CLEAN FIX (SERMONES / SPOTIFY) ================= */
-
-/* elimina bordes feos del iframe */
+/* ================= GLOBAL IFRAME FIX ================= */
 iframe {
-  border: none !important;
-  outline: none !important;
+  border: none;
+  outline: none;
 }
 
-/* contenedor limpio sin “caja vacía” */
-.iframe-wrapper {
+/* ================= SERMONES ONLY ================= */
+#sermones .iframe-wrapper {
   width: 100%;
   max-width: 900px;
   margin: 20px auto;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-/* SERMONES SECTION centrado real */
-#sermones {
-  width: 100%;
   display: flex;
   justify-content: center;
 }
 
-/* SPOTIFY / EMBED general */
 #sermones iframe {
-  width: 100% !important;
+  width: 100%;
   max-width: 900px;
   height: 352px;
   border-radius: 12px;
-  background: transparent !important;
 }
 
-/* Spotify específico (evita borde blanco raro) */
-iframe[src*="spotify"] {
-  border: none !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  border-radius: 12px;
+/* Spotify */
+#sermones iframe[src*="spotify"] {
+  border: none;
 }
 
-/* ================= MOBILE PWA FIX ================= */
+/* MOBILE */
 @media (max-width: 768px) {
   #sermones iframe {
-    width: 100% !important;
-    height: 280px !important;
-    max-width: 100% !important;
-  }
-
-  .iframe-wrapper {
-    padding: 0 10px;
+    height: 280px;
   }
 }
