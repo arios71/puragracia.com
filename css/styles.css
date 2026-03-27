@@ -1,191 +1,151 @@
-/* ================= RESET ================= */
+<!DOCTYPE html>
+<html lang="es">
+<head>
 
-* {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-/* ================= BODY ================= */
+<title>WRPG-DB Pura Gracia | Escuchar Radio Cristiana Reformada en vivo 24/7</title>
 
-body {
-	font-family: 'Segoe UI', sans-serif;
-	background: linear-gradient(135deg, #0a0f1a, #111c2e);
-	color: #fff;
-	min-height: 100vh;
-	overflow-x: hidden;
-	scroll-behavior: smooth;
-	padding-bottom: 85px;
-}
+<meta name="description" content="Escucha Pura Gracia Radio, emisora cristiana reformada online 24/7. Predicación expositiva, teología reformada y música cristiana centrada en el evangelio.">
 
-/* ================= LOGO ================= */
+<meta name="keywords" content="
+radio cristiana,
+radio reformada,
+predicación expositiva,
+teología reformada,
+radio cristiana online,
+emisora cristiana Puerto Rico,
+Pura Gracia Radio,
+radio cristiana 24/7
+">
 
-.logo-container {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	margin: 50px 0 10px 0;
-}
+<meta name="author" content="Pura Gracia Radio">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.puragracia.com/">
 
-.logo {
-	width: clamp(300px, 42vw, 460px);
-	height: auto;
-	margin-bottom: 10px;
-	filter: drop-shadow(0 8px 25px rgba(0, 0, 0, 0.6));
-}
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.puragracia.com/">
+<meta property="og:title" content="WRPG-DB Pura Gracia | Radio Cristiana">
+<meta property="og:description" content="Escucha Pura Gracia Radio en vivo. Predicación expositiva, sana doctrina y música cristiana que expone fielmente la Palabra de Dios.">
+<meta property="og:image" content="https://www.puragracia.com/assets/icons/logo-512.png">
 
-/* ================= PLAYER ================= */
+<meta property="og:audio" content="https://playerservices.streamtheworld.com/api/livestream-redirect/SAM05AAC459_SC">
+<meta property="og:audio:type" content="audio/mpeg">
 
-.player-section {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	padding: 10px 20px 30px;
-}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="WRPG-DB Pura Gracia">
+<meta name="twitter:description" content="Radio cristiana online 24/7 con predicación expositiva y sana doctrina.">
+<meta name="twitter:image" content="https://www.puragracia.com/assets/icons/logo-512.png">
 
-.radio-wrapper {
-	background: rgba(255, 255, 255, 0.05);
-	backdrop-filter: blur(18px);
-	border-radius: 22px;
-	padding: 18px;
-	max-width: 520px;
-	margin: 0 auto;
-	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
-	border: 1px solid rgba(255, 255, 255, 0.08);
-}
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/logo-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/logo-16.png">
+<link rel="shortcut icon" href="/assets/icons/logo-32.png">
 
-/* ================= BUTTON ================= */
+<meta name="theme-color" content="#121212">
 
-.play-btn,
-#playRadio {
-	width: 100%;
-	padding: 16px;
-	border: none;
-	border-radius: 14px;
-	font-size: 1.1rem;
-	font-weight: 600;
-	color: #fff;
-	cursor: pointer;
-	background: linear-gradient(180deg, #3b82f6, #1e3a8a);
-}
+<link rel="stylesheet" href="/css/styles.css">
 
-/* ================= LIVE ================= */
+</head>
 
-.live-row {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 10px;
-	margin: 12px 0;
-}
+<body>
 
-.live-row .line {
-	flex: 1;
-	height: 1px;
-	background: rgba(255,255,255,0.2);
-}
+<main class="app">
 
-.live-text {
-	color: #ff3b3b;
-	font-weight: bold;
-}
+  <!-- CONTENIDO PRINCIPAL (SE MANTIENE IGUAL) -->
+  <section id="inicio" class="section active">
 
-/* ================= SECTIONS ================= */
+    <div class="logo-container">
+      <img class="logo" src="/assets/branding/logo.webp" alt="Logo de Pura Gracia Radio">
+      <h1 class="seo-title">Pura Gracia Radio</h1>
+      <h2 class="seo-subtitle">WRPG-DB</h2>
+    </div>
 
-.section {
-	display: none;
-	width: 100%;
-	max-width: 1100px;
-	margin: 0 auto;
-	padding: 20px;
-	text-align: center;
-}
+    <section class="player-section">
+      <div class="radio-wrapper">
 
-.section.active {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-}
+        <button id="playRadio" class="play-btn">▶ Reproducir Radio</button>
 
-/* ================= FOOTER ================= */
+        <p id="radioStatus" class="radio-status" style="display:none;"></p>
 
-footer {
-	text-align: center;
-	padding: 40px 20px;
-	font-size: 0.85rem;
-	color: #9aa7c0;
-}
+        <div class="live-row">
+          <div class="line"></div>
+          <span class="live-text">En vivo</span>
+          <div class="line"></div>
+        </div>
 
-/* ================= IFRAME ================= */
+        <div id="nowPlayingBox"></div>
 
-.iframe-wrapper {
-	width: 100%;
-	max-width: 900px;
-	margin: 20px auto;
-	padding: 0 15px;
-}
+        <audio id="radioAudio" preload="none"></audio>
 
-.iframe-wrapper iframe {
-	width: 100%;
-	height: 600px;
-	border: 0;
-}
+      </div>
+    </section>
 
-/* ================= BOTTOM NAV ================= */
+  </section>
 
-.bottom-nav {
-	position: fixed;
-	bottom: 0;
-	left: 0;
-	width: 100%;
-	height: 70px;
-	background: rgba(10, 15, 26, 0.92);
-	backdrop-filter: blur(16px);
-	border-top: 1px solid rgba(255,255,255,0.08);
-	display: flex;
-	justify-content: space-around;
-	align-items: center;
-	z-index: 9999;
-	padding-bottom: env(safe-area-inset-bottom);
-}
+  <section id="programacion" class="section">
+    <h2>🗓️ Programación</h2>
+    <div id="scheduleContainer"></div>
+  </section>
 
-.nav-item {
-	background: none;
-	border: none;
-	color: rgba(255,255,255,0.65);
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	flex: 1;
-	font-size: 12px;
-	cursor: pointer;
-	transition: 0.2s;
-}
+  <section id="sermones" class="section">
+    <h2>🎙️ Sermones</h2>
+    <div class="iframe-wrapper pg-spotify-wrapper">
+      <iframe src="https://open.spotify.com/embed/show/7bCzhWNjuVzSWeTLXvk9vt"></iframe>
+    </div>
+  </section>
 
-.nav-icon {
-	font-size: 20px;
-	margin-bottom: 4px;
-}
+  <section id="contacto" class="section">
+    <h2>📬 Contacto</h2>
+    <p>Escríbenos a: <a href="mailto:radio@puragracia.com">radio@puragracia.com</a></p>
+  </section>
 
-.nav-item.active {
-	color: #fbac33;
-}
+  <footer>
+    © 2026 Iglesia Bíblica Gracia Verdadera
+  </footer>
 
-.nav-item:active {
-	transform: scale(0.92);
-}
+</main>
 
-/* ================= RESPONSIVE ================= */
+<!-- 🔻 BOTTOM NAV (SOLO SE MUEVE AQUÍ, SIN CAMBIAR ICONOS NI ESTRUCTURA) -->
+<header class="bottom-nav">
+  <nav class="menu-principal">
 
-@media (max-width: 768px) {
+    <a href="#" data-section="inicio" class="menu-item" aria-label="Inicio">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 3a7 7 0 0 0-7 7v4a3 3 0 0 0 3 3h1v-6H6v-1a6 6 0 0 1 12 0v1h-3v6h1a3 3 0 0 0 3-3v-4a7 7 0 0 0-7-7z"/>
+      </svg>
+      <span class="menu-text">Inicio</span>
+    </a>
 
-	.logo {
-		width: 65vw;
-	}
+    <a href="#" data-section="programacion" class="menu-item" aria-label="Programación">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M7 2v2H5a2 2 0 0 0-2 2v2h18V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7zm14 8H3v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V10z"/>
+      </svg>
+      <span class="menu-text">Programación</span>
+    </a>
 
-	.iframe-wrapper iframe {
-		height: 400px;
-	}
-}
+    <a href="#" data-section="sermones" class="menu-item" aria-label="Sermones">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 14 0h-2zM11 19v3h2v-3h-2z"/>
+      </svg>
+      <span class="menu-text">Sermones</span>
+    </a>
+
+    <a href="mailto:radio@puragracia.com" class="menu-item" aria-label="Contacto">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z"/>
+      </svg>
+      <span class="menu-text">Contacto</span>
+    </a>
+
+  </nav>
+</header>
+
+<script src="js/radio.js"></script>
+<script src="js/menu.js"></script>
+<script src="js/nowplaying.js"></script>
+<script src="js/schedule.js"></script>
+
+</body>
+</html>
