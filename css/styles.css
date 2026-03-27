@@ -6,7 +6,6 @@
 	box-sizing: border-box;
 }
 
-
 /* ================= BODY ================= */
 
 body {
@@ -18,8 +17,7 @@ body {
 	scroll-behavior: smooth;
 }
 
-
-/* ================= HEADER / NAV ================= */
+/* ================= HEADER / NAV (ANTIGUO - MANTENIDO POR COMPATIBILIDAD) ================= */
 
 .nav {
 	width: 100%;
@@ -54,7 +52,6 @@ body {
 	color: #4da3ff;
 }
 
-
 /* ================= LOGO ================= */
 
 .logo-container {
@@ -72,7 +69,6 @@ body {
 	filter: drop-shadow(0 8px 25px rgba(0, 0, 0, 0.6));
 }
 
-
 /* ================= SEO TITLES ================= */
 
 .seo-title,
@@ -88,7 +84,6 @@ body {
 	border: 0;
 }
 
-
 /* ================= PLAYER ================= */
 
 .player-section {
@@ -97,7 +92,6 @@ body {
 	align-items: center;
 	padding: 10px 20px 30px 20px;
 }
-
 
 /* ================= RADIO WRAPPER ================= */
 
@@ -112,7 +106,6 @@ body {
 	border: 1px solid rgba(255, 255, 255, 0.08);
 	transition: all 0.3s ease;
 }
-
 
 /* ================= PLAY BUTTON ================= */
 
@@ -137,7 +130,6 @@ body {
 	transform: translateY(-1px);
 }
 
-
 /* ================= EN VIVO ================= */
 
 .live-row {
@@ -158,7 +150,6 @@ body {
 	color: #ff3b3b;
 	font-weight: bold;
 }
-
 
 /* ================= NOW CARD ================= */
 
@@ -196,7 +187,6 @@ body {
 	box-shadow: 0 12px 35px rgba(59, 130, 246, 0.45);
 }
 
-
 /* ================= NOW INFO ================= */
 
 .now-info {
@@ -220,7 +210,6 @@ body {
 	opacity: 0.8;
 }
 
-
 /* ================= EQUALIZER ================= */
 
 .equalizer {
@@ -240,36 +229,16 @@ body {
 	animation-play-state: paused;
 }
 
-.equalizer span:nth-child(1) {
-	animation-delay: 0s;
-}
-
-.equalizer span:nth-child(2) {
-	animation-delay: 0.2s;
-}
-
-.equalizer span:nth-child(3) {
-	animation-delay: 0.4s;
-}
-
-.equalizer span:nth-child(4) {
-	animation-delay: 0.6s;
-}
-
-.equalizer span:nth-child(5) {
-	animation-delay: 0.8s;
-}
+.equalizer span:nth-child(1) { animation-delay: 0s; }
+.equalizer span:nth-child(2) { animation-delay: 0.2s; }
+.equalizer span:nth-child(3) { animation-delay: 0.4s; }
+.equalizer span:nth-child(4) { animation-delay: 0.6s; }
+.equalizer span:nth-child(5) { animation-delay: 0.8s; }
 
 @keyframes equalize {
-	0%,
-	100% {
-		height: 8px;
-	}
-	50% {
-		height: 28px;
-	}
+	0%, 100% { height: 8px; }
+	50% { height: 28px; }
 }
-
 
 /* ================= PLAYING GLOW ================= */
 
@@ -280,7 +249,6 @@ body {
 .playing .equalizer span {
 	animation-play-state: running;
 }
-
 
 /* ================= IFRAME ================= */
 
@@ -301,7 +269,6 @@ body {
 	border: 0;
 }
 
-
 /* ================= FOOTER ================= */
 
 footer {
@@ -311,7 +278,6 @@ footer {
 	color: #9aa7c0;
 	border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
-
 
 /* ================= SECTIONS ================= */
 
@@ -338,7 +304,6 @@ footer {
 	margin-bottom: 15px;
 }
 
-
 /* ================= CONTACT ================= */
 
 #contacto {
@@ -350,7 +315,6 @@ footer {
 	text-align: center;
 	word-break: break-word;
 }
-
 
 /* ================= WHATSAPP ================= */
 
@@ -380,64 +344,68 @@ footer {
 	object-fit: contain;
 }
 
-
 /* ================= RESPONSIVE ================= */
 
 @media(max-width:768px) {
+
 	.logo {
 		width: clamp(240px, 65vw, 340px);
 	}
+
 	.player-section {
 		padding: 10px 15px 25px;
 	}
+
 	.radio-wrapper {
 		padding: 16px;
 	}
+
 	.iframe-wrapper iframe {
 		height: 400px;
 	}
+
 	.now-card img {
 		width: 85px;
 		height: 85px;
 	}
+
 	.section {
 		padding: 15px 12px;
 	}
+
 	#contacto p {
 		font-size: 0.95rem;
 	}
+
 	.section h2 {
 		font-size: 1.4rem;
 	}
+
 	.nav {
 		gap: 12px;
 		padding: 10px 5px;
 	}
+
 	.nav a {
 		font-size: 0.8rem;
 		padding: 8px 5px;
 	}
+
 	.radio-status {
 		margin-top: 10px;
 		font-size: 0.9rem;
 		opacity: 0.8;
 		text-align: center;
 	}
-	.radio-status.error {
-		color: #ff4d4d;
-	}
-	.radio-status.loading {
-		color: #4da3ff;
-	}
-	.radio-status.live {
-		color: #22c55e;
-		font-weight: 600;
-	}
+
+	.radio-status.error { color: #ff4d4d; }
+	.radio-status.loading { color: #4da3ff; }
+	.radio-status.live { color: #22c55e; font-weight: 600; }
+
 	.radio-status:empty {
 		display: none;
 	}
 }
-
 
 /* ================= PROGRAMACIÓN ================= */
 
@@ -458,7 +426,6 @@ footer {
 	border-left: 4px solid #3b82f6;
 	background: rgba(255, 255, 255, 0.05);
 	border-radius: 10px;
-	letter-spacing: 0.5px;
 }
 
 .day-title.today {
@@ -473,7 +440,6 @@ footer {
 	padding-bottom: 8px;
 	scroll-behavior: smooth;
 	scroll-snap-type: x mandatory;
-	/* para scroll fluido en móvil/desktop */
 }
 
 .day-row::-webkit-scrollbar {
@@ -496,12 +462,10 @@ footer {
 	border: 1px solid rgba(255, 255, 255, 0.05);
 	position: relative;
 	scroll-snap-align: center;
-	/* centra la tarjeta al hacer scroll */
 }
 
 .schedule-card:hover {
 	transform: translateY(-4px) scale(1.02);
-	box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
 }
 
 .card-time {
@@ -523,13 +487,8 @@ footer {
 }
 
 @keyframes livePulse {
-	0%,
-	100% {
-		box-shadow: 0 0 0 rgba(245, 158, 11, 0.6);
-	}
-	50% {
-		box-shadow: 0 0 25px rgba(245, 158, 11, 0.8);
-	}
+	0%, 100% { box-shadow: 0 0 0 rgba(245, 158, 11, 0.6); }
+	50% { box-shadow: 0 0 25px rgba(245, 158, 11, 0.8); }
 }
 
 .live-badge {
@@ -548,25 +507,26 @@ footer {
 	text-align: center;
 }
 
-
-/* GRID DESKTOP */
+/* ================= GRID DESKTOP ================= */
 
 @media(min-width:900px) {
+
 	#scheduleContainer {
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
 		gap: 20px;
 	}
+
 	.day-row {
-		overflow-x: auto;
 		flex-wrap: wrap;
+		overflow-x: auto;
 	}
+
 	.schedule-card {
-		min-width: auto;
 		width: 100%;
+		min-width: auto;
 	}
 }
-
 
 /* ================= MODAL ================= */
 
@@ -610,7 +570,6 @@ footer {
 	cursor: pointer;
 }
 
-
 /* ================= SYNC NOWPLAYING ================= */
 
 .schedule-card.playing-now {
@@ -630,55 +589,59 @@ footer {
 	border-radius: 5px;
 }
 
+/* ================= MENU PRINCIPAL (CORREGIDO) ================= */
+
 .menu-principal {
-  display: flex;
-  justify-content: center;
-  gap: 24px;
-  padding: 12px 0;
+	display: flex;
+	justify-content: center;
+	gap: 24px;
+	padding: 12px 0;
 }
 
 .menu-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-decoration: none;
-  color: #ffffff;
-  position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-decoration: none;
+	color: #ffffff;
+	position: relative;
 }
 
 .menu-item svg {
-  transition: transform 0.2s ease, color 0.2s ease;
+	transition: transform 0.2s ease, fill 0.2s ease;
 }
 
 .menu-item:hover svg {
-  transform: scale(1.1);
-  color: #fbac33;
+	transform: scale(1.1);
+	fill: #fbac33;
 }
 
 /* Texto oculto por defecto (desktop) */
 .menu-text {
-  font-size: 12px;
-  margin-top: 4px;
-  opacity: 0;
-  transform: translateY(-4px);
-  transition: all 0.2s ease;
+	font-size: 12px;
+	margin-top: 4px;
+	opacity: 0;
+	transform: translateY(-4px);
+	transition: all 0.2s ease;
 }
 
-/* Mostrar en hover */
-.menu-item:hover .menu-text {
-  opacity: 1;
-  transform: translateY(0);
+/* Hover solo en dispositivos con hover real */
+@media (hover: hover) {
+	.menu-item:hover .menu-text {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 
-/* ACTIVO (cuando menu.js lo marca) */
+/* ACTIVO */
 .menu-item.active svg {
-  color: #fbac33;
+	fill: #fbac33;
 }
 
-/* MÓVIL: mostrar siempre el texto */
+/* MÓVIL */
 @media (max-width: 768px) {
-  .menu-text {
-    opacity: 1;
-    transform: translateY(0);
-  }
+	.menu-text {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
