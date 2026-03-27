@@ -396,3 +396,61 @@ footer p {
 #sermones .section {
   align-items: center;
 }
+
+/* ================= EMBED CLEAN FIX (SERMONES / SPOTIFY) ================= */
+
+/* elimina bordes feos del iframe */
+iframe {
+  border: none !important;
+  outline: none !important;
+}
+
+/* contenedor limpio sin “caja vacía” */
+.iframe-wrapper {
+  width: 100%;
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* SERMONES SECTION centrado real */
+#sermones {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* SPOTIFY / EMBED general */
+#sermones iframe {
+  width: 100% !important;
+  max-width: 900px;
+  height: 352px;
+  border-radius: 12px;
+  background: transparent !important;
+}
+
+/* Spotify específico (evita borde blanco raro) */
+iframe[src*="spotify"] {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 12px;
+}
+
+/* ================= MOBILE PWA FIX ================= */
+@media (max-width: 768px) {
+  #sermones iframe {
+    width: 100% !important;
+    height: 280px !important;
+    max-width: 100% !important;
+  }
+
+  .iframe-wrapper {
+    padding: 0 10px;
+  }
+}
