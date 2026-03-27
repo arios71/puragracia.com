@@ -1,28 +1,32 @@
-// Navegación del menú
-const menuLinks = document.querySelectorAll('nav a[data-section]');
+// Navegación del menú (BOTTOM NAV)
+
+const menuLinks = document.querySelectorAll('.nav-item[data-section]');
 
 menuLinks.forEach(link => {
-  link.addEventListener('click', e => {
-    e.preventDefault();
+  link.addEventListener('click', () => {
 
     const target = link.getAttribute('data-section');
 
-    // Ocultar todas las secciones
-    document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+    // ocultar secciones
+    document.querySelectorAll('.section').forEach(sec => {
+      sec.classList.remove('active');
+    });
 
-    // Mostrar sección seleccionada
+    // mostrar sección
     const section = document.getElementById(target);
-    if(section) section.classList.add('active');
+    if (section) section.classList.add('active');
 
-    // Marcar link activo
+    // activar botón
     menuLinks.forEach(l => l.classList.remove('active'));
     link.classList.add('active');
   });
 });
 
-// Activar por defecto la sección "inicio" y link activo al cargar
+// estado inicial
 document.addEventListener('DOMContentLoaded', () => {
+
   document.getElementById('inicio').classList.add('active');
-  const firstLink = document.querySelector('nav a[data-section="inicio"]');
-  if(firstLink) firstLink.classList.add('active');
+
+  const first = document.querySelector('.nav-item[data-section="inicio"]');
+  if (first) first.classList.add('active');
 });
