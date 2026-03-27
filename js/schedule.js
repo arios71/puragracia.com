@@ -25,6 +25,86 @@ function getTodayName() {
 }
 
 /* =========================
+   UX FIX: TODAY + SCROLL + NEXT PROGRAM
+========================= */
+
+function scrollToTodayBlock() {
+  const todayKey = getTodayName();
+
+  document.querySelectorAll(".day-block").forEach(block => {
+    const title = block.querySelector(".day-title");
+
+    const dayName = title.textContent
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+
+    if (dayName === todayKey) {
+      block.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+
+      block.classList.add("today-highlight");
+    } else {
+      block.classList.remove("today-highlight");
+    }
+  });
+}
+
+function updateNextProgramLabel() {
+  const todayKey = getTodayName();
+  const now = getCurrentMinutes();
+
+  let nextCard = null;
+  let minDiff = Infinity;
+
+  document.querySelectorAll(".day-block").forEach(block => {
+
+    const title = block.querySelector(".day-title");
+
+    const dayName = title.textContent
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+
+    if (dayName !== todayKey) return;
+
+    block.querySelectorAll(".schedule-card").forEach(card => {
+
+      const timeText = card.querySelector(".card-time")?.textContent;
+      if (!timeText) return;
+
+      const [start] = timeText.split(" - ");
+      const startMin = timeToMinutes(start);
+
+      const diff = startMin - now;
+
+      if (diff > 0 && diff < minDiff) {
+        minDiff = diff;
+        nextCard = card;
+      }
+
+    });
+
+  });
+
+  document.querySelectorAll(".next-badge").forEach(b => b.remove());
+
+  if (nextCard && !document.querySelector(".live-now")) {
+    const badge = document.createElement("div");
+    badge.classList.add("next-badge");
+    badge.textContent = "PRÓXIMO";
+    nextCard.appendChild(badge);
+  }
+}
+
+function refreshUX() {
+  scrollToTodayBlock();
+  updateNextProgramLabel();
+}
+
+/* =========================
    LOAD + RENDER
 ========================= */
 
@@ -38,12 +118,13 @@ async function loadAndRenderSchedule() {
     requestAnimationFrame(() => {
       setTimeout(() => {
         updateLiveStatus(true);
+        refreshUX();
       }, 300);
     });
 
-    // ✅ FIX 4: re-evaluate after render (PWA wake fix)
     setTimeout(() => {
       updateLiveStatus(true);
+      refreshUX();
     }, 400);
 
   } catch (err) {
@@ -271,15 +352,16 @@ function syncNowPlaying(title) {
 window.syncNowPlaying = syncNowPlaying;
 
 /* =========================
-   FIX 2: REFRESH SYSTEM
+   REFRESH SYSTEM
 ========================= */
 
 function refreshScheduleUI() {
   updateLiveStatus(true);
+  refreshUX();
 }
 
 /* =========================
-   INIT (FIX 3)
+   INIT
 ========================= */
 
 createModal();
@@ -290,11 +372,21 @@ setInterval(() => {
 }, 30000);
 
 /* =========================
-   FIX 1: PWA WAKE UP
+   PWA WAKE UP FIX
 ========================= */
 
 document.addEventListener("visibilitychange", () => {
   if (!document.hidden) {
     refreshScheduleUI();
   }
+});
+
+/* =========================
+   AUTO SCROLL ON OPEN
+========================= */
+
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    scrollToTodayBlock();
+  }, 500);
 });
