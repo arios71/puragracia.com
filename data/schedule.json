@@ -91,6 +91,7 @@
     { "name": "Deleite en la Palabra", "start": "23:00", "end": "23:30" }
   ],
   "viernes": [
+    { "name": "Lectura Pública Biblia", "start": "00:00", "end": "00:20" },
     { "name": "Renovando tu Mente", "start": "05:00", "end": "05:30" },
     { "name": "A Través de la Biblia", "start": "06:00", "end": "06:30" },
     { "name": "Deleite en la Palabra", "start": "07:00", "end": "07:30" },
