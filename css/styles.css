@@ -15,41 +15,7 @@ body {
 	min-height: 100vh;
 	overflow-x: hidden;
 	scroll-behavior: smooth;
-}
-
-/* ================= HEADER / NAV (ANTIGUO - MANTENIDO POR COMPATIBILIDAD) ================= */
-
-.nav {
-	width: 100%;
-	max-width: 1100px;
-	margin: 0 auto;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	gap: 20px;
-	padding: 12px 15px;
-}
-
-.nav a {
-	text-align: center;
-	font-size: 0.85rem;
-	text-decoration: none;
-	color: #fff;
-	font-weight: 500;
-	white-space: nowrap;
-	position: relative;
-	padding: 0 6px;
-	transition: color 0.3s;
-}
-
-.nav a:not(:last-child)::after {
-	content: "|";
-	margin-left: 10px;
-	opacity: 0.6;
-}
-
-.nav a:hover {
-	color: #4da3ff;
+	padding-bottom: 85px;
 }
 
 /* ================= LOGO ================= */
@@ -69,31 +35,14 @@ body {
 	filter: drop-shadow(0 8px 25px rgba(0, 0, 0, 0.6));
 }
 
-/* ================= SEO TITLES ================= */
-
-.seo-title,
-.seo-subtitle {
-	position: absolute;
-	width: 1px;
-	height: 1px;
-	margin: -1px;
-	padding: 0;
-	overflow: hidden;
-	clip: rect(0, 0, 0, 0);
-	white-space: nowrap;
-	border: 0;
-}
-
 /* ================= PLAYER ================= */
 
 .player-section {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	padding: 10px 20px 30px 20px;
+	padding: 10px 20px 30px;
 }
-
-/* ================= RADIO WRAPPER ================= */
 
 .radio-wrapper {
 	background: rgba(255, 255, 255, 0.05);
@@ -104,10 +53,9 @@ body {
 	margin: 0 auto;
 	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
 	border: 1px solid rgba(255, 255, 255, 0.08);
-	transition: all 0.3s ease;
 }
 
-/* ================= PLAY BUTTON ================= */
+/* ================= BUTTON ================= */
 
 .play-btn,
 #playRadio {
@@ -120,17 +68,9 @@ body {
 	color: #fff;
 	cursor: pointer;
 	background: linear-gradient(180deg, #3b82f6, #1e3a8a);
-	box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-	transition: all 0.3s ease;
 }
 
-.play-btn:hover,
-#playRadio:hover {
-	background: linear-gradient(180deg, #4b8df7, #243f9c);
-	transform: translateY(-1px);
-}
-
-/* ================= EN VIVO ================= */
+/* ================= LIVE ================= */
 
 .live-row {
 	display: flex;
@@ -143,140 +83,12 @@ body {
 .live-row .line {
 	flex: 1;
 	height: 1px;
-	background: rgba(255, 255, 255, 0.2);
+	background: rgba(255,255,255,0.2);
 }
 
 .live-text {
 	color: #ff3b3b;
 	font-weight: bold;
-}
-
-/* ================= NOW CARD ================= */
-
-.now-card {
-	display: flex;
-	gap: 14px;
-	align-items: center;
-	background: rgba(0, 0, 0, 0.25);
-	border-radius: 18px;
-	padding: 14px;
-	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-	position: relative;
-	overflow: hidden;
-	transition: all 0.3s ease;
-}
-
-.now-card img {
-	width: 110px;
-	height: 110px;
-	border-radius: 14px;
-	object-fit: cover;
-	transition: all 0.3s ease;
-}
-
-.now-card img.default-cover {
-	opacity: 0.95;
-	border-radius: 14px;
-	border: 2px solid rgba(255, 255, 255, 0.25);
-	box-shadow: 0 8px 25px rgba(59, 130, 246, 0.25);
-}
-
-.now-card img.default-cover:hover {
-	opacity: 1;
-	border-color: rgba(255, 255, 255, 0.6);
-	box-shadow: 0 12px 35px rgba(59, 130, 246, 0.45);
-}
-
-/* ================= NOW INFO ================= */
-
-.now-info {
-	display: flex;
-	flex-direction: column;
-	gap: 6px;
-}
-
-.now-label {
-	font-size: 0.8rem;
-	opacity: 0.6;
-}
-
-.now-title {
-	font-size: 1.1rem;
-	font-weight: 700;
-}
-
-.now-artist {
-	font-size: 0.9rem;
-	opacity: 0.8;
-}
-
-/* ================= EQUALIZER ================= */
-
-.equalizer {
-	display: flex;
-	align-items: flex-end;
-	gap: 4px;
-	margin-top: 8px;
-	height: 30px;
-}
-
-.equalizer span {
-	width: 5px;
-	height: 10px;
-	background: linear-gradient(#60a5fa, #1d4ed8);
-	border-radius: 3px;
-	animation: equalize 1s infinite ease-in-out;
-	animation-play-state: paused;
-}
-
-.equalizer span:nth-child(1) { animation-delay: 0s; }
-.equalizer span:nth-child(2) { animation-delay: 0.2s; }
-.equalizer span:nth-child(3) { animation-delay: 0.4s; }
-.equalizer span:nth-child(4) { animation-delay: 0.6s; }
-.equalizer span:nth-child(5) { animation-delay: 0.8s; }
-
-@keyframes equalize {
-	0%, 100% { height: 8px; }
-	50% { height: 28px; }
-}
-
-/* ================= PLAYING GLOW ================= */
-
-.playing .radio-wrapper {
-	box-shadow: 0 0 25px rgba(59, 130, 246, 0.4), 0 20px 60px rgba(0, 0, 0, 0.6);
-}
-
-.playing .equalizer span {
-	animation-play-state: running;
-}
-
-/* ================= IFRAME ================= */
-
-.iframe-wrapper {
-	width: 100%;
-	max-width: 900px;
-	margin: 20px auto;
-	padding: 0 15px;
-	display: flex;
-	justify-content: center;
-	overflow-x: hidden;
-}
-
-.iframe-wrapper iframe {
-	width: 100%;
-	max-width: 100%;
-	height: 600px;
-	border: 0;
-}
-
-/* ================= FOOTER ================= */
-
-footer {
-	text-align: center;
-	padding: 40px 20px;
-	font-size: 0.85rem;
-	color: #9aa7c0;
-	border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 /* ================= SECTIONS ================= */
@@ -293,366 +105,87 @@ footer {
 .section.active {
 	display: flex;
 	flex-direction: column;
-	justify-content: flex-start;
 	align-items: center;
 }
 
-.section h1,
-.section h2,
-.section h3 {
+/* ================= FOOTER ================= */
+
+footer {
 	text-align: center;
-	margin-bottom: 15px;
-}
-
-/* ================= CONTACT ================= */
-
-#contacto {
-	text-align: center;
-}
-
-#contacto p,
-#contacto a {
-	text-align: center;
-	word-break: break-word;
-}
-
-/* ================= RESPONSIVE ================= */
-
-@media(max-width:768px) {
-
-	.logo {
-		width: clamp(240px, 65vw, 340px);
-	}
-
-	.player-section {
-		padding: 10px 15px 25px;
-	}
-
-	.radio-wrapper {
-		padding: 16px;
-	}
-
-	.iframe-wrapper iframe {
-		height: 400px;
-	}
-
-	.now-card img {
-		width: 85px;
-		height: 85px;
-	}
-
-	.section {
-		padding: 15px 12px;
-	}
-
-	#contacto p {
-		font-size: 0.95rem;
-	}
-
-	.section h2 {
-		font-size: 1.4rem;
-	}
-
-	.nav {
-		gap: 12px;
-		padding: 10px 5px;
-	}
-
-	.nav a {
-		font-size: 0.8rem;
-		padding: 8px 5px;
-	}
-
-	.radio-status {
-		margin-top: 10px;
-		font-size: 0.9rem;
-		opacity: 0.8;
-		text-align: center;
-	}
-
-	.radio-status.error { color: #ff4d4d; }
-	.radio-status.loading { color: #4da3ff; }
-	.radio-status.live { color: #22c55e; font-weight: 600; }
-
-	.radio-status:empty {
-		display: none;
-	}
-}
-
-/* ================= PROGRAMACIÓN ================= */
-
-#scheduleContainer {
-	width: 100%;
-}
-
-.day-block {
-	margin-bottom: 30px;
-}
-
-.day-title {
-	font-size: 1.2rem;
-	font-weight: 700;
-	text-align: left;
-	margin-bottom: 12px;
-	padding: 10px 14px;
-	border-left: 4px solid #3b82f6;
-	background: rgba(255, 255, 255, 0.05);
-	border-radius: 10px;
-}
-
-.day-title.today {
-	border-left-color: #22c55e;
-	background: rgba(34, 197, 94, 0.1);
-}
-
-.day-row {
-	display: flex;
-	gap: 14px;
-	overflow-x: auto;
-	padding-bottom: 8px;
-	scroll-behavior: smooth;
-	scroll-snap-type: x mandatory;
-}
-
-.day-row::-webkit-scrollbar {
-	height: 6px;
-}
-
-.day-row::-webkit-scrollbar-thumb {
-	background: rgba(255, 255, 255, 0.2);
-	border-radius: 10px;
-}
-
-.schedule-card {
-	min-width: 220px;
-	background: rgba(255, 255, 255, 0.05);
-	border-radius: 16px;
-	padding: 14px;
-	text-align: left;
-	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-	transition: all 0.3s ease;
-	border: 1px solid rgba(255, 255, 255, 0.05);
-	position: relative;
-	scroll-snap-align: center;
-}
-
-.schedule-card:hover {
-	transform: translateY(-4px) scale(1.02);
-}
-
-.card-time {
+	padding: 40px 20px;
 	font-size: 0.85rem;
-	opacity: 0.7;
+	color: #9aa7c0;
 }
 
-.card-title {
-	font-size: 1rem;
-	font-weight: 600;
-	margin-top: 4px;
+/* ================= IFRAME ================= */
+
+.iframe-wrapper {
+	width: 100%;
+	max-width: 900px;
+	margin: 20px auto;
+	padding: 0 15px;
 }
 
-.schedule-card.live-now {
-	background: linear-gradient(135deg, #f59e0b, #b45309);
-	color: #000;
-	box-shadow: 0 10px 30px rgba(245, 158, 11, 0.6);
-	animation: livePulse 2s infinite;
+.iframe-wrapper iframe {
+	width: 100%;
+	height: 600px;
+	border: 0;
 }
 
-@keyframes livePulse {
-	0%, 100% { box-shadow: 0 0 0 rgba(245, 158, 11, 0.6); }
-	50% { box-shadow: 0 0 25px rgba(245, 158, 11, 0.8); }
-}
+/* ================= BOTTOM NAV ================= */
 
-.live-badge {
-	margin-top: 8px;
-	font-size: 0.7rem;
-	font-weight: 700;
-	background: #000;
-	color: #f59e0b;
-	display: inline-block;
-	padding: 4px 8px;
-	border-radius: 6px;
-}
-
-.empty-card {
-	opacity: 0.5;
-	text-align: center;
-}
-
-/* ================= GRID DESKTOP ================= */
-
-@media(min-width:900px) {
-
-	#scheduleContainer {
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: 20px;
-	}
-
-	.day-row {
-		flex-wrap: wrap;
-		overflow-x: auto;
-	}
-
-	.schedule-card {
-		width: 100%;
-		min-width: auto;
-	}
-}
-
-/* ================= MODAL ================= */
-
-#scheduleModal {
+.bottom-nav {
 	position: fixed;
-	top: 0;
+	bottom: 0;
 	left: 0;
 	width: 100%;
-	height: 100%;
-	background: rgba(0, 0, 0, 0.7);
+	height: 70px;
+	background: rgba(10, 15, 26, 0.92);
+	backdrop-filter: blur(16px);
+	border-top: 1px solid rgba(255,255,255,0.08);
 	display: flex;
-	justify-content: center;
+	justify-content: space-around;
 	align-items: center;
-	opacity: 0;
-	pointer-events: none;
-	transition: 0.3s ease;
 	z-index: 9999;
+	padding-bottom: env(safe-area-inset-bottom);
 }
 
-#scheduleModal.show {
-	opacity: 1;
-	pointer-events: auto;
-}
-
-.modal-content {
-	background: #111c2e;
-	padding: 25px;
-	border-radius: 16px;
-	width: 90%;
-	max-width: 400px;
-	text-align: center;
-	box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-	position: relative;
-}
-
-.close-btn {
-	position: absolute;
-	top: 10px;
-	right: 15px;
-	font-size: 1.5rem;
-	cursor: pointer;
-}
-
-/* ================= SYNC NOWPLAYING ================= */
-
-.schedule-card.playing-now {
-	outline: 2px solid #3b82f6;
-	box-shadow: 0 0 20px rgba(59, 130, 246, 0.7);
-	transform: scale(1.03);
-}
-
-.schedule-card.playing-now::after {
-	content: "SONANDO AHORA";
-	position: absolute;
-	top: 8px;
-	right: 8px;
-	font-size: 0.6rem;
-	background: #3b82f6;
-	padding: 4px 6px;
-	border-radius: 5px;
-}
-
-/* ================= MENU APP MODERNO ================= */
-
-.menu-principal {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	gap: 18px;
-	padding: 14px 10px;
-	background: rgba(255, 255, 255, 0.04);
-	backdrop-filter: blur(14px);
-	border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-	position: sticky;
-	top: 0;
-	z-index: 999;
-}
-
-.menu-item {
+.nav-item {
+	background: none;
+	border: none;
+	color: rgba(255,255,255,0.65);
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	text-decoration: none;
-	color: rgba(255, 255, 255, 0.75);
-	position: relative;
-	padding: 8px 12px;
-	border-radius: 12px;
-	transition: all 0.25s ease;
-	min-width: 70px;
+	flex: 1;
+	font-size: 12px;
+	cursor: pointer;
+	transition: 0.2s;
 }
 
-.menu-item svg {
-	width: 22px;
-	height: 22px;
-	transition: transform 0.2s ease, fill 0.2s ease;
-	fill: currentColor;
+.nav-icon {
+	font-size: 20px;
+	margin-bottom: 4px;
 }
 
-.menu-text {
-	font-size: 11px;
-	margin-top: 4px;
-	opacity: 0.7;
-	transition: all 0.2s ease;
-}
-
-/* HOVER (solo desktop real) */
-@media (hover: hover) {
-	.menu-item:hover {
-		background: rgba(255, 255, 255, 0.06);
-		color: #fbac33;
-		transform: translateY(-1px);
-	}
-
-	.menu-item:hover svg {
-		transform: scale(1.08);
-		color: #fbac33;
-	}
-
-	.menu-item:hover .menu-text {
-		opacity: 1;
-	}
-}
-
-/* ACTIVO estilo “pill app” */
-.menu-item.active {
-	background: rgba(251, 172, 51, 0.12);
+.nav-item.active {
 	color: #fbac33;
-	box-shadow: inset 0 0 0 1px rgba(251, 172, 51, 0.25);
 }
 
-.menu-item.active svg {
-	color: #fbac33;
-	transform: scale(1.05);
+.nav-item:active {
+	transform: scale(0.92);
 }
 
-.menu-item.active .menu-text {
-	opacity: 1;
-}
+/* ================= RESPONSIVE ================= */
 
-/* MÓVIL */
 @media (max-width: 768px) {
-	.menu-principal {
-		gap: 10px;
-		padding: 12px 6px;
+
+	.logo {
+		width: 65vw;
 	}
 
-	.menu-item {
-		min-width: 60px;
-		padding: 6px 8px;
-	}
-
-	.menu-text {
-		font-size: 10px;
-		opacity: 1;
+	.iframe-wrapper iframe {
+		height: 400px;
 	}
 }
