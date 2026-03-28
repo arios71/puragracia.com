@@ -659,7 +659,7 @@ footer {
 @media (max-width: 768px) {
 
   #inicio.section.active {
-    min-height: 100dvh; /* altura REAL del dispositivo */
+    min-height: calc(100dvh - 70px);
     justify-content: center;
   }
 
