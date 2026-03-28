@@ -45,7 +45,7 @@ body {
 }
 /* ================= LOGO ================= */
 .logo-container {
-	display: flex;
+	: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
@@ -636,4 +636,18 @@ body {
     gap: 12px;
     padding: 10px 6px;
   }
+}
+
+/* =========================
+   FOOTER SOLO FUERA DE INICIO
+========================= */
+
+/* por defecto visible */
+footer {
+  display: block;
+}
+
+/* oculto cuando Inicio está activo */
+#inicio.active ~ footer {
+  display: none;
 }
