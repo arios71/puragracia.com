@@ -672,3 +672,20 @@ footer {
 #contacto.active ~ footer {
   display: block;
 }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.section {
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.section.active {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
