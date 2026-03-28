@@ -1,9 +1,11 @@
-// js/schedule.js
+// =========================
+// SCHEDULE ENGINE v2 (FOCUS FIX)
+// =========================
 
 const scheduleContainer = document.getElementById("scheduleContainer");
 
 let currentLiveCard = null;
-let lastLiveCard = null;
+let lastFocusedCard = null;
 
 /* =========================
    HELPERS
@@ -20,39 +22,15 @@ function getCurrentMinutes() {
 }
 
 function getTodayName() {
-  const days = ["domingo","lunes","martes","miércoles","jueves","viernes","sábado"]; 
+  const days = ["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
   return days[new Date().getDay()];
 }
 
 /* =========================
-   UX FIX: TODAY + SCROLL + NEXT PROGRAM
+   NEXT PROGRAM DETECTOR
 ========================= */
 
-function scrollToTodayBlock() {
-  const todayKey = getTodayName();
-
-  document.querySelectorAll(".day-block").forEach(block => {
-    const title = block.querySelector(".day-title");
-
-    const dayName = title.textContent
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "");
-
-    if (dayName === todayKey) {
-      block.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-
-      block.classList.add("today-highlight");
-    } else {
-      block.classList.remove("today-highlight");
-    }
-  });
-}
-
-function updateNextProgramLabel() {
+function getNextProgramCard() {
   const todayKey = getTodayName();
   const now = getCurrentMinutes();
 
@@ -60,7 +38,6 @@ function updateNextProgramLabel() {
   let minDiff = Infinity;
 
   document.querySelectorAll(".day-block").forEach(block => {
-
     const title = block.querySelector(".day-title");
 
     const dayName = title.textContent
@@ -71,7 +48,6 @@ function updateNextProgramLabel() {
     if (dayName !== todayKey) return;
 
     block.querySelectorAll(".schedule-card").forEach(card => {
-
       const timeText = card.querySelector(".card-time")?.textContent;
       if (!timeText) return;
 
@@ -84,28 +60,130 @@ function updateNextProgramLabel() {
         minDiff = diff;
         nextCard = card;
       }
-
     });
-
   });
 
-  document.querySelectorAll(".next-badge").forEach(b => b.remove());
-
-  if (nextCard && !document.querySelector(".live-now")) {
-    const badge = document.createElement("div");
-    badge.classList.add("next-badge");
-    badge.textContent = "PRÓXIMO";
-    nextCard.appendChild(badge);
-  }
-}
-
-function refreshUX() {
-  scrollToTodayBlock();
-  updateNextProgramLabel();
+  return nextCard;
 }
 
 /* =========================
-   LOAD + RENDER
+   LIVE DETECTOR
+========================= */
+
+function updateLiveStatus() {
+  const todayKey = getTodayName();
+  const nowMinutes = getCurrentMinutes();
+
+  currentLiveCard = null;
+
+  document.querySelectorAll(".day-block").forEach(block => {
+    const title = block.querySelector(".day-title");
+
+    const dayName = title.textContent
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+
+    block.querySelectorAll(".schedule-card").forEach(card => {
+      card.classList.remove("live-now");
+
+      const timeText = card.querySelector(".card-time")?.textContent;
+      if (!timeText) return;
+
+      const [start, end] = timeText.split(" - ");
+
+      const startMin = timeToMinutes(start);
+      const endMin = timeToMinutes(end);
+
+      if (dayName === todayKey && nowMinutes >= startMin && nowMinutes < endMin) {
+
+        card.classList.add("live-now");
+        currentLiveCard = card;
+
+        if (!card.querySelector(".live-badge")) {
+          const badge = document.createElement("div");
+          badge.classList.add("live-badge");
+          badge.textContent = "EN VIVO";
+          card.appendChild(badge);
+        }
+
+      } else {
+        const badge = card.querySelector(".live-badge");
+        if (badge) badge.remove();
+      }
+    });
+  });
+}
+
+/* =========================
+   SCROLL ENGINE (UNIFICADO)
+========================= */
+
+function focusCard(card) {
+  if (!card) return;
+
+  // vertical center
+  const rect = card.getBoundingClientRect();
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+  const offsetTop =
+    rect.top + scrollTop - window.innerHeight / 2 + rect.height / 2;
+
+  window.scrollTo({
+    top: offsetTop,
+    behavior: "smooth"
+  });
+
+  // horizontal row scroll
+  const row = card.closest(".day-row");
+
+  if (row) {
+    const cardOffset = card.offsetLeft;
+    const cardWidth = card.offsetWidth;
+    const rowWidth = row.scrollWidth;
+    const rowVisibleWidth = row.clientWidth;
+
+    const scrollLeft = Math.min(
+      Math.max(cardOffset - rowVisibleWidth / 2 + cardWidth / 2, 0),
+      rowWidth - rowVisibleWidth
+    );
+
+    row.scrollTo({
+      left: scrollLeft,
+      behavior: "smooth"
+    });
+  }
+}
+
+/* =========================
+   FOCUS ENGINE (NUEVO CORE)
+========================= */
+
+function runFocusEngine(force = false) {
+
+  let targetCard = null;
+
+  // 1. LIVE priority
+  if (currentLiveCard) {
+    targetCard = currentLiveCard;
+  }
+
+  // 2. NEXT fallback
+  if (!targetCard) {
+    targetCard = getNextProgramCard();
+  }
+
+  // 3. evitar scroll repetido innecesario
+  if (!targetCard) return;
+
+  if (!force && targetCard === lastFocusedCard) return;
+
+  focusCard(targetCard);
+  lastFocusedCard = targetCard;
+}
+
+/* =========================
+   RENDER (sin cambios funcionales)
 ========================= */
 
 async function loadAndRenderSchedule() {
@@ -115,16 +193,9 @@ async function loadAndRenderSchedule() {
 
     renderSchedule(data);
 
-    requestAnimationFrame(() => {
-      setTimeout(() => {
-        updateLiveStatus(true);
-        refreshUX();
-      }, 300);
-    });
-
     setTimeout(() => {
-      updateLiveStatus(true);
-      refreshUX();
+      updateLiveStatus();
+      runFocusEngine(true);
     }, 400);
 
   } catch (err) {
@@ -173,7 +244,6 @@ function renderSchedule(data) {
     } else {
 
       programs.forEach(program => {
-
         const card = document.createElement("div");
         card.classList.add("schedule-card");
 
@@ -194,106 +264,10 @@ function renderSchedule(data) {
 }
 
 /* =========================
-   AUTO-SCROLL LIVE CARD
-========================= */
-
-function scrollToLiveCard() {
-  if (!currentLiveCard) return;
-
-  const rect = currentLiveCard.getBoundingClientRect();
-  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  const offsetTop = rect.top + scrollTop - window.innerHeight / 2 + rect.height / 2;
-
-  window.scrollTo({
-    top: offsetTop,
-    behavior: "smooth"
-  });
-
-  const row = currentLiveCard.closest(".day-row");
-  if (row) {
-    const cardOffset = currentLiveCard.offsetLeft;
-    const cardWidth = currentLiveCard.offsetWidth;
-    const rowWidth = row.scrollWidth;
-    const rowVisibleWidth = row.clientWidth;
-
-    const scrollLeft = Math.min(
-      Math.max(cardOffset - rowVisibleWidth / 2 + cardWidth / 2, 0),
-      rowWidth - rowVisibleWidth
-    );
-
-    row.scrollTo({
-      left: scrollLeft,
-      behavior: "smooth"
-    });
-  }
-}
-
-/* =========================
-   UPDATE LIVE (INTELIGENTE)
-========================= */
-
-function updateLiveStatus(forceScroll = false) {
-
-  const todayKey = getTodayName();
-  const nowMinutes = getCurrentMinutes();
-
-  currentLiveCard = null;
-
-  document.querySelectorAll(".day-block").forEach(block => {
-
-    const title = block.querySelector(".day-title");
-    const dayName = title.textContent
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "");
-
-    const cards = block.querySelectorAll(".schedule-card");
-
-    cards.forEach(card => {
-
-      card.classList.remove("live-now");
-
-      const timeText = card.querySelector(".card-time")?.textContent;
-      if (!timeText) return;
-
-      const [start, end] = timeText.split(" - ");
-
-      const startMin = timeToMinutes(start);
-      const endMin = timeToMinutes(end);
-
-      if (dayName === todayKey && nowMinutes >= startMin && nowMinutes < endMin) {
-
-        card.classList.add("live-now");
-        currentLiveCard = card;
-
-        if (!card.querySelector(".live-badge")) {
-          const badge = document.createElement("div");
-          badge.classList.add("live-badge");
-          badge.textContent = "EN VIVO";
-          card.appendChild(badge);
-        }
-
-      } else {
-        const badge = card.querySelector(".live-badge");
-        if (badge) badge.remove();
-      }
-
-    });
-
-  });
-
-  if (currentLiveCard && (forceScroll || currentLiveCard !== lastLiveCard)) {
-    scrollToLiveCard();
-    lastLiveCard = currentLiveCard;
-  }
-}
-
-/* =========================
-   MODAL
+   MODAL (igual)
 ========================= */
 
 function createModal() {
-
   const modal = document.createElement("div");
   modal.id = "scheduleModal";
 
@@ -330,37 +304,6 @@ function openModal(program) {
 }
 
 /* =========================
-   SYNC NOWPLAYING
-========================= */
-
-function syncNowPlaying(title) {
-  if (!title) return;
-
-  const cards = document.querySelectorAll(".schedule-card");
-
-  cards.forEach(card => {
-    const text = card.innerText.toLowerCase();
-
-    if (text.includes(title.toLowerCase())) {
-      card.classList.add("playing-now");
-    } else {
-      card.classList.remove("playing-now");
-    }
-  });
-}
-
-window.syncNowPlaying = syncNowPlaying;
-
-/* =========================
-   REFRESH SYSTEM
-========================= */
-
-function refreshScheduleUI() {
-  updateLiveStatus(true);
-  refreshUX();
-}
-
-/* =========================
    INIT
 ========================= */
 
@@ -371,22 +314,9 @@ setInterval(() => {
   updateLiveStatus();
 }, 30000);
 
-/* =========================
-   PWA WAKE UP FIX
-========================= */
-
 document.addEventListener("visibilitychange", () => {
   if (!document.hidden) {
-    refreshScheduleUI();
+    updateLiveStatus();
+    runFocusEngine(true);
   }
-});
-
-/* =========================
-   AUTO SCROLL ON OPEN
-========================= */
-
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    scrollToTodayBlock();
-  }, 500);
 });
