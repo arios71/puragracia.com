@@ -664,16 +664,3 @@ footer {
   }
 
 }
-
-/* =========================
-   FOOTER SOLO EN CONTACTO
-========================= */
-
-#contacto.section {
-  display: flex;
-  flex-direction: column;
-}
-
-#contacto.section footer {
-  margin-top: auto;
-}
