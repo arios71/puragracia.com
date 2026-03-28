@@ -664,24 +664,3 @@ footer {
   }
 
 }
-
-html, body {
-  height: 100%;
-  margin: 0;
-}
-
-main.app {
-  min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
-}
-
-/* IMPORTANTE: cada sección ocupa el espacio disponible */
-.section {
-  flex: 1;
-}
-
-/* footer pegado abajo */
-main.app > footer {
-  margin-top: auto;
-}
