@@ -664,3 +664,20 @@ footer {
   }
 
 }
+
+main.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+/* empuja footer al fondo real del contenido */
+main.app > footer {
+  margin-top: auto;
+  padding-bottom: 20px;
+}
+
+/* evita conflicto con el menú fijo */
+.section {
+  padding-bottom: 100px;
+}
