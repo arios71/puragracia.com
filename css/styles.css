@@ -689,3 +689,17 @@ html, body {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
+
+:root {
+  --bottom-bar-height: 80px;
+}
+
+/* da espacio REAL para el menú inferior */
+.section {
+  padding-bottom: calc(var(--bottom-bar-height) + env(safe-area-inset-bottom));
+}
+
+/* evita que el último contenido quede pegado abajo */
+.section:last-child {
+  padding-bottom: calc(var(--bottom-bar-height) + 20px);
+}
