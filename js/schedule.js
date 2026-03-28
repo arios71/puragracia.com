@@ -1,5 +1,5 @@
 // =========================
-// SCHEDULE ENGINE v2 (FOCUS FIX)
+// SCHEDULE ENGINE v2.1 CLEAN
 // =========================
 
 const scheduleContainer = document.getElementById("scheduleContainer");
@@ -10,6 +10,13 @@ let lastFocusedCard = null;
 /* =========================
    HELPERS
 ========================= */
+
+function normalizeDay(str) {
+  return str
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
 
 function timeToMinutes(time) {
   const [h, m] = time.split(":").map(Number);
@@ -31,7 +38,7 @@ function getTodayName() {
 ========================= */
 
 function getNextProgramCard() {
-  const todayKey = getTodayName();
+  const todayKey = normalizeDay(getTodayName());
   const now = getCurrentMinutes();
 
   let nextCard = null;
@@ -39,12 +46,11 @@ function getNextProgramCard() {
 
   document.querySelectorAll(".day-block").forEach(block => {
     const title = block.querySelector(".day-title");
+    if (!title) return;
 
-    const dayName = title.textContent
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "");
+    const dayName = normalizeDay(title.textContent);
 
+    // solo hoy
     if (dayName !== todayKey) return;
 
     block.querySelectorAll(".schedule-card").forEach(card => {
@@ -71,18 +77,16 @@ function getNextProgramCard() {
 ========================= */
 
 function updateLiveStatus() {
-  const todayKey = getTodayName();
+  const todayKey = normalizeDay(getTodayName());
   const nowMinutes = getCurrentMinutes();
 
   currentLiveCard = null;
 
   document.querySelectorAll(".day-block").forEach(block => {
     const title = block.querySelector(".day-title");
+    if (!title) return;
 
-    const dayName = title.textContent
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "");
+    const dayName = normalizeDay(title.textContent);
 
     block.querySelectorAll(".schedule-card").forEach(card => {
       card.classList.remove("live-now");
@@ -95,8 +99,11 @@ function updateLiveStatus() {
       const startMin = timeToMinutes(start);
       const endMin = timeToMinutes(end);
 
-      if (dayName === todayKey && nowMinutes >= startMin && nowMinutes < endMin) {
-
+      if (
+        dayName === todayKey &&
+        nowMinutes >= startMin &&
+        nowMinutes < endMin
+      ) {
         card.classList.add("live-now");
         currentLiveCard = card;
 
@@ -116,13 +123,12 @@ function updateLiveStatus() {
 }
 
 /* =========================
-   SCROLL ENGINE (UNIFICADO)
+   SCROLL ENGINE
 ========================= */
 
 function focusCard(card) {
   if (!card) return;
 
-  // vertical center
   const rect = card.getBoundingClientRect();
   const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
@@ -134,7 +140,6 @@ function focusCard(card) {
     behavior: "smooth"
   });
 
-  // horizontal row scroll
   const row = card.closest(".day-row");
 
   if (row) {
@@ -156,24 +161,20 @@ function focusCard(card) {
 }
 
 /* =========================
-   FOCUS ENGINE (NUEVO CORE)
+   FOCUS ENGINE
 ========================= */
 
 function runFocusEngine(force = false) {
-
   let targetCard = null;
 
-  // 1. LIVE priority
   if (currentLiveCard) {
     targetCard = currentLiveCard;
   }
 
-  // 2. NEXT fallback
   if (!targetCard) {
     targetCard = getNextProgramCard();
   }
 
-  // 3. evitar scroll repetido innecesario
   if (!targetCard) return;
 
   if (!force && targetCard === lastFocusedCard) return;
@@ -183,7 +184,7 @@ function runFocusEngine(force = false) {
 }
 
 /* =========================
-   RENDER (sin cambios funcionales)
+   RENDER
 ========================= */
 
 async function loadAndRenderSchedule() {
@@ -204,7 +205,6 @@ async function loadAndRenderSchedule() {
 }
 
 function renderSchedule(data) {
-
   const days = ["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"];
 
   const keyMap = {
@@ -220,7 +220,6 @@ function renderSchedule(data) {
   scheduleContainer.innerHTML = "";
 
   days.forEach(dayName => {
-
     const key = keyMap[dayName];
     const programs = data[key] || [];
 
@@ -238,11 +237,10 @@ function renderSchedule(data) {
 
     if (programs.length === 0) {
       const empty = document.createElement("div");
-      empty.classList.add("schedule-card","empty-card");
+      empty.classList.add("schedule-card", "empty-card");
       empty.textContent = "Sin programación";
       row.appendChild(empty);
     } else {
-
       programs.forEach(program => {
         const card = document.createElement("div");
         card.classList.add("schedule-card");
@@ -264,7 +262,7 @@ function renderSchedule(data) {
 }
 
 /* =========================
-   MODAL (igual)
+   MODAL
 ========================= */
 
 function createModal() {
@@ -312,6 +310,7 @@ loadAndRenderSchedule();
 
 setInterval(() => {
   updateLiveStatus();
+  runFocusEngine(false);
 }, 30000);
 
 document.addEventListener("visibilitychange", () => {
