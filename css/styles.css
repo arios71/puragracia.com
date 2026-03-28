@@ -681,13 +681,25 @@ html, body {
 }
 
 .section {
-  height: 100dvh;
-  overflow: hidden;
+  min-height: 100dvh;
 }
 
-.section.active {
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+/* solo en móvil se activa el modo app */
+@media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+
+  .section {
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  .section.active {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
 :root {
