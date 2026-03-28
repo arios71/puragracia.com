@@ -715,3 +715,41 @@ html, body {
 .section:last-child {
   padding-bottom: calc(var(--bottom-bar-height) + 20px);
 }
+
+.contact-block {
+  color: #fff;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.contact-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: 0.5px;
+}
+
+.contact-text {
+  font-size: 1.05rem;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.contact-text a {
+  color: #fff;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,0.4);
+  padding-bottom: 2px;
+}
+
+.contact-footer {
+  margin-top: 30px;
+  font-size: 0.85rem;
+  opacity: 0.65;
+  letter-spacing: 0.4px;
+}
