@@ -761,3 +761,75 @@ html, body {
 .contact-title:first-child {
   margin-top: 0;
 }
+
+/* ================= CONTACT CARDS ================= */
+
+.contact-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* tarjetas estilo app */
+.contact-card {
+  width: 100%;
+  max-width: 500px;
+
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px);
+
+  border-radius: 18px;
+  padding: 20px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+
+  transition: all 0.25s ease;
+}
+
+.contact-card:hover {
+  transform: translateY(-2px);
+}
+
+/* títulos */
+.contact-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+/* texto */
+.contact-text {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+/* links */
+.contact-text a {
+  color: #ffffff;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,0.4);
+  padding-bottom: 2px;
+}
+
+.contact-text a:hover {
+  border-bottom-color: #fbac33;
+}
+
+/* footer simulado */
+.contact-footer {
+  margin-top: 10px;
+  font-size: 0.8rem;
+  opacity: 0.6;
+  letter-spacing: 0.4px;
+  font-weight: 300;
+  text-align: center;
+}
