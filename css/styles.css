@@ -651,3 +651,16 @@ footer {
 #inicio.active ~ footer {
   display: none;
 }
+
+/* =========================
+   FIX SCROLL INICIO MOBILE
+========================= */
+
+@media (max-width: 768px) {
+
+  #inicio.section.active {
+    min-height: 100dvh; /* altura REAL del dispositivo */
+    justify-content: center;
+  }
+
+}
