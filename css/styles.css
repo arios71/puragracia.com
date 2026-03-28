@@ -664,3 +664,15 @@ footer {
   }
 
 }
+
+/* ===== FIX FOOTER ABAJO ===== */
+
+.section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.section footer {
+  margin-top: auto;
+}
