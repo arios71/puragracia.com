@@ -753,3 +753,11 @@ html, body {
   opacity: 0.65;
   letter-spacing: 0.4px;
 }
+
+.contact-title {
+  margin-top: 30px;
+}
+
+.contact-title:first-child {
+  margin-top: 0;
+}
