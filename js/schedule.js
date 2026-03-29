@@ -312,7 +312,7 @@ loadAndRenderSchedule();
 
 setInterval(() => {
   updateLiveStatus();
-  runFocusEngine(false);
+  runFocusEngine(true);
 }, 30000);
 
 document.addEventListener("visibilitychange", () => {
