@@ -50,7 +50,7 @@ function getNextProgramCard() {
 
     const dayName = normalizeDay(title.textContent);
 
-    // solo hoy
+     // solo hoy
     if (dayName !== todayKey) return;
 
     block.querySelectorAll(".schedule-card").forEach(card => {
