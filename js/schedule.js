@@ -88,22 +88,25 @@ function updateLiveStatus() {
 
     const dayName = normalizeDay(title.textContent);
 
+    // 🔥 SOLO HOY
+    if (dayName !== todayKey) return;
+
     block.querySelectorAll(".schedule-card").forEach(card => {
       card.classList.remove("live-now");
 
       const timeText = card.querySelector(".card-time")?.textContent;
       if (!timeText) return;
 
-      const [start, end] = timeText.split(" - ");
+      // 🔥 LIMPIEZA ROBUSTA (ESTE ES EL FIX REAL)
+      const clean = timeText.replace(/\s+/g, " ").trim();
+      const [start, end] = clean.split("-").map(t => t.trim());
+
+      if (!start || !end) return;
 
       const startMin = timeToMinutes(start);
       const endMin = timeToMinutes(end);
 
-      if (
-        dayName === todayKey &&
-        nowMinutes >= startMin &&
-        nowMinutes < endMin
-      ) {
+      if (nowMinutes >= startMin && nowMinutes < endMin) {
         card.classList.add("live-now");
         currentLiveCard = card;
 
@@ -113,7 +116,6 @@ function updateLiveStatus() {
           badge.textContent = "EN VIVO";
           card.appendChild(badge);
         }
-
       } else {
         const badge = card.querySelector(".live-badge");
         if (badge) badge.remove();
