@@ -3,7 +3,7 @@
     { "name": "Lectura Pública Biblia", "start": "00:00", "end": "00:20" },    
     { "name": "Iglesia Evangélica de la Gracia", "start": "01:00", "end": "02:00" },    
     { "name": "Ruta 66", "start": "02:00", "end": "02:30" },    
-    { "name": "Grace Church", "start": "03:00", "end": "04:00" },    
+    { "name": "Grace Community Church", "start": "03:00", "end": "04:00" },    
     { "name": "Coalición Podcast", "start": "04:30", "end": "04:40" },    
     { "name": "Renovando tu Mente", "start": "05:00", "end": "05:30" },
     { "name": "A Través de la Biblia", "start": "06:00", "end": "06:30" },
@@ -152,3 +152,4 @@
     { "name": "Trazando la Palabra", "start": "22:00", "end": "22:30" }
   ]
 }
+
