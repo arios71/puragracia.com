@@ -1,14 +1,11 @@
 // =========================
-// SCHEDULE ENGINE v2.3 (LIVE + NEXT + SMART SCROLL)
+// SCHEDULE ENGINE v2.1 CLEAN
 // =========================
 
 const scheduleContainer = document.getElementById("scheduleContainer");
 
 let currentLiveCard = null;
-let nextProgramCard = null;
 let lastFocusedCard = null;
-let programsMap = {};
-let lastScrollTarget = null;
 
 /* =========================
    HELPERS
@@ -37,7 +34,46 @@ function getTodayName() {
 }
 
 /* =========================
-   LIVE + NEXT DETECTION
+   NEXT PROGRAM DETECTOR
+========================= */
+
+function getNextProgramCard() {
+  const todayKey = normalizeDay(getTodayName());
+  const now = getCurrentMinutes();
+
+  let nextCard = null;
+  let minDiff = Infinity;
+
+  document.querySelectorAll(".day-block").forEach(block => {
+    const title = block.querySelector(".day-title");
+    if (!title) return;
+
+    const dayName = normalizeDay(title.textContent);
+
+     // solo hoy
+    if (dayName !== todayKey) return;
+
+    block.querySelectorAll(".schedule-card").forEach(card => {
+      const timeText = card.querySelector(".card-time")?.textContent;
+      if (!timeText) return;
+
+      const [start] = timeText.split(" - ");
+      const startMin = timeToMinutes(start);
+
+      const diff = startMin - now;
+
+      if (diff > 0 && diff < minDiff) {
+        minDiff = diff;
+        nextCard = card;
+      }
+    });
+  });
+
+  return nextCard;
+}
+
+/* =========================
+   LIVE DETECTOR
 ========================= */
 
 function updateLiveStatus() {
@@ -45,23 +81,23 @@ function updateLiveStatus() {
   const nowMinutes = getCurrentMinutes();
 
   currentLiveCard = null;
-  nextProgramCard = null;
-
-  let minNextDiff = Infinity;
 
   document.querySelectorAll(".day-block").forEach(block => {
     const title = block.querySelector(".day-title");
     if (!title) return;
 
     const dayName = normalizeDay(title.textContent);
+
+    // 🔥 SOLO HOY
     if (dayName !== todayKey) return;
 
     block.querySelectorAll(".schedule-card").forEach(card => {
-      card.classList.remove("live-now", "next-upcoming");
+      card.classList.remove("live-now");
 
       const timeText = card.querySelector(".card-time")?.textContent;
       if (!timeText) return;
 
+      // 🔥 LIMPIEZA ROBUSTA (ESTE ES EL FIX REAL)
       const clean = timeText.replace(/\s+/g, " ").trim();
       const [start, end] = clean.split("-").map(t => t.trim());
 
@@ -70,7 +106,6 @@ function updateLiveStatus() {
       const startMin = timeToMinutes(start);
       const endMin = timeToMinutes(end);
 
-      // 🔴 LIVE
       if (nowMinutes >= startMin && nowMinutes < endMin) {
         card.classList.add("live-now");
         currentLiveCard = card;
@@ -81,26 +116,16 @@ function updateLiveStatus() {
           badge.textContent = "EN VIVO";
           card.appendChild(badge);
         }
-      }
-
-      // 🔵 NEXT (solo si no es LIVE)
-      const diff = startMin - nowMinutes;
-
-      if (diff > 0 && diff < minNextDiff) {
-        minNextDiff = diff;
-        nextProgramCard = card;
+      } else {
+        const badge = card.querySelector(".live-badge");
+        if (badge) badge.remove();
       }
     });
   });
-
-  // 🔵 SOLO highlight si NO hay live
-  if (!currentLiveCard && nextProgramCard) {
-    nextProgramCard.classList.add("next-upcoming");
-  }
 }
 
 /* =========================
-   SMART SCROLL ENGINE
+   SCROLL ENGINE
 ========================= */
 
 function focusCard(card) {
@@ -122,8 +147,8 @@ function focusCard(card) {
   if (row) {
     const cardOffset = card.offsetLeft;
     const cardWidth = card.offsetWidth;
-    const rowVisibleWidth = row.clientWidth;
     const rowWidth = row.scrollWidth;
+    const rowVisibleWidth = row.clientWidth;
 
     const scrollLeft = Math.min(
       Math.max(cardOffset - rowVisibleWidth / 2 + cardWidth / 2, 0),
@@ -138,22 +163,26 @@ function focusCard(card) {
 }
 
 /* =========================
-   FOCUS ENGINE (SMART PRIORITY)
+   FOCUS ENGINE
 ========================= */
 
 function runFocusEngine(force = false) {
-  let targetCard = currentLiveCard || nextProgramCard;
+  let targetCard = null;
+
+  if (currentLiveCard) {
+    targetCard = currentLiveCard;
+  }
+
+  if (!targetCard) {
+    targetCard = getNextProgramCard();
+  }
 
   if (!targetCard) return;
 
-  // 🔒 evita re-scroll al mismo elemento
   if (!force && targetCard === lastFocusedCard) return;
-  if (targetCard === lastScrollTarget && !force) return;
 
   focusCard(targetCard);
-
   lastFocusedCard = targetCard;
-  lastScrollTarget = targetCard;
 }
 
 /* =========================
@@ -162,20 +191,10 @@ function runFocusEngine(force = false) {
 
 async function loadAndRenderSchedule() {
   try {
-    const [scheduleRes, programsRes] = await Promise.all([
-      fetch('/data/schedule.json'),
-      fetch('/data/programs.json')
-    ]);
+    const res = await fetch('/data/schedule.json');
+    const data = await res.json();
 
-    const scheduleData = await scheduleRes.json();
-    const programsData = await programsRes.json();
-
-    programsMap = {};
-    programsData.forEach(p => {
-      programsMap[p.id] = p;
-    });
-
-    renderSchedule(scheduleData);
+    renderSchedule(data);
 
     setTimeout(() => {
       updateLiveStatus();
@@ -228,14 +247,13 @@ function renderSchedule(data) {
         const card = document.createElement("div");
         card.classList.add("schedule-card");
 
-        const info = programsMap[program.id];
-
         card.innerHTML = `
           <div class="card-time">${program.start} - ${program.end}</div>
-          <div class="card-title">${info?.name || "Programa"}</div>
+          <div class="card-title">${program.name}</div>
         `;
 
         card.addEventListener("click", () => openModal(program));
+
         row.appendChild(card);
       });
     }
@@ -277,12 +295,9 @@ function openModal(program) {
   const modal = document.getElementById("scheduleModal");
   const body = modal.querySelector(".modal-body");
 
-  const info = programsMap[program.id];
-
   body.innerHTML = `
-    <h2>${info?.name || "Programa"}</h2>
+    <h2>${program.name}</h2>
     <p>${program.start} - ${program.end}</p>
-    <p>${info?.description || ""}</p>
   `;
 
   modal.classList.add("show");
