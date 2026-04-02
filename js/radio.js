@@ -68,11 +68,9 @@ function updateUIPlayingState(state){
 
   if(state){
     playBtn.textContent = '⏸ Pausar Radio';
-    waves.forEach(w => w.style.animationPlayState = 'running');
     body.classList.add('playing');
   } else {
     playBtn.textContent = '▶ Reproducir Radio';
-    waves.forEach(w => w.style.animationPlayState = 'paused');
     body.classList.remove('playing');
   }
 }
