@@ -590,11 +590,16 @@ footer {
 	}
 
 	.now-card img {
+<<<<<<< HEAD
 
 		width: 85px;
 
 		height: 85px;
 
+=======
+		width: 92px;
+		height: 92px;
+>>>>>>> parent of 56e64da (Refactor CSS styles for improved organization)
 	}
 
 	.section {
