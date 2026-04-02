@@ -199,6 +199,9 @@ body {
 	border-radius: 3px;
 	animation: equalize 1s infinite ease-in-out;
 	animation-play-state: paused;
+
+	transform-origin: bottom;
+	will-change: transform;
 }
 .equalizer span:nth-child(1) {
 	animation-delay: 0s;
