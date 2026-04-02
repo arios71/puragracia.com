@@ -73,18 +73,20 @@ function updateNowPlaying(metadata) {
     // TEXTO CANCIÓN
     const titleText = metadata.title || "";
     const artistText = metadata.artist || "";
-    const trackText = (artistText || titleText) ? `${artistText}${artistText && titleText ? " - " : ""}${titleText}` : "";
+    // 🎯 TÍTULO
+const title = document.createElement("div");
+title.classList.add("now-title");
+title.textContent = metadata.title || "En vivo";
 
-    // 🎯 TÍTULO PRINCIPAL
-    const title = document.createElement("div");
-    title.classList.add("now-title");
-    title.textContent = trackText || "En vivo";
+// 🎤 ARTISTA
+const artist = document.createElement("div");
+artist.classList.add("now-artist");
+artist.textContent = metadata.artist || "Pura Gracia Radio";
 
-    // 🎧 SUBTÍTULO
-    const artist = document.createElement("div");
-    artist.classList.add("now-artist");
-    artist.textContent = ""; // oculto, ya no depende de schedule
-    artist.style.display = "none";
+// 📻 PROGRAMA
+const program = document.createElement("div");
+program.classList.add("now-program");
+program.textContent = metadata.album || "Programa en vivo";
 
     // EQUALIZER
     const equalizer = document.createElement("div");
@@ -96,9 +98,10 @@ function updateNowPlaying(metadata) {
 
     // ENSAMBLAR
     infoDiv.appendChild(label);
-    infoDiv.appendChild(title);
-    infoDiv.appendChild(artist);
-    infoDiv.appendChild(equalizer);
+infoDiv.appendChild(title);
+infoDiv.appendChild(artist);
+infoDiv.appendChild(program);
+infoDiv.appendChild(equalizer);
 
     card.appendChild(coverImg);
     card.appendChild(infoDiv);
