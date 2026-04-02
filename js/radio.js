@@ -32,7 +32,6 @@ navLinks.forEach(link => {
 // -------------------------
 const playBtn = document.getElementById('playRadio');
 const audio = document.getElementById('radioAudio');
-const waves = document.querySelectorAll('.equalizer span');
 const body = document.body;
 const radioStatus = document.getElementById('radioStatus');
 
