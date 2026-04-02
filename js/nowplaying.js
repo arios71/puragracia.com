@@ -71,18 +71,20 @@ function updateNowPlaying(metadata) {
     label.textContent = "Ahora";
 
     // TEXTO CANCIÓN
-const titleText = metadata.title || "";
-const artistText = metadata.artist || "";
+    const titleText = metadata.title || "";
+    const artistText = metadata.artist || "";
+    const trackText = (artistText || titleText) ? `${artistText}${artistText && titleText ? " - " : ""}${titleText}` : "";
 
-// 🎯 TÍTULO PRINCIPAL (SOLO CANCIÓN)
-const title = document.createElement("div");
-title.classList.add("now-title");
-title.textContent = titleText || "En vivo";
+    // 🎯 TÍTULO PRINCIPAL
+    const title = document.createElement("div");
+    title.classList.add("now-title");
+    title.textContent = trackText || "En vivo";
 
-// 🎤 ARTISTA (SEGUNDA LÍNEA)
-const artist = document.createElement("div");
-artist.classList.add("now-artist");
-artist.textContent = artistText || "";
+    // 🎧 SUBTÍTULO
+    const artist = document.createElement("div");
+    artist.classList.add("now-artist");
+    artist.textContent = ""; // oculto, ya no depende de schedule
+    artist.style.display = "none";
 
     // EQUALIZER
     const equalizer = document.createElement("div");
