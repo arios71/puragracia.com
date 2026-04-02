@@ -172,6 +172,11 @@ body {
 	font-size: 0.9rem;
 	opacity: 0.8;
 }
+.now-program {
+	font-size: 0.75rem;
+	opacity: 0.6;
+	margin-top: 2px;
+}
 /* ================= EQUALIZER ================= */
 .equalizer {
 	display: flex;
