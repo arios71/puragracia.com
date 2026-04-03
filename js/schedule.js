@@ -269,9 +269,16 @@ function renderSchedule(data) {
         const programInfo = programsMap[program.id];
 
         card.innerHTML = `
-          <div class="card-time">${program.start} - ${program.end}</div>
-          <div class="card-title">${programInfo?.name || program.id}</div>
-        `;
+  <div class="card-time">${program.start} - ${program.end}</div>
+
+  <div class="card-title">
+    ${programInfo?.name || program.id}
+  </div>
+
+  <div class="card-desc">
+    ${programInfo?.description || ""}
+  </div>
+`;
 
         card.addEventListener("click", () => openModal(program));
 
