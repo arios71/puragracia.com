@@ -856,3 +856,26 @@ html, body {
   font-weight: 300;
   text-align: center;
 }
+
+#scheduleModal {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 220ms ease, visibility 220ms ease;
+}
+
+#scheduleModal.show {
+  opacity: 1;
+  visibility: visible;
+  backdrop-filter: blur(4px);
+}
+
+#scheduleModal .modal-content {
+  transform: translateY(20px);
+  opacity: 0;
+  transition: transform 220ms ease, opacity 220ms ease;
+}
+
+#scheduleModal.show .modal-content {
+  transform: translateY(0);
+  opacity: 1;
+}
