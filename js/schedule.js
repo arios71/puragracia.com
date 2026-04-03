@@ -274,12 +274,7 @@ function renderSchedule(data) {
   <div class="card-title">
     ${programInfo?.name || program.id}
   </div>
-
-  <div class="card-desc">
-    ${programInfo?.description || ""}
-  </div>
 `;
-
         card.addEventListener("click", () => openModal(program));
 
         row.appendChild(card);
@@ -326,9 +321,12 @@ function openModal(program) {
   const programInfo = programsMap[program.id];
 
   body.innerHTML = `
-    <h2>${programInfo?.name || program.id}</h2>
-    <p>${program.start} - ${program.end}</p>
-  `;
+  <h2>${programInfo?.name || program.id}</h2>
+
+  <p><strong>${program.start} - ${program.end}</strong></p>
+
+  <p>${programInfo?.description || ""}</p>
+`;
 
   modal.classList.add("show");
 }
