@@ -13,11 +13,6 @@ body {
 	overflow-x: hidden;
 	scroll-behavior: smooth;
 }
-
-html, body {
-  overflow-x: hidden;
-  overflow-y: auto;
-}
 /* ================= HEADER / NAV (ANTIGUO - MANTENIDO POR COMPATIBILIDAD) ================= */
 .nav {
 	width: 100%;
@@ -352,9 +347,9 @@ footer {
 		display: none;
 	}
 }
+/* ================= PROGRAMACIÓN ================= */
 #scheduleContainer {
 	width: 100%;
-	padding-bottom: 120px;
 }
 .day-block {
 	margin-bottom: 30px;
@@ -624,12 +619,12 @@ footer {
   justify-content: center;
 }
 
-:root {
-  --bottom-bar-height: 80px;
-}
+/* ===============================
+   EVITAR QUE EL MENU TAPÉ CONTENIDO
+================================= */
 
 body {
-  padding-bottom: calc(var(--bottom-bar-height) + env(safe-area-inset-bottom));
+  padding-bottom: 80px;
 }
 
 /* ===============================
@@ -699,6 +694,35 @@ footer {
 
 #contacto.active ~ footer {
   display: block;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.section {
+  min-height: 100dvh;
+}
+
+/* solo en móvil se activa el modo app */
+@media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+
+  .section {
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  .section.active {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
 :root {
