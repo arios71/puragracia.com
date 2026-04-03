@@ -1,12 +1,11 @@
 // =========================
-// SCHEDULE ENGINE v2.2 PRO
+// SCHEDULE ENGINE v2.1 CLEAN
 // =========================
 
 const scheduleContainer = document.getElementById("scheduleContainer");
 
 let currentLiveCard = null;
 let lastFocusedCard = null;
-let scheduleData = null; // 👈 NUEVO
 
 /* =========================
    HELPERS
@@ -35,71 +34,6 @@ function getTodayName() {
 }
 
 /* =========================
-   NOW + NEXT ENGINE (NUEVO)
-========================= */
-
-function getNowAndNextFromData() {
-  if (!scheduleData) return null;
-
-  const todayKey = normalizeDay(getTodayName());
-  const todaySchedule = scheduleData[todayKey] || [];
-
-  const nowMinutes = getCurrentMinutes();
-
-  let current = null;
-  let next = null;
-
-  for (let i = 0; i < todaySchedule.length; i++) {
-    const p = todaySchedule[i];
-
-    const start = timeToMinutes(p.start);
-    const end = timeToMinutes(p.end);
-
-    if (nowMinutes >= start && nowMinutes < end) {
-      current = p;
-      next = todaySchedule[i + 1] || null;
-      break;
-    }
-
-    if (nowMinutes < start && !next) {
-      next = p;
-    }
-  }
-
-  // 👇 CLAVE: cubrir gaps automáticamente
-  if (!current) {
-    current = {
-      name: "Música",
-      type: "music"
-    };
-  }
-
-  return { current, next };
-}
-
-function updateNowPlaying() {
-  const data = getNowAndNextFromData();
-  if (!data) return;
-
-  const { current, next } = data;
-
-  const nowEl = document.getElementById("nowTitle");
-  const nextEl = document.getElementById("nextTitle");
-
-  if (nowEl) {
-    nowEl.textContent = current.name;
-  }
-
-  if (nextEl) {
-    if (next) {
-      nextEl.textContent = `${next.name} - ${next.start}`;
-    } else {
-      nextEl.textContent = "—";
-    }
-  }
-}
-
-/* =========================
    NEXT PROGRAM DETECTOR
 ========================= */
 
@@ -116,6 +50,7 @@ function getNextProgramCard() {
 
     const dayName = normalizeDay(title.textContent);
 
+     // solo hoy
     if (dayName !== todayKey) return;
 
     block.querySelectorAll(".schedule-card").forEach(card => {
@@ -153,6 +88,7 @@ function updateLiveStatus() {
 
     const dayName = normalizeDay(title.textContent);
 
+    // 🔥 SOLO HOY
     if (dayName !== todayKey) return;
 
     block.querySelectorAll(".schedule-card").forEach(card => {
@@ -161,6 +97,7 @@ function updateLiveStatus() {
       const timeText = card.querySelector(".card-time")?.textContent;
       if (!timeText) return;
 
+      // 🔥 LIMPIEZA ROBUSTA (ESTE ES EL FIX REAL)
       const clean = timeText.replace(/\s+/g, " ").trim();
       const [start, end] = clean.split("-").map(t => t.trim());
 
@@ -257,14 +194,11 @@ async function loadAndRenderSchedule() {
     const res = await fetch('/data/schedule.json');
     const data = await res.json();
 
-    scheduleData = data; // 👈 NUEVO
-
     renderSchedule(data);
 
     setTimeout(() => {
       updateLiveStatus();
       runFocusEngine(true);
-      updateNowPlaying(); // 👈 NUEVO
     }, 400);
 
   } catch (err) {
@@ -379,13 +313,11 @@ loadAndRenderSchedule();
 setInterval(() => {
   updateLiveStatus();
   runFocusEngine(true);
-  updateNowPlaying(); // 👈 NUEVO
 }, 30000);
 
 document.addEventListener("visibilitychange", () => {
   if (!document.hidden) {
     updateLiveStatus();
     runFocusEngine(true);
-    updateNowPlaying(); // 👈 NUEVO
   }
 });
