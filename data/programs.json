@@ -1,196 +1,36 @@
 {
   "programs": [
-    {
-      "id": "prog_001",
-      "name": "Lectura Pública Biblia",
-      "description": "Plan de lectura diario con porciones del Antiguo y Nuevo Testamentos, en modo narrativo",
-      "source": "Fundación Grace & Mercy"
-    },
-    {
-      "id": "prog_002",
-      "name": "Iglesia Evangélica de la Gracia",
-      "description": "Sermones de la IEG en Barcelona, España",
-      "source": "Iglesia Evangélica de la Gracia"
-    },
-    {
-      "id": "prog_003",
-      "name": "Ruta 66",
-      "description": "Ruta 66 es un comentario bíblico que se acerca a las Escrituras, capítulo a capítulo.",
-      "source": "Radio Transmundial"
-    },
-    {
-      "id": "prog_004",
-      "name": "Grace Community Church",
-      "description": "Sermones desde la Iglesia de Grace Community en California",
-      "source": "Grace Church Español"
-    },
-    {
-      "id": "prog_005",
-      "name": "Coalición Podcast",
-      "description": "Lectura de artículos de diversos temas con enfoque bíblico",
-      "source": "Coalición por el Evangelio"
-    },
-    {
-      "id": "prog_006",
-      "name": "Renovando tu Mente",
-      "description": "Presenta fielmente la verdad de las Escrituras, ayudando a las personas a saber lo que creen, porqué lo creen, cómo vivirlo, y cómo compartirlo",
-      "source": "Ministerios Ligonier"
-    },
-    {
-      "id": "prog_007",
-      "name": "A Través de la Biblia",
-      "description": "Análisis de la Biblia libro por libro diseñado por el Dr. J Vernon McGee.",
-      "source": "Radio Transmundial"
-    },
-    {
-      "id": "prog_008",
-      "name": "5 Minutos Historia de la Iglesia",
-      "description": "Viaja en el tiempo con Stephen Nichols para observar los eventos, las personas, e incluso los lugares que han dado forma a la historia del cristianismo.",
-      "source": "Ministerios Ligonier"
-    },
-    {
-      "id": "prog_009",
-      "name": "Deleite en la Palabra",
-      "description": "Sermones de la Iglesia Bíblica Gracia Verdadera, en un espacio diario en formato de serie.",
-      "source": "IBGV"
-    },
-    {
-      "id": "prog_010",
-      "name": "Aviva Nuestros Corazones",
-      "description": "Recibe ánimo y aprende cómo aplicar la Palabra de Dios en tu vida a través de nuestros programas diarios.",
-      "source": "Nancy DeMoss Wolgemuth"
-    },
-    {
-      "id": "prog_011",
-      "name": "Gracia a Vosotros",
-      "description": "Desatando la verdad de Dios un versículo a la vez.",
-      "source": "John MacArthur"
-    },
-    {
-      "id": "prog_012",
-      "name": "Abre la Biblia",
-      "description": "De lunes a viernes, se dedica a proclamar la poderosa Palabra de Dios para ayudarte a encontrar vida en el Señor Jesucristo.",
-      "source": "Colin Smith"
-    },
-    {
-      "id": "prog_013",
-      "name": "Crianza Reverente",
-      "description": "Nuestros hijos necesitan padres que vivan en reverencia delante de Dios, glorificándole en toda situación y decisión.",
-      "source": "Susi Bixby"
-    },
-    {
-      "id": "prog_014",
-      "name": "Entendiendo los Tiempos",
-      "description": "Un programa conducido por el pastor Eduardo Saladín, donde analizamos nuestra actualidad desde una perspectiva bíblica.",
-      "source": "Eduardo Saladín"
-    },
-    {
-      "id": "prog_015",
-      "name": "Jungla Semántica",
-      "description": "Para descifrar las palabras, para entender su etimología, para saber de qué hablamos cuando citamos la Biblia, el Prof. Héctor Leites nos ayuda a indagar el texto en sus idiomas originales.",
-      "source": "Héctor Leites"
-    },
-    {
-      "id": "prog_016",
-      "name": "Contexto Bíblico",
-      "description": "",
-      "source": ""
-    },
-    {
-      "id": "prog_017",
-      "name": "Iglesia Bautista Internacional",
-      "description": "",
-      "source": ""
-    },
-    {
-      "id": "prog_018",
-      "name": "Iglesia Bíblica del Señor Jesucristo",
-      "description": "",
-      "source": ""
-    },
-    {
-      "id": "prog_019",
-      "name": "Bite Project",
-      "description": "",
-      "source": ""
-    },
-    {
-      "id": "prog_020",
-      "name": "Iglesia Gracia sobre Gracia",
-      "description": "",
-      "source": ""
-    },
-    {
-      "id": "prog_021",
-      "name": "Iglesia Gracia y Verdad",
-      "description": "",
-      "source": ""
-    },
-    {
-      "id": "prog_022",
-      "name": "Oye la Biblia",
-      "description": "",
-      "source": ""
-    },
-    {
-      "id": "prog_023",
-      "name": "Iglesia Bíblica Sola Gracia",
-      "description": "",
-      "source": ""
-    },
-    {
-      "id": "prog_024",
-      "name": "Iglesia Reforma",
-      "description": "",
-      "source": ""
-    },
-    {
-      "id": "prog_025",
-      "name": "Iglesia Bíblica Berea",
-      "description": "",
-      "source": ""
-    },
-    {
-      "id": "prog_026",
-      "name": "Iglesia del Centro",
-      "description": "",
-      "source": ""
-    },
-    {
-      "id": "prog_027",
-      "name": "Cursos Third Mill",
-      "description": "",
-      "source": ""
-    },
-    {
-      "id": "prog_028",
-      "name": "La Verdad en el Tubo de Ensayo",
-      "description": "",
-      "source": ""
-    },
-    {
-      "id": "prog_029",
-      "name": "Trazando la Palabra",
-      "description": "",
-      "source": ""
-    },
-    {
-      "id": "prog_030",
-      "name": "Escuela Bíblica",
-      "description": "",
-      "source": ""
-    },
-    {
-      "id": "prog_031",
-      "name": "Iglesia Bíblica Gracia Verdadera",
-      "description": "",
-      "source": ""
-    },
-    {
-      "id": "prog_032",
-      "name": "Solid Joys en Español",
-      "description": "",
-      "source": ""
-    }
+    { "id": "prog_001", "name": "Lectura Pública Biblia", "description": "Plan de lectura diario con porciones del Antiguo y Nuevo Testamentos, en modo narrativo", "source": "Fundación Grace & Mercy" },
+    { "id": "prog_002", "name": "Iglesia Evangélica de la Gracia", "description": "Sermones de la IEG en Barcelona, España", "source": "Iglesia Evangélica de la Gracia" },
+    { "id": "prog_003", "name": "Ruta 66", "description": "Ruta 66 es un comentario bíblico capítulo a capítulo.", "source": "Radio Transmundial" },
+    { "id": "prog_004", "name": "Grace Community Church", "description": "Sermones desde California", "source": "Grace Church Español" },
+    { "id": "prog_005", "name": "Coalición Podcast", "description": "Lectura de artículos bíblicos", "source": "Coalición por el Evangelio" },
+    { "id": "prog_006", "name": "Renovando tu Mente", "description": "Doctrina reformada aplicada", "source": "Ministerios Ligonier" },
+    { "id": "prog_007", "name": "A Través de la Biblia", "description": "Libro por libro", "source": "Radio Transmundial" },
+    { "id": "prog_008", "name": "5 Minutos Historia de la Iglesia", "description": "Historia cristiana", "source": "Ministerios Ligonier" },
+    { "id": "prog_009", "name": "Deleite en la Palabra", "description": "Sermones diarios", "source": "IBGV" },
+    { "id": "prog_010", "name": "Aviva Nuestros Corazones", "description": "Aplicación práctica bíblica", "source": "Nancy DeMoss Wolgemuth" },
+    { "id": "prog_011", "name": "Gracia a Vosotros", "description": "John MacArthur", "source": "John MacArthur" },
+    { "id": "prog_012", "name": "Abre la Biblia", "description": "Colin Smith", "source": "Colin Smith" },
+    { "id": "prog_013", "name": "Crianza Reverente", "description": "Familia cristiana", "source": "Susi Bixby" },
+    { "id": "prog_014", "name": "Entendiendo los Tiempos", "description": "Actualidad bíblica", "source": "Eduardo Saladín" },
+    { "id": "prog_015", "name": "Jungla Semántica", "description": "Idiomas bíblicos", "source": "Héctor Leites" },
+    { "id": "prog_016", "name": "Contexto Bíblico", "description": "", "source": "" },
+    { "id": "prog_017", "name": "Iglesia Bautista Internacional", "description": "", "source": "" },
+    { "id": "prog_018", "name": "Iglesia Bíblica del Señor Jesucristo", "description": "", "source": "" },
+    { "id": "prog_019", "name": "Bite Project", "description": "", "source": "" },
+    { "id": "prog_020", "name": "Iglesia Gracia sobre Gracia", "description": "", "source": "" },
+    { "id": "prog_021", "name": "Iglesia Gracia y Verdad", "description": "", "source": "" },
+    { "id": "prog_022", "name": "Oye la Biblia", "description": "", "source": "" },
+    { "id": "prog_023", "name": "Iglesia Bíblica Sola Gracia", "description": "", "source": "" },
+    { "id": "prog_024", "name": "Iglesia Reforma", "description": "", "source": "" },
+    { "id": "prog_025", "name": "Iglesia Bíblica Berea", "description": "", "source": "" },
+    { "id": "prog_026", "name": "Iglesia del Centro", "description": "", "source": "" },
+    { "id": "prog_027", "name": "Cursos Third Mill", "description": "", "source": "" },
+    { "id": "prog_028", "name": "La Verdad en el Tubo de Ensayo", "description": "", "source": "" },
+    { "id": "prog_029", "name": "Trazando la Palabra", "description": "", "source": "" },
+    { "id": "prog_030", "name": "Escuela Bíblica", "description": "", "source": "" },
+    { "id": "prog_031", "name": "Iglesia Bíblica Gracia Verdadera", "description": "", "source": "" },
+    { "id": "prog_032", "name": "Solid Joys en Español", "description": "", "source": "" }
   ]
 }
