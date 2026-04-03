@@ -30,7 +30,7 @@
     { "id": "prog_028", "name": "La Verdad en el Tubo de Ensayo", "description": "", "source": "" },
     { "id": "prog_029", "name": "Trazando la Palabra", "description": "", "source": "" },
     { "id": "prog_030", "name": "Escuela Bíblica", "description": "", "source": "" },
-    { "id": "prog_031", "name": "Iglesia Bíblica Gracia Verdadera", "description": "", "source": "" },
+    { "id": "prog_031", "name": "Iglesia Bíblica Gracia Verdadera", "El sermón semanal de los domingos.": "", "source": "" },
     { "id": "prog_032", "name": "Solid Joys en Español", "description": "", "source": "" }
   ]
 }
