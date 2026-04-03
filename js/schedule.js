@@ -1,11 +1,33 @@
 // =========================
-// SCHEDULE ENGINE v2.1 CLEAN
+// SCHEDULE ENGINE v2.2 (ID SYSTEM FIXED)
 // =========================
 
 const scheduleContainer = document.getElementById("scheduleContainer");
 
 let currentLiveCard = null;
 let lastFocusedCard = null;
+
+/* =========================
+   PROGRAMS MAP (NEW)
+========================= */
+
+let programsMap = {};
+
+async function loadPrograms() {
+  try {
+    const res = await fetch('/data/programs.json');
+    const data = await res.json();
+
+    programsMap = {};
+
+    data.programs.forEach(p => {
+      programsMap[p.id] = p;
+    });
+
+  } catch (err) {
+    console.error("Error cargando programs:", err);
+  }
+}
 
 /* =========================
    HELPERS
@@ -50,7 +72,6 @@ function getNextProgramCard() {
 
     const dayName = normalizeDay(title.textContent);
 
-     // solo hoy
     if (dayName !== todayKey) return;
 
     block.querySelectorAll(".schedule-card").forEach(card => {
@@ -88,7 +109,6 @@ function updateLiveStatus() {
 
     const dayName = normalizeDay(title.textContent);
 
-    // 🔥 SOLO HOY
     if (dayName !== todayKey) return;
 
     block.querySelectorAll(".schedule-card").forEach(card => {
@@ -97,7 +117,6 @@ function updateLiveStatus() {
       const timeText = card.querySelector(".card-time")?.textContent;
       if (!timeText) return;
 
-      // 🔥 LIMPIEZA ROBUSTA (ESTE ES EL FIX REAL)
       const clean = timeText.replace(/\s+/g, " ").trim();
       const [start, end] = clean.split("-").map(t => t.trim());
 
@@ -247,9 +266,11 @@ function renderSchedule(data) {
         const card = document.createElement("div");
         card.classList.add("schedule-card");
 
+        const programInfo = programsMap[program.id];
+
         card.innerHTML = `
           <div class="card-time">${program.start} - ${program.end}</div>
-          <div class="card-title">${program.name}</div>
+          <div class="card-title">${programInfo?.name || program.id}</div>
         `;
 
         card.addEventListener("click", () => openModal(program));
@@ -295,8 +316,10 @@ function openModal(program) {
   const modal = document.getElementById("scheduleModal");
   const body = modal.querySelector(".modal-body");
 
+  const programInfo = programsMap[program.id];
+
   body.innerHTML = `
-    <h2>${program.name}</h2>
+    <h2>${programInfo?.name || program.id}</h2>
     <p>${program.start} - ${program.end}</p>
   `;
 
@@ -308,7 +331,13 @@ function openModal(program) {
 ========================= */
 
 createModal();
-loadAndRenderSchedule();
+
+async function init() {
+  await loadPrograms();
+  await loadAndRenderSchedule();
+}
+
+init();
 
 setInterval(() => {
   updateLiveStatus();
