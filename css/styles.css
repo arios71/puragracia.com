@@ -436,7 +436,7 @@ footer {
 	text-align: center;
 }
 /* ================= GRID DESKTOP ================= */
-@media(:900px) {
+@media (min-width: 900px) {
 	#scheduleContainer {
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
@@ -700,7 +700,7 @@ html, body {
   height: 100%;
   margin: 0;
   overflow-x: hidden;
-  overflow-y: hidden;
+  overflow-y: auto;
 }
 
 .section {
