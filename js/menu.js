@@ -20,14 +20,29 @@ menuLinks.forEach(link => {
     // Marcar link activo
     menuLinks.forEach(l => l.classList.remove('active'));
     link.classList.add('active');
+
+    // 🔥 Actualizar URL
+    window.location.hash = target;
   });
 });
 
-// Activar por defecto la sección "inicio" y link activo al cargar
+// Activar sección según hash al cargar
 
 document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('inicio').classList.add('active');
+  let hash = window.location.hash.replace('#', '');
 
-  const firstLink = document.querySelector('nav a[data-section="inicio"]');
-  if (firstLink) firstLink.classList.add('active');
+  if (!hash || !document.getElementById(hash)) {
+    hash = 'inicio';
+  }
+
+  document.querySelectorAll('.section').forEach(sec => {
+    sec.classList.remove('active');
+  });
+
+  const activeSection = document.getElementById(hash);
+  if (activeSection) activeSection.classList.add('active');
+
+  menuLinks.forEach(l => l.classList.remove('active'));
+  const activeLink = document.querySelector(`nav a[data-section="${hash}"]`);
+  if (activeLink) activeLink.classList.add('active');
 });
