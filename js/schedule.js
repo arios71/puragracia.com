@@ -7,6 +7,9 @@ const scheduleContainer = document.getElementById("scheduleContainer");
 let currentLiveCard = null;
 let lastFocusedCard = null;
 
+let userHasInteracted = false;
+let initialAutoScrollDone = false;
+
 /* =========================
    PROGRAMS MAP (NEW)
 ========================= */
@@ -93,6 +96,23 @@ function getNextProgramCard() {
   return nextCard;
 }
 
+function scrollToTodayBlock() {
+  const todayKey = normalizeDay(getTodayName());
+
+  document.querySelectorAll(".day-block").forEach(block => {
+    const title = block.querySelector(".day-title");
+    if (!title) return;
+
+    const dayName = normalizeDay(title.textContent);
+
+    if (dayName === todayKey) {
+      block.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+  });
+}
 /* =========================
    LIVE DETECTOR
 ========================= */
@@ -112,7 +132,7 @@ function updateLiveStatus() {
     if (dayName !== todayKey) return;
 
     block.querySelectorAll(".schedule-card").forEach(card => {
-      card.classList.remove("live-now");
+      card.classList.remove("live-now", "radio-active");
 
       const timeText = card.querySelector(".card-time")?.textContent;
       if (!timeText) return;
@@ -126,9 +146,14 @@ function updateLiveStatus() {
       const endMin = timeToMinutes(end);
 
       if (nowMinutes >= startMin && nowMinutes < endMin) {
-        card.classList.add("live-now");
+        card.classList.add("live-now", "radio-active");
         currentLiveCard = card;
 
+// limpiar otros activos
+document.querySelectorAll(".radio-active").forEach(c => {
+  if (c !== card) c.classList.remove("radio-active");
+});
+         
         if (!card.querySelector(".live-badge")) {
           const badge = document.createElement("div");
           badge.classList.add("live-badge");
@@ -190,17 +215,26 @@ function runFocusEngine(force = false) {
 
   if (currentLiveCard) {
     targetCard = currentLiveCard;
-  }
-
-  if (!targetCard) {
+  } else {
     targetCard = getNextProgramCard();
   }
 
   if (!targetCard) return;
 
+  // 🚫 evitar molestar al usuario
+  if (!force && userHasInteracted) return;
+
   if (!force && targetCard === lastFocusedCard) return;
 
+  // 📍 primero asegurar día visible
+  if (!initialAutoScrollDone) {
+    scrollToTodayBlock();
+    initialAutoScrollDone = true;
+  }
+
+  // 🎯 luego centrar card
   focusCard(targetCard);
+
   lastFocusedCard = targetCard;
 }
 
@@ -218,7 +252,7 @@ async function loadAndRenderSchedule() {
     setTimeout(() => {
       updateLiveStatus();
       runFocusEngine(true);
-    }, 400);
+    }, 600);
 
   } catch (err) {
     console.error("Error cargando schedule:", err);
@@ -344,9 +378,15 @@ async function init() {
 
 init();
 
+["scroll", "touchstart", "wheel"].forEach(evt => {
+  window.addEventListener(evt, () => {
+    userHasInteracted = true;
+  }, { passive: true });
+});
+
 setInterval(() => {
   updateLiveStatus();
-  runFocusEngine(true);
+  runFocusEngine(false);
 }, 30000);
 
 document.addEventListener("visibilitychange", () => {
