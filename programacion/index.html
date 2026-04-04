@@ -2,14 +2,13 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Programación | Pura Gracia Radio</title>
   <meta name="description" content="Consulta la programación de Pura Gracia Radio: horarios y programas en vivo 24/7.">
   <link rel="canonical" href="https://www.puragracia.com/programacion/">
 
-  <!-- Redirección suave a SPA -->
-  <script>
-    window.location.href = "/#programacion";
-  </script>
+  <!-- PWA manifest -->
+  <link rel="manifest" href="/manifest.json">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
@@ -23,11 +22,21 @@
   <meta name="twitter:title" content="Programación | Pura Gracia Radio" />
   <meta name="twitter:description" content="Consulta la programación de Pura Gracia Radio: horarios y programas en vivo 24/7." />
   <meta name="twitter:image" content="https://www.puragracia.com/assets/icons/logo-512.png" />
+
+  <!-- Styles (opcional si quieres heredar los del SPA) -->
+  <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-  <h1>🗓️ Programación de Pura Gracia Radio</h1>
-  <p>Aquí puedes consultar todos los horarios y programas de nuestra emisora cristiana reformada online 24/7.</p>
-  <p>La programación se reproduce en vivo a través de nuestra PWA.</p>
-  <a href="/">Volver al inicio</a>
+  <main>
+    <h1>🗓️ Programación de Pura Gracia Radio</h1>
+    <p>Aquí puedes consultar todos los horarios y programas de nuestra emisora cristiana reformada online 24/7.</p>
+    <p>La programación se reproduce en vivo a través de nuestra PWA.</p>
+
+    <!-- Enlace para abrir la sección directamente en la PWA -->
+    <p><a href="/#programacion">Ver programación en la PWA</a></p>
+  </main>
+
+  <!-- JS de la sección -->
+  <script src="/js/schedule.js" defer></script>
 </body>
 </html>
