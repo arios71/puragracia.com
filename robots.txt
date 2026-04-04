@@ -1,4 +1,18 @@
+# robots.txt para Pura Gracia PWA
+
+# Todos los bots
 User-agent: *
+
+# Permitimos rastrear todo el sitio
 Allow: /
 
+# Opcional: bloquear archivos que no aportan SEO (CSS, JS, imágenes grandes si quieres)
+#Pero normalmente GitHub Pages y SPA necesitan JS y CSS, así que no bloqueamos nada.
+
+# Sitemap oficial
 Sitemap: https://www.puragracia.com/sitemap.xml
+
+# Nota:
+# Las secciones de tu SPA (#programacion, #sermones, #contacto)
+# no se listan como URLs reales, pero Google podrá leerlas
+# desde la homepage al cargar el JS.
