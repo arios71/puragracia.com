@@ -132,7 +132,6 @@ function updateLiveStatus() {
     if (dayName !== todayKey) return;
 
     block.querySelectorAll(".schedule-card").forEach(card => {
-      card.classList.remove("live-now", "radio-active");
 
       const timeText = card.querySelector(".card-time")?.textContent;
       if (!timeText) return;
@@ -228,9 +227,11 @@ function runFocusEngine(force = false) {
 
   // 📍 primero asegurar día visible
   if (!initialAutoScrollDone) {
+  setTimeout(() => {
     scrollToTodayBlock();
-    initialAutoScrollDone = true;
-  }
+  }, 100);
+  initialAutoScrollDone = true;
+}
 
   // 🎯 luego centrar card
   focusCard(targetCard);
@@ -392,6 +393,6 @@ setInterval(() => {
 document.addEventListener("visibilitychange", () => {
   if (!document.hidden) {
     updateLiveStatus();
-    runFocusEngine(true);
+    runFocusEngine(false);
   }
 });
