@@ -435,21 +435,28 @@ footer {
 	opacity: 0.5;
 	text-align: center;
 }
-/* ================= GRID DESKTOP ================= */
+/* ================= GRID REAL DESKTOP ================= */
 @media (min-width: 900px) {
-	#scheduleContainer {
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: 20px;
-	}
-	.day-row {
-		flex-wrap: wrap;
-		overflow-x: auto;
-	}
-	.schedule-card {
-		width: 100%;
-		min-width: auto;
-	}
+
+  /* cada día sigue en vertical */
+  #scheduleContainer {
+    display: block;
+  }
+
+  /* aquí ocurre la magia */
+  .day-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+
+    overflow: visible; /* quitamos scroll horizontal */
+  }
+
+  .schedule-card {
+    min-width: auto;
+    width: 100%;
+  }
+
 }
 /* ================= MODAL ================= */
 #scheduleModal {
