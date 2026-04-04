@@ -10,7 +10,7 @@
     />
     <meta
       name="keywords"
-      content=" radio cristiana, radio reformada, predicación expositiva, teología reformada, radio cristiana online, emisora cristiana Puerto Rico, Pura Gracia Radio, radio cristiana 24/7 "
+      content="radio cristiana, radio reformada, predicación expositiva, teología reformada, radio cristiana online, emisora cristiana Puerto Rico, Pura Gracia Radio, radio cristiana 24/7"
     />
     <meta name="author" content="Pura Gracia Radio" />
     <meta name="robots" content="index, follow" />
@@ -42,13 +42,12 @@
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/logo-32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/logo-16.png" />
-    <!-- Opcional (mejor soporte en algunos navegadores) -->
     <link rel="shortcut icon" href="/assets/icons/logo-32.png" />
     <meta name="theme-color" content="#121212" />
     <!-- Styles -->
     <link rel="stylesheet" href="/css/styles.css" />
     <!-- Google Analytics -->
-    <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-GX4KQ87HQC"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GX4KQ87HQC"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
@@ -61,8 +60,8 @@
   <body>
     <header>
       <nav class="menu-principal">
-        <!-- INICIO (audífonos) -->
-        <a href="#" data-section="inicio" class="menu-item" aria-label="Inicio">
+        <!-- INICIO -->
+        <a href="/" data-section="inicio" class="menu-item" aria-label="Inicio">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
             <path
               d="M12 3a7 7 0 0 0-7 7v4a3 3 0 0 0 3 3h1v-6H6v-1a6 6 0 0 1 12 0v1h-3v6h1a3 3 0 0 0 3-3v-4a7 7 0 0 0-7-7z"
@@ -70,8 +69,8 @@
           </svg>
           <span class="menu-text">Inicio</span>
         </a>
-        <!-- PROGRAMACIÓN (calendario real) -->
-        <a href="#" data-section="programacion" class="menu-item" aria-label="Programación">
+        <!-- PROGRAMACIÓN -->
+        <a href="/programacion/" data-section="programacion" class="menu-item" aria-label="Programación">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
             <path
               d="M7 2v2H5a2 2 0 0 0-2 2v2h18V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7zm14 8H3v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V10z"
@@ -79,8 +78,8 @@
           </svg>
           <span class="menu-text">Programación</span>
         </a>
-        <!-- SERMONES (micrófono correcto) -->
-        <a href="#" data-section="sermones" class="menu-item" aria-label="Sermones">
+        <!-- SERMONES -->
+        <a href="/sermones/" data-section="sermones" class="menu-item" aria-label="Sermones">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
             <path
               d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 14 0h-2zM11 19v3h2v-3h-2z"
@@ -88,8 +87,8 @@
           </svg>
           <span class="menu-text">Sermones</span>
         </a>
-        <!-- CONTACTO (email limpio) -->
-        <a href="#" data-section="contacto" class="menu-item" aria-label="Contacto">
+        <!-- CONTACTO -->
+        <a href="/contacto/" data-section="contacto" class="menu-item" aria-label="Contacto">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
             <path
               d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z"
@@ -99,6 +98,7 @@
         </a>
       </nav>
     </header>
+
     <main class="app">
       <!-- INICIO -->
       <section id="inicio" class="section active">
@@ -107,31 +107,27 @@
           <h1 class="seo-title">Pura Gracia Radio</h1>
           <h2 class="seo-subtitle">WRPG-DB</h2>
         </div>
-        <!-- PLAYER -->
         <section class="player-section">
           <div class="radio-wrapper">
-            <!-- BOTÓN -->
             <button id="playRadio" class="play-btn">▶ Reproducir Radio</button>
-            <!-- STATUS -->
             <p id="radioStatus" class="radio-status" style="display: none"></p>
-            <!-- EN VIVO -->
             <div class="live-row">
               <div class="line"></div>
               <span class="live-text">En vivo</span>
               <div class="line"></div>
             </div>
-            <!-- NOW PLAYING -->
             <div id="nowPlayingBox"></div>
-            <!-- AUDIO -->
             <audio id="radioAudio" preload="none"></audio>
           </div>
         </section>
       </section>
+
       <!-- PROGRAMACION -->
       <section id="programacion" class="section">
         <h2>🗓️ Programación</h2>
         <div id="scheduleContainer"></div>
       </section>
+
       <!-- SERMONES -->
       <section id="sermones" class="section">
         <h2>🎙️ Sermones</h2>
@@ -142,62 +138,43 @@
           ></iframe>
         </div>
       </section>
+
       <!-- CONTACTO -->
-     <section id="contacto" class="section">
-  <div class="contact-block">
-
-    <!-- CARD CONTACTO -->
-    <div class="contact-card">
-
-      <h2 class="contact-title">
-        📬 Contacto
-      </h2>
-
-      <p class="contact-text">
-        <b>Escríbenos:</b><br>
-        <a href="mailto:radio@puragracia.com">radio@puragracia.com</a>
-      </p>
-
-      <p class="contact-text">
-        <b>Llámanos:</b><br>
-        <a href="tel:+17872582480">(787) 258-2480</a>
-      </p>
-
-    </div>
-
-    <!-- CARD IGLESIA -->
-    <div class="contact-card">
-
-      <h2 class="contact-title">
-        ✝️ Iglesia Bíblica Gracia Verdadera
-      </h2>
-
-      <p class="contact-text">
-        <b>Días de reunión:</b><br>
-        Domingos: 10:00 a.m.<br>
-        Miércoles: 7:30 p.m. (Grupos pequeños)
-      </p>
-
-      <p class="contact-text">
-        <b>Dirección:</b><br>
-        Avenida José Garrido<br>
-        Caguas, Puerto Rico
-      </p>
-
-    </div>
-
-    <!-- FOOTER SIMULADO -->
-    <p class="contact-footer">
-      © 2026 Iglesia Bíblica Gracia Verdadera
-    </p>
-
-  </div>
-</section>
+      <section id="contacto" class="section">
+        <div class="contact-block">
+          <div class="contact-card">
+            <h2 class="contact-title">📬 Contacto</h2>
+            <p class="contact-text">
+              <b>Escríbenos:</b><br>
+              <a href="mailto:radio@puragracia.com">radio@puragracia.com</a>
+            </p>
+            <p class="contact-text">
+              <b>Llámanos:</b><br>
+              <a href="tel:+17872582480">(787) 258-2480</a>
+            </p>
+          </div>
+          <div class="contact-card">
+            <h2 class="contact-title">✝️ Iglesia Bíblica Gracia Verdadera</h2>
+            <p class="contact-text">
+              <b>Días de reunión:</b><br>
+              Domingos: 10:00 a.m.<br>
+              Miércoles: 7:30 p.m. (Grupos pequeños)
+            </p>
+            <p class="contact-text">
+              <b>Dirección:</b><br>
+              Avenida José Garrido<br>
+              Caguas, Puerto Rico
+            </p>
+          </div>
+          <p class="contact-footer">© 2026 Iglesia Bíblica Gracia Verdadera</p>
+        </div>
+      </section>
     </main>
+
     <!-- JS -->
-    <script src="js/radio.js"></script>
-    <script src="js/menu.js"></script>
-    <script src="js/nowplaying.js"></script>
-    <script src="js/schedule.js"></script>
+    <script src="/js/radio.js"></script>
+    <script src="/js/menu.js"></script>
+    <script src="/js/nowplaying.js"></script>
+    <script src="/js/schedule.js"></script>
   </body>
 </html>
