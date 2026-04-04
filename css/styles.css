@@ -879,3 +879,25 @@ html, body {
   transform: translateY(0);
   opacity: 1;
 }
+
+/* =========================
+   SCROLL SOLO EN WEB (NO PWA)
+========================= */
+
+@media (display-mode: browser) {
+
+  /* INICIO */
+  #inicio.section.active {
+    max-height: 100vh;
+    overflow-y: auto;
+    padding-bottom: 100px; /* espacio para el menú */
+  }
+
+  /* PROGRAMACIÓN */
+  #programacion.section.active {
+    max-height: 100vh;
+    overflow-y: auto;
+    padding-bottom: 120px; /* asegura ver últimos días */
+  }
+
+}
