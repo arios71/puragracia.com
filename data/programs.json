@@ -30,7 +30,7 @@
     { "id": "prog_028", "name": "La Verdad en el Tubo de Ensayo", "description": "", "Radio Transmundial": "" },
     { "id": "prog_029", "name": "Trazando la Palabra", "description": "", "Radio Eternidad": "" },
     { "id": "prog_030", "name": "Escuela Bíblica", "description": "", "Radio Eternidad": "" },
-    { "id": "prog_031", "name": "Iglesia Bíblica Gracia Verdadera", "description": "El sermón semanal de los domingos.": "", "IBGV": "" },
+    { "id": "prog_031", "name": "Iglesia Bíblica Gracia Verdadera", "description": "El sermón semanal de los domingos, grabado desde nuestra iglesia en Caguas." }
     { "id": "prog_032", "name": "Solid Joys en Español", "description": "El devocional diario de John Piper, en la voz de Nathan Díaz.": "", "John Piper": "" }
   ]
 }
