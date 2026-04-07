@@ -356,12 +356,14 @@ function openModal(program) {
   const programInfo = programsMap[program.id];
 
   body.innerHTML = `
-  <h2>${programInfo?.name || program.id}</h2>
+    ${programInfo?.image ? `<img src="${programInfo.image}" class="modal-image" />` : ""}
 
-  <p><strong>${program.start} - ${program.end}</strong></p>
+    <h2>${programInfo?.name || program.id}</h2>
 
-  <p>${programInfo?.description || ""}</p>
-`;
+    <p><strong>${program.start} - ${program.end}</strong></p>
+
+    <p>${programInfo?.description || ""}</p>
+  `;
 
   modal.classList.add("show");
 }
