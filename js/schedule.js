@@ -356,7 +356,7 @@ function openModal(program) {
   const programInfo = programsMap[program.id];
 
   body.innerHTML = `
-    ${programInfo?.image ? `<img src="${programInfo.image}" class="modal-image" />` : ""}
+    ${programInfo?.artwork ? `<img src="${programInfo.artwork}" class="modal-image" />` : ""}
 
     <h2>${programInfo?.name || program.id}</h2>
 
