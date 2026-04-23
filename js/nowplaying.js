@@ -6,6 +6,7 @@ const nowPlayingBox = document.getElementById("nowPlayingBox");
 let currentTrack = null;
 let trackStartTime = 0;
 let trackDuration = 0;
+let progressInterval = null; // 👈 AÑADIDO
 
 // 🖼️ FALLBACK GLOBAL
 const DEFAULT_COVER = "/default-cover.png";
@@ -101,12 +102,21 @@ function updateNowPlaying(metadata) {
     program.classList.add("now-program");
     program.textContent = metadata.album || "Programa en vivo";
 
-    // ⏱️ DURACIÓN (CORREGIDO)
+    // ⏱️ DURACIÓN
     const durationEl = document.createElement("div");
     durationEl.classList.add("now-duration");
     durationEl.textContent = metadata.duration
       ? `⏱ ${metadata.duration}`
       : "";
+
+    // 🔊 BARRA DE PROGRESO (AÑADIDO)
+    const progressContainer = document.createElement("div");
+    progressContainer.classList.add("now-progress");
+
+    const progressBar = document.createElement("div");
+    progressBar.classList.add("now-progress-bar");
+
+    progressContainer.appendChild(progressBar);
 
     // EQUALIZER
     const equalizer = document.createElement("div");
@@ -121,13 +131,33 @@ function updateNowPlaying(metadata) {
     infoDiv.appendChild(title);
     infoDiv.appendChild(artist);
     infoDiv.appendChild(program);
-    infoDiv.appendChild(durationEl); // 👈 AÑADIDO
+    infoDiv.appendChild(durationEl);
+    infoDiv.appendChild(progressContainer); // 👈 AÑADIDO
     infoDiv.appendChild(equalizer);
 
     card.appendChild(coverImg);
     card.appendChild(infoDiv);
 
     nowPlayingBox.appendChild(card);
+
+    // 🔥 CONTROL DE INTERVAL (CRÍTICO)
+    clearInterval(progressInterval);
+    progressInterval = null;
+
+    progressInterval = setInterval(() => {
+      if (!trackDuration) return;
+
+      const now = Date.now();
+      const elapsed = (now - trackStartTime) / 1000;
+
+      const percent = Math.min((elapsed / trackDuration) * 100, 100);
+
+      const bar = document.querySelector(".now-progress-bar");
+      if (bar) {
+        bar.style.width = percent + "%";
+      }
+
+    }, 1000); // 👈 optimizado para móvil
 
     // 🎧 MEDIA SESSION
     if ("mediaSession" in navigator) {
@@ -174,3 +204,10 @@ async function fetchNowPlaying() {
 ========================= */
 fetchNowPlaying();
 setInterval(fetchNowPlaying, 15000);
+
+// 🔴 DETENER INTERVAL EN BACKGROUND (AÑADIDO)
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    clearInterval(progressInterval);
+  }
+});
