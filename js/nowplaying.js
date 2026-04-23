@@ -6,7 +6,8 @@ const nowPlayingBox = document.getElementById("nowPlayingBox");
 let currentTrack = null;
 let trackStartTime = 0;
 let trackDuration = 0;
-let progressInterval = null;
+
+let animationFrame = null; // 🔥 reemplaza setInterval
 
 // 🖼️ FALLBACK GLOBAL
 const DEFAULT_COVER = "/default-cover.png";
@@ -31,13 +32,29 @@ function parseDuration(duration) {
 }
 
 /* =========================
-   CLEAN INTERVAL
+   CLEAN PROGRESS
 ========================= */
-function clearProgress() {
-  if (progressInterval) {
-    clearInterval(progressInterval);
-    progressInterval = null;
+function stopProgress() {
+  if (animationFrame) {
+    cancelAnimationFrame(animationFrame);
+    animationFrame = null;
   }
+}
+
+/* =========================
+   PROGRESS ENGINE (FLUIDO)
+========================= */
+let progressBarRef = null;
+
+function updateProgress() {
+  if (!trackDuration || !progressBarRef) return;
+
+  const elapsed = (Date.now() - trackStartTime) / 1000;
+  const percent = Math.min((elapsed / trackDuration) * 100, 100);
+
+  progressBarRef.style.width = percent + "%";
+
+  animationFrame = requestAnimationFrame(updateProgress);
 }
 
 /* =========================
@@ -68,8 +85,7 @@ function updateNowPlaying(metadata) {
   trackStartTime = now;
   trackDuration = duration;
 
-  // limpiar interval anterior
-  clearProgress();
+  stopProgress();
 
   nowPlayingBox.style.opacity = 0;
 
@@ -123,6 +139,9 @@ function updateNowPlaying(metadata) {
 
     progressContainer.appendChild(progressBar);
 
+    // 👇 guardamos referencia directa (clave del fix)
+    progressBarRef = progressBar;
+
     // EQUALIZER
     const equalizer = document.createElement("div");
     equalizer.classList.add("equalizer");
@@ -148,15 +167,8 @@ function updateNowPlaying(metadata) {
 
     nowPlayingBox.style.opacity = 1;
 
-    // 🔥 PROGRESS UPDATE (FIX IMPORTANTE)
-    progressInterval = setInterval(() => {
-      if (!trackDuration || !progressBar) return;
-
-      const elapsed = (Date.now() - trackStartTime) / 1000;
-      const percent = Math.min((elapsed / trackDuration) * 100, 100);
-
-      progressBar.style.width = percent + "%";
-    }, 1000);
+    // 🔥 START FLUID ENGINE
+    animationFrame = requestAnimationFrame(updateProgress);
 
     // MEDIA SESSION
     if ("mediaSession" in navigator) {
@@ -207,6 +219,8 @@ setInterval(fetchNowPlaying, 15000);
 ========================= */
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
-    clearProgress();
+    stopProgress();
+  } else if (trackDuration && progressBarRef) {
+    animationFrame = requestAnimationFrame(updateProgress);
   }
 });
