@@ -113,6 +113,7 @@ function scrollToTodayBlock() {
     }
   });
 }
+
 /* =========================
    LIVE DETECTOR
 ========================= */
@@ -148,18 +149,22 @@ function updateLiveStatus() {
         card.classList.add("live-now", "radio-active");
         currentLiveCard = card;
 
-// limpiar otros activos
-document.querySelectorAll(".radio-active").forEach(c => {
-  if (c !== card) c.classList.remove("radio-active");
-});
-         
+        // limpiar otros activos
+        document.querySelectorAll(".radio-active").forEach(c => {
+          if (c !== card) c.classList.remove("radio-active");
+        });
+
         if (!card.querySelector(".live-badge")) {
           const badge = document.createElement("div");
           badge.classList.add("live-badge");
           badge.textContent = "EN VIVO";
           card.appendChild(badge);
         }
+
       } else {
+        // ✅ FIX: remover clases cuando NO está en vivo
+        card.classList.remove("live-now", "radio-active");
+
         const badge = card.querySelector(".live-badge");
         if (badge) badge.remove();
       }
@@ -220,22 +225,17 @@ function runFocusEngine(force = false) {
 
   if (!targetCard) return;
 
-  // 🚫 evitar molestar al usuario
   if (!force && userHasInteracted) return;
-
   if (!force && targetCard === lastFocusedCard) return;
 
-  // 📍 primero asegurar día visible
   if (!initialAutoScrollDone) {
-  setTimeout(() => {
-    scrollToTodayBlock();
-  }, 100);
-  initialAutoScrollDone = true;
-}
+    setTimeout(() => {
+      scrollToTodayBlock();
+    }, 100);
+    initialAutoScrollDone = true;
+  }
 
-  // 🎯 luego centrar card
   focusCard(targetCard);
-
   lastFocusedCard = targetCard;
 }
 
