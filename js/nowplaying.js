@@ -6,7 +6,7 @@ const nowPlayingBox = document.getElementById("nowPlayingBox");
 let currentTrack = null;
 let trackStartTime = 0;
 let trackDuration = 0;
-let progressInterval = null; // 👈 AÑADIDO
+let progressInterval = null;
 
 // 🖼️ FALLBACK GLOBAL
 const DEFAULT_COVER = "/default-cover.png";
@@ -31,6 +31,16 @@ function parseDuration(duration) {
 }
 
 /* =========================
+   CLEAN INTERVAL
+========================= */
+function clearProgress() {
+  if (progressInterval) {
+    clearInterval(progressInterval);
+    progressInterval = null;
+  }
+}
+
+/* =========================
    UPDATE NOW PLAYING
 ========================= */
 function updateNowPlaying(metadata) {
@@ -47,9 +57,7 @@ function updateNowPlaying(metadata) {
   // Anti metadata adelantada
   if (currentTrack && trackDuration > 0) {
     const elapsed = (now - trackStartTime) / 1000;
-    if (elapsed < trackDuration - 5) {
-      return;
-    }
+    if (elapsed < trackDuration - 5) return;
   }
 
   // Evitar duplicación
@@ -60,7 +68,9 @@ function updateNowPlaying(metadata) {
   trackStartTime = now;
   trackDuration = duration;
 
-  // Fade out
+  // limpiar interval anterior
+  clearProgress();
+
   nowPlayingBox.style.opacity = 0;
 
   setTimeout(() => {
@@ -73,43 +83,38 @@ function updateNowPlaying(metadata) {
     // IMAGEN
     const coverImg = document.createElement("img");
     coverImg.src = metadata.coverArt || DEFAULT_COVER;
+
     if (!metadata.coverArt) {
       coverImg.classList.add("default-cover");
     }
+
     coverImg.alt = metadata.album || "Álbum";
 
     // INFO
     const infoDiv = document.createElement("div");
     infoDiv.classList.add("now-info");
 
-    // LABEL GENERAL
     const label = document.createElement("div");
     label.classList.add("now-label");
     label.textContent = "Ahora";
 
-    // 🎯 TÍTULO
     const title = document.createElement("div");
     title.classList.add("now-title");
     title.textContent = metadata.title || "En vivo";
 
-    // 🎤 ARTISTA
     const artist = document.createElement("div");
     artist.classList.add("now-artist");
     artist.textContent = metadata.artist || "Pura Gracia Radio";
 
-    // 📻 PROGRAMA
     const program = document.createElement("div");
     program.classList.add("now-program");
     program.textContent = metadata.album || "Programa en vivo";
 
-    // ⏱️ DURACIÓN
     const durationEl = document.createElement("div");
     durationEl.classList.add("now-duration");
-    durationEl.textContent = metadata.duration
-      ? `⏱ ${metadata.duration}`
-      : "";
+    durationEl.textContent = metadata.duration ? `⏱ ${metadata.duration}` : "";
 
-    // 🔊 BARRA DE PROGRESO (AÑADIDO)
+    // 🔥 PROGRESS BAR
     const progressContainer = document.createElement("div");
     progressContainer.classList.add("now-progress");
 
@@ -121,6 +126,7 @@ function updateNowPlaying(metadata) {
     // EQUALIZER
     const equalizer = document.createElement("div");
     equalizer.classList.add("equalizer");
+
     for (let i = 0; i < 5; i++) {
       const bar = document.createElement("span");
       equalizer.appendChild(bar);
@@ -132,7 +138,7 @@ function updateNowPlaying(metadata) {
     infoDiv.appendChild(artist);
     infoDiv.appendChild(program);
     infoDiv.appendChild(durationEl);
-    infoDiv.appendChild(progressContainer); // 👈 AÑADIDO
+    infoDiv.appendChild(progressContainer);
     infoDiv.appendChild(equalizer);
 
     card.appendChild(coverImg);
@@ -140,26 +146,19 @@ function updateNowPlaying(metadata) {
 
     nowPlayingBox.appendChild(card);
 
-    // 🔥 CONTROL DE INTERVAL (CRÍTICO)
-    clearInterval(progressInterval);
-    progressInterval = null;
+    nowPlayingBox.style.opacity = 1;
 
+    // 🔥 PROGRESS UPDATE (FIX IMPORTANTE)
     progressInterval = setInterval(() => {
-      if (!trackDuration) return;
+      if (!trackDuration || !progressBar) return;
 
-      const now = Date.now();
-      const elapsed = (now - trackStartTime) / 1000;
-
+      const elapsed = (Date.now() - trackStartTime) / 1000;
       const percent = Math.min((elapsed / trackDuration) * 100, 100);
 
-      const bar = document.querySelector(".now-progress-bar");
-      if (bar) {
-        bar.style.width = percent + "%";
-      }
+      progressBar.style.width = percent + "%";
+    }, 1000);
 
-    }, 1000); // 👈 optimizado para móvil
-
-    // 🎧 MEDIA SESSION
+    // MEDIA SESSION
     if ("mediaSession" in navigator) {
       navigator.mediaSession.metadata = new MediaMetadata({
         title: metadata.title || "Pura Gracia Radio",
@@ -175,8 +174,6 @@ function updateNowPlaying(metadata) {
       });
     }
 
-    nowPlayingBox.style.opacity = 1;
-
   }, 200);
 }
 
@@ -186,7 +183,7 @@ function updateNowPlaying(metadata) {
 async function fetchNowPlaying() {
   try {
     const res = await fetch(
-      "https://pg-radio-webhook.vercel.app/api/nowplaying?_=" + new Date().getTime()
+      "https://pg-radio-webhook.vercel.app/api/nowplaying?_=" + Date.now()
     );
 
     if (!res.ok) throw new Error("No se pudo obtener metadata");
@@ -205,9 +202,11 @@ async function fetchNowPlaying() {
 fetchNowPlaying();
 setInterval(fetchNowPlaying, 15000);
 
-// 🔴 DETENER INTERVAL EN BACKGROUND (AÑADIDO)
+/* =========================
+   CLEANUP VISIBILITY
+========================= */
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
-    clearInterval(progressInterval);
+    clearProgress();
   }
 });
