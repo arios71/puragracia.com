@@ -74,14 +74,12 @@ function updateNowPlaying(metadata) {
   // Evitar duplicación EXACTA
   if (currentTrack === newTrackId) return;
 
-  // Aceptar cambio
   currentTrack = newTrackId;
   trackStartTime = now;
   trackDuration = duration;
 
   stopProgress();
 
-  // reset visual inmediato (fix clave)
   if (progressBarRef) {
     progressBarRef.style.width = "0%";
   }
@@ -110,13 +108,25 @@ function updateNowPlaying(metadata) {
     label.classList.add("now-label");
     label.textContent = "Ahora";
 
+    // =========================
+    // TITULO (SAFE TICKER VIA CSS)
+    // =========================
     const title = document.createElement("div");
     title.classList.add("now-title");
-    title.textContent = metadata.title || "En vivo";
 
+    const titleSpan = document.createElement("span");
+    titleSpan.textContent = metadata.title || "En vivo";
+    title.appendChild(titleSpan);
+
+    // =========================
+    // ARTISTA (SAFE TICKER VIA CSS)
+    // =========================
     const artist = document.createElement("div");
     artist.classList.add("now-artist");
-    artist.textContent = metadata.artist || "Pura Gracia Radio";
+
+    const artistSpan = document.createElement("span");
+    artistSpan.textContent = metadata.artist || "Pura Gracia Radio";
+    artist.appendChild(artistSpan);
 
     const program = document.createElement("div");
     program.classList.add("now-program");
