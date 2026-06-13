@@ -59,6 +59,23 @@ function updateProgress() {
 }
 
 /* =========================
+   🎯 RADIO SCROLL LOGIC
+========================= */
+function applyScrollIfNeeded(el) {
+  const span = el.querySelector("span");
+  if (!span) return;
+
+  el.classList.remove("scroll-text");
+
+  // espera a render (clave en mobile)
+  requestAnimationFrame(() => {
+    if (span.scrollWidth > el.clientWidth) {
+      el.classList.add("scroll-text");
+    }
+  });
+}
+
+/* =========================
    UPDATE NOW PLAYING
 ========================= */
 function updateNowPlaying(metadata) {
@@ -69,19 +86,16 @@ function updateNowPlaying(metadata) {
   const newTrackId = normalize(newTitle) + "_" + normalize(newArtist);
 
   const duration = parseDuration(metadata.duration || metadata.length);
-  const now = Date.now();
 
   // Evitar duplicación EXACTA
   if (currentTrack === newTrackId) return;
 
-  // Aceptar cambio
   currentTrack = newTrackId;
-  trackStartTime = now;
+  trackStartTime = Date.now();
   trackDuration = duration;
 
   stopProgress();
 
-  // reset visual inmediato (fix clave)
   if (progressBarRef) {
     progressBarRef.style.width = "0%";
   }
@@ -112,19 +126,21 @@ function updateNowPlaying(metadata) {
 
     const title = document.createElement("div");
     title.classList.add("now-title");
-    title.textContent = metadata.title || "En vivo";
 
     const artist = document.createElement("div");
     artist.classList.add("now-artist");
-    artist.textContent = metadata.artist || "Pura Gracia Radio";
 
     const program = document.createElement("div");
     program.classList.add("now-program");
-    program.textContent = metadata.album || "Programa en vivo";
 
     const durationEl = document.createElement("div");
     durationEl.classList.add("now-duration");
     durationEl.textContent = metadata.duration ? `⏱ ${metadata.duration}` : "";
+
+    // 👉 IMPORTANTE: ahora usamos span para scroll
+    title.innerHTML = `<span>${metadata.title || "En vivo"}</span>`;
+    artist.innerHTML = `<span>${metadata.artist || "Pura Gracia Radio"}</span>`;
+    program.innerHTML = `<span>${metadata.album || "Programa en vivo"}</span>`;
 
     const progressContainer = document.createElement("div");
     progressContainer.classList.add("now-progress");
@@ -156,6 +172,11 @@ function updateNowPlaying(metadata) {
     nowPlayingBox.appendChild(card);
 
     nowPlayingBox.style.opacity = 1;
+
+    // 🎯 activar scroll solo si hace falta
+    applyScrollIfNeeded(title);
+    applyScrollIfNeeded(artist);
+    applyScrollIfNeeded(program);
 
     animationFrame = requestAnimationFrame(updateProgress);
 
