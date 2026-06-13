@@ -993,3 +993,9 @@ html, body {
     transform: translateX(calc(-100% - 30px));
   }
 }
+
+.now-title span,
+.now-artist span {
+  display: inline-block;
+  white-space: nowrap;
+}
