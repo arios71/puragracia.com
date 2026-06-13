@@ -7,7 +7,7 @@ let currentTrack = null;
 let trackStartTime = 0;
 let trackDuration = 0;
 
-let animationFrame = null;
+let animationFrame = null; // 🔥 reemplaza setInterval
 
 // 🖼️ FALLBACK GLOBAL
 const DEFAULT_COVER = "/default-cover.png";
@@ -20,6 +20,7 @@ const normalize = (str) => (str || "").trim().toLowerCase();
 ========================= */
 function parseDuration(duration) {
   if (!duration) return 0;
+
   if (typeof duration === "number") return duration;
 
   if (typeof duration === "string" && duration.includes(":")) {
@@ -53,9 +54,7 @@ function updateProgress() {
 
   progressBarRef.style.width = percent + "%";
 
-  if (percent < 100) {
-    animationFrame = requestAnimationFrame(updateProgress);
-  }
+  animationFrame = requestAnimationFrame(updateProgress);
 }
 
 /* =========================
@@ -66,32 +65,38 @@ function updateNowPlaying(metadata) {
 
   const newTitle = metadata.title || "";
   const newArtist = metadata.artist || "";
+
   const newTrackId = normalize(newTitle) + "_" + normalize(newArtist);
 
   const duration = parseDuration(metadata.duration || metadata.length);
   const now = Date.now();
 
-  // Evitar duplicación EXACTA
+  // Anti metadata adelantada
+  if (currentTrack && trackDuration > 0) {
+    const elapsed = (now - trackStartTime) / 1000;
+    if (elapsed < trackDuration - 5) return;
+  }
+
+  // Evitar duplicación
   if (currentTrack === newTrackId) return;
 
+  // Aceptar cambio
   currentTrack = newTrackId;
   trackStartTime = now;
   trackDuration = duration;
 
   stopProgress();
 
-  if (progressBarRef) {
-    progressBarRef.style.width = "0%";
-  }
-
   nowPlayingBox.style.opacity = 0;
 
   setTimeout(() => {
     nowPlayingBox.innerHTML = "";
 
+    // CONTENEDOR PRINCIPAL
     const card = document.createElement("div");
     card.classList.add("now-card");
 
+    // IMAGEN
     const coverImg = document.createElement("img");
     coverImg.src = metadata.coverArt || DEFAULT_COVER;
 
@@ -101,6 +106,7 @@ function updateNowPlaying(metadata) {
 
     coverImg.alt = metadata.album || "Álbum";
 
+    // INFO
     const infoDiv = document.createElement("div");
     infoDiv.classList.add("now-info");
 
@@ -108,25 +114,13 @@ function updateNowPlaying(metadata) {
     label.classList.add("now-label");
     label.textContent = "Ahora";
 
-    // =========================
-    // TITULO (SAFE TICKER VIA CSS)
-    // =========================
     const title = document.createElement("div");
     title.classList.add("now-title");
+    title.textContent = metadata.title || "En vivo";
 
-    const titleSpan = document.createElement("span");
-    titleSpan.textContent = metadata.title || "En vivo";
-    title.appendChild(titleSpan);
-
-    // =========================
-    // ARTISTA (SAFE TICKER VIA CSS)
-    // =========================
     const artist = document.createElement("div");
     artist.classList.add("now-artist");
-
-    const artistSpan = document.createElement("span");
-    artistSpan.textContent = metadata.artist || "Pura Gracia Radio";
-    artist.appendChild(artistSpan);
+    artist.textContent = metadata.artist || "Pura Gracia Radio";
 
     const program = document.createElement("div");
     program.classList.add("now-program");
@@ -136,6 +130,7 @@ function updateNowPlaying(metadata) {
     durationEl.classList.add("now-duration");
     durationEl.textContent = metadata.duration ? `⏱ ${metadata.duration}` : "";
 
+    // 🔥 PROGRESS BAR
     const progressContainer = document.createElement("div");
     progressContainer.classList.add("now-progress");
 
@@ -143,15 +138,20 @@ function updateNowPlaying(metadata) {
     progressBar.classList.add("now-progress-bar");
 
     progressContainer.appendChild(progressBar);
+
+    // 👇 guardamos referencia directa (clave del fix)
     progressBarRef = progressBar;
 
+    // EQUALIZER
     const equalizer = document.createElement("div");
     equalizer.classList.add("equalizer");
 
     for (let i = 0; i < 5; i++) {
-      equalizer.appendChild(document.createElement("span"));
+      const bar = document.createElement("span");
+      equalizer.appendChild(bar);
     }
 
+    // ENSAMBLAR
     infoDiv.appendChild(label);
     infoDiv.appendChild(title);
     infoDiv.appendChild(artist);
@@ -167,8 +167,10 @@ function updateNowPlaying(metadata) {
 
     nowPlayingBox.style.opacity = 1;
 
+    // 🔥 START FLUID ENGINE
     animationFrame = requestAnimationFrame(updateProgress);
 
+    // MEDIA SESSION
     if ("mediaSession" in navigator) {
       navigator.mediaSession.metadata = new MediaMetadata({
         title: metadata.title || "Pura Gracia Radio",
@@ -183,6 +185,7 @@ function updateNowPlaying(metadata) {
         ]
       });
     }
+
   }, 200);
 }
 
@@ -198,7 +201,7 @@ async function fetchNowPlaying() {
     if (!res.ok) throw new Error("No se pudo obtener metadata");
 
     const data = await res.json();
-updateNowPlaying(data);
+    updateNowPlaying(data);
 
   } catch (err) {
     console.error("Error cargando Now Playing:", err);
