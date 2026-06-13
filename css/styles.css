@@ -159,6 +159,11 @@ body {
 	display: flex;
 	flex-direction: column;
 	gap: 6px;
+	
+	/* 🔒 CLAVE: Evita que el contenedor empuje el ancho de la tarjeta */
+	min-width: 0;
+	flex: 1;
+	overflow: hidden; 
 }
 .now-label {
 	font-size: 0.8rem;
@@ -167,14 +172,48 @@ body {
 .now-title {
 	font-size: 1.1rem;
 	font-weight: 700;
+	
+	/* Comportamiento base estático */
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 100%;
+	display: block;
 }
 .now-artist {
 	font-size: 0.9rem;
 	opacity: 0.8;
+	
+	/* Comportamiento base estático */
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 100%;
+	display: block;
 }
-.now-artist {
-	font-size: 0.9rem;
-	opacity: 0.8;
+
+/* 🔄 ANIMACIÓN SCROLL (Hover en Desktop / Toque largo en PWA) */
+.now-card:hover .now-title,
+.now-card:hover .now-artist {
+	overflow: visible;
+	text-overflow: clip;
+	width: max-content;
+	padding-right: 40px; /* Espacio de cortesía al final del texto */
+	animation: marqueeScroll 12s linear infinite;
+}
+
+/* Pausa el scroll del artista 2 segundos para dar prioridad a la lectura del título */
+.now-card:hover .now-artist {
+	animation-delay: 2s;
+}
+
+@keyframes marqueeScroll {
+	0% {
+		transform: translate3d(0, 0, 0);
+	}
+	100% {
+		transform: translate3d(-100%, 0, 0);
+	}
 }
 
 /* 📻 PROGRAMA */
@@ -183,6 +222,11 @@ body {
 	opacity: 0.65;
 	margin-top: 2px;
 	letter-spacing: 0.3px;
+	
+	/* También protegido para que no deforme la caja */
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 /* ================= EQUALIZER ================= */
 .equalizer {
