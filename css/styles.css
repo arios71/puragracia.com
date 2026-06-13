@@ -959,3 +959,37 @@ html, body {
   margin-top: 8px;
   flex-shrink: 0;
 }
+
+/* =========================
+   TICKER REAL
+========================= */
+
+.now-title,
+.now-artist {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+}
+
+.now-title span,
+.now-artist span {
+  display: inline-block;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.now-title.scroll span,
+.now-artist.scroll span {
+  animation: npTicker linear infinite;
+}
+
+@keyframes npTicker {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(-100% - 30px));
+  }
+}
