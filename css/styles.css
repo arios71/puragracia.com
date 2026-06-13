@@ -706,3 +706,61 @@ footer {
 	border-radius: 10px;
 	transition: width 1s linear;
 }
+
+/* =========================
+   FIX NOW CARD STABILITY
+========================= */
+
+.now-card {
+  width: 100%;
+  max-width: 520px;
+  overflow: hidden;
+}
+
+/* Evita que el contenido empuje la caja */
+.now-info {
+  flex: 1;
+  min-width: 0;
+}
+
+/* TITULOS NO ROMPEN LAYOUT */
+.now-title,
+.now-artist,
+.now-program {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Duración no debe expandir */
+.now-duration {
+  font-size: 0.75rem;
+  opacity: 0.7;
+  white-space: nowrap;
+}
+
+/* PROGRESO SIEMPRE FIJO */
+.now-progress {
+  flex-shrink: 0;
+}
+
+/* evita que el card cambie altura rara */
+.now-card img {
+  flex-shrink: 0;
+}
+
+/* =========================
+   MARQUEE STYLE (RADIO SCROLL)
+========================= */
+
+.now-title.scroll,
+.now-artist.scroll {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee 8s linear infinite;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
