@@ -1,10 +1,13 @@
-```javascript
 // js/nowplaying.js
 
 const nowPlayingBox = document.getElementById("nowPlayingBox");
 
-// 🔒 CONTROL DE TRACK (ANTI-DUPLICACIÓN)
+// 🔒 CONTROL DE TRACK (ANTI-METADATA ADELANTADA)
 let currentTrack = null;
+let trackStartTime = 0;
+let trackDuration = 0;
+
+let animationFrame = null; // 🔥 reemplaza setInterval
 
 // 🖼️ FALLBACK GLOBAL
 const DEFAULT_COVER = "/default-cover.png";
@@ -29,6 +32,32 @@ function parseDuration(duration) {
 }
 
 /* =========================
+   CLEAN PROGRESS
+========================= */
+function stopProgress() {
+  if (animationFrame) {
+    cancelAnimationFrame(animationFrame);
+    animationFrame = null;
+  }
+}
+
+/* =========================
+   PROGRESS ENGINE (FLUIDO)
+========================= */
+let progressBarRef = null;
+
+function updateProgress() {
+  if (!trackDuration || !progressBarRef) return;
+
+  const elapsed = (Date.now() - trackStartTime) / 1000;
+  const percent = Math.min((elapsed / trackDuration) * 100, 100);
+
+  progressBarRef.style.width = percent + "%";
+
+  animationFrame = requestAnimationFrame(updateProgress);
+}
+
+/* =========================
    UPDATE NOW PLAYING
 ========================= */
 function updateNowPlaying(metadata) {
@@ -39,16 +68,24 @@ function updateNowPlaying(metadata) {
 
   const newTrackId = normalize(newTitle) + "_" + normalize(newArtist);
 
-  // Evitar redibujar exactamente el mismo contenido
-  if (
-    currentTrack === newTrackId &&
-    nowPlayingBox.querySelector(".now-card")
-  ) {
-    return;
+  const duration = parseDuration(metadata.duration || metadata.length);
+  const now = Date.now();
+
+  // Anti metadata adelantada
+  if (currentTrack && trackDuration > 0) {
+    const elapsed = (now - trackStartTime) / 1000;
+    if (elapsed < trackDuration - 5) return;
   }
+
+  // Evitar duplicación
+  if (currentTrack === newTrackId) return;
 
   // Aceptar cambio
   currentTrack = newTrackId;
+  trackStartTime = now;
+  trackDuration = duration;
+
+  stopProgress();
 
   nowPlayingBox.style.opacity = 0;
 
@@ -91,9 +128,19 @@ function updateNowPlaying(metadata) {
 
     const durationEl = document.createElement("div");
     durationEl.classList.add("now-duration");
-    durationEl.textContent = metadata.duration
-      ? `⏱ ${metadata.duration}`
-      : "";
+    durationEl.textContent = metadata.duration ? `⏱ ${metadata.duration}` : "";
+
+    // 🔥 PROGRESS BAR
+    const progressContainer = document.createElement("div");
+    progressContainer.classList.add("now-progress");
+
+    const progressBar = document.createElement("div");
+    progressBar.classList.add("now-progress-bar");
+
+    progressContainer.appendChild(progressBar);
+
+    // 👇 guardamos referencia directa (clave del fix)
+    progressBarRef = progressBar;
 
     // EQUALIZER
     const equalizer = document.createElement("div");
@@ -110,6 +157,7 @@ function updateNowPlaying(metadata) {
     infoDiv.appendChild(artist);
     infoDiv.appendChild(program);
     infoDiv.appendChild(durationEl);
+    infoDiv.appendChild(progressContainer);
     infoDiv.appendChild(equalizer);
 
     card.appendChild(coverImg);
@@ -118,6 +166,9 @@ function updateNowPlaying(metadata) {
     nowPlayingBox.appendChild(card);
 
     nowPlayingBox.style.opacity = 1;
+
+    // 🔥 START FLUID ENGINE
+    animationFrame = requestAnimationFrame(updateProgress);
 
     // MEDIA SESSION
     if ("mediaSession" in navigator) {
@@ -162,4 +213,14 @@ async function fetchNowPlaying() {
 ========================= */
 fetchNowPlaying();
 setInterval(fetchNowPlaying, 15000);
-```
+
+/* =========================
+   CLEANUP VISIBILITY
+========================= */
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    stopProgress();
+  } else if (trackDuration && progressBarRef) {
+    animationFrame = requestAnimationFrame(updateProgress);
+  }
+});
