@@ -154,72 +154,24 @@ body {
 	border-color: rgba(255, 255, 255, 0.6);
 	box-shadow: 0 12px 35px rgba(59, 130, 246, 0.45);
 }
-/* ================= NOW CARD ================= */
-.now-card {
-	display: flex;
-	gap: 14px;
-	align-items: center;
-	background: rgba(0, 0, 0, 0.25);
-	border-radius: 18px;
-	padding: 14px;
-	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-	position: relative;
-	transition: opacity 0.3s ease;
-
-	/* 🔒 BLOQUEO TOTAL DE TAMAÑO */
-	overflow: hidden; 
-	width: 100%;       /* Se adapta al tamaño del .radio-wrapper (max 520px) */
-	max-width: 100%; 
-}
-
 /* ================= NOW INFO ================= */
 .now-info {
 	display: flex;
 	flex-direction: column;
 	gap: 6px;
-	
-	/* 🔒 EL TÚNEL INVISIBLE: Ocupa solo el espacio sobrante */
-	flex: 1;
-	min-width: 0; 
-	overflow: hidden; 
 }
-
-/* Textos fijos y perfectamente centrados */
-.now-label,
-.now-artist,
-.now-program {
-	text-align: center;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	display: block;
-	width: 100%;
-}
-
 .now-label {
 	font-size: 0.8rem;
 	opacity: 0.6;
 }
-
-/* 🔥 TÍTULO: Animado dentro del túnel sin empujar las paredes */
 .now-title {
 	font-size: 1.1rem;
 	font-weight: 700;
-	text-align: center;
-	display: block;
-	width: 100%;
-	
-	white-space: nowrap;
-	overflow: visible; /* Permite que el texto largo pase hacia el área oculta */
 }
-
-/* 🔄 Aplicar la animación mediante un contenedor interno virtual */
-.now-title {
-	display: inline-block;
-	padding-right: 60px; /* Espacio para que no se pegue el final con el inicio */
-	animation: marqueeScrollTitle 12s linear infinite;
+.now-artist {
+	font-size: 0.9rem;
+	opacity: 0.8;
 }
-
 .now-artist {
 	font-size: 0.9rem;
 	opacity: 0.8;
@@ -231,31 +183,6 @@ body {
 	opacity: 0.65;
 	margin-top: 2px;
 	letter-spacing: 0.3px;
-}
-
-/* ================= EQUALIZER ================= */
-.equalizer {
-	display: flex;
-	justify-content: center; /* Centrado */
-	align-items: flex-end;
-	gap: 4px;
-	margin-top: 8px;
-	height: 30px;
-}
-
-/* 🔄 NUEVA ANIMACIÓN COMPACTA */
-@keyframes marqueeScrollTitle {
-	0% {
-		transform: translate3d(0, 0, 0);
-	}
-	20% {
-		transform: translate3d(0, 0, 0); /* Pausa de 2 segundos para leer al inicio */
-	}
-	100% {
-		/* En lugar de -100% (que usa el tamaño total del texto largo), 
-		   usamos un porcentaje estimado para que no corra infinitamente hacia la nada */
-		transform: translate3d(-50%, 0, 0); 
-	}
 }
 /* ================= EQUALIZER ================= */
 .equalizer {
