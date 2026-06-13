@@ -999,3 +999,32 @@ html, body {
   display: inline-block;
   white-space: nowrap;
 }
+
+/* =========================
+   FIX REAL NOW CARD OVERFLOW
+========================= */
+
+.now-card {
+  max-width: 520px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.now-info {
+  flex: 1;
+  min-width: 0; /* 🔴 CLAVE: evita expansión del flex */
+}
+
+.now-title,
+.now-artist,
+.now-program {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* evita que imágenes o bloques empujen el layout */
+.now-card img {
+  flex-shrink: 0;
+}
