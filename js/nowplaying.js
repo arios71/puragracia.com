@@ -197,15 +197,8 @@ async function fetchNowPlaying() {
 
     if (!res.ok) throw new Error("No se pudo obtener metadata");
 
-    const fakeData = {
-  title: "ESTE ES UN TÍTULO EXTREMADAMENTE LARGO PARA PROBAR SI EL CARD SE ROMPE O NO",
-  artist: "ARTISTA CON NOMBRE IGUALMENTE LARGO PARA VER EL COMPORTAMIENTO",
-  album: "Programa en vivo",
-  duration: "4:32",
-  coverArt: ""
-};
-
-updateNowPlaying(fakeData);
+    const data = await res.json();
+updateNowPlaying(data);
 
   } catch (err) {
     console.error("Error cargando Now Playing:", err);
