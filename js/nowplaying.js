@@ -2,12 +2,8 @@
 
 const nowPlayingBox = document.getElementById("nowPlayingBox");
 
-// 🔒 CONTROL DE TRACK (ANTI-METADATA ADELANTADA)
+// 🔒 CONTROL DE TRACK
 let currentTrack = null;
-let trackStartTime = 0;
-let trackDuration = 0;
-
-let animationFrame = null; // 🔥 reemplaza setInterval
 
 // 🖼️ FALLBACK GLOBAL
 const DEFAULT_COVER = "/default-cover.png";
@@ -19,42 +15,16 @@ const normalize = (str) => (str || "").trim().toLowerCase();
    HELPERS
 ========================= */
 function parseDuration(duration) {
-  if (!duration) return 0;
+  if (!duration) return "";
 
   if (typeof duration === "number") return duration;
 
   if (typeof duration === "string" && duration.includes(":")) {
     const parts = duration.split(":");
-    return parseInt(parts[0]) * 60 + parseInt(parts[1]);
+    return `${parts[0]}:${parts[1]}`;
   }
 
-  return parseInt(duration) || 0;
-}
-
-/* =========================
-   CLEAN PROGRESS
-========================= */
-function stopProgress() {
-  if (animationFrame) {
-    cancelAnimationFrame(animationFrame);
-    animationFrame = null;
-  }
-}
-
-/* =========================
-   PROGRESS ENGINE (FLUIDO)
-========================= */
-let progressBarRef = null;
-
-function updateProgress() {
-  if (!trackDuration || !progressBarRef) return;
-
-  const elapsed = (Date.now() - trackStartTime) / 1000;
-  const percent = Math.min((elapsed / trackDuration) * 100, 100);
-
-  progressBarRef.style.width = percent + "%";
-
-  animationFrame = requestAnimationFrame(updateProgress);
+  return duration || "";
 }
 
 /* =========================
@@ -68,24 +38,10 @@ function updateNowPlaying(metadata) {
 
   const newTrackId = normalize(newTitle) + "_" + normalize(newArtist);
 
-  const duration = parseDuration(metadata.duration || metadata.length);
-  const now = Date.now();
-
-  // Anti metadata adelantada
-  if (currentTrack && trackDuration > 0) {
-    const elapsed = (now - trackStartTime) / 1000;
-    if (elapsed < trackDuration - 5) return;
-  }
-
   // Evitar duplicación
   if (currentTrack === newTrackId) return;
 
-  // Aceptar cambio
   currentTrack = newTrackId;
-  trackStartTime = now;
-  trackDuration = duration;
-
-  stopProgress();
 
   nowPlayingBox.style.opacity = 0;
 
@@ -128,37 +84,16 @@ function updateNowPlaying(metadata) {
 
     const durationEl = document.createElement("div");
     durationEl.classList.add("now-duration");
-    durationEl.textContent = metadata.duration ? `⏱ ${metadata.duration}` : "";
+    durationEl.textContent = metadata.duration
+      ? `⏱ ${metadata.duration}`
+      : "";
 
-    // 🔥 PROGRESS BAR
-    const progressContainer = document.createElement("div");
-    progressContainer.classList.add("now-progress");
-
-    const progressBar = document.createElement("div");
-    progressBar.classList.add("now-progress-bar");
-
-    progressContainer.appendChild(progressBar);
-
-    // 👇 guardamos referencia directa (clave del fix)
-    progressBarRef = progressBar;
-
-    // EQUALIZER
-    const equalizer = document.createElement("div");
-    equalizer.classList.add("equalizer");
-
-    for (let i = 0; i < 5; i++) {
-      const bar = document.createElement("span");
-      equalizer.appendChild(bar);
-    }
-
-    // ENSAMBLAR
+    // ENSAMBLAR UI
     infoDiv.appendChild(label);
     infoDiv.appendChild(title);
     infoDiv.appendChild(artist);
     infoDiv.appendChild(program);
     infoDiv.appendChild(durationEl);
-    infoDiv.appendChild(progressContainer);
-    infoDiv.appendChild(equalizer);
 
     card.appendChild(coverImg);
     card.appendChild(infoDiv);
@@ -166,9 +101,6 @@ function updateNowPlaying(metadata) {
     nowPlayingBox.appendChild(card);
 
     nowPlayingBox.style.opacity = 1;
-
-    // 🔥 START FLUID ENGINE
-    animationFrame = requestAnimationFrame(updateProgress);
 
     // MEDIA SESSION
     if ("mediaSession" in navigator) {
@@ -185,7 +117,6 @@ function updateNowPlaying(metadata) {
         ]
       });
     }
-
   }, 200);
 }
 
@@ -202,7 +133,6 @@ async function fetchNowPlaying() {
 
     const data = await res.json();
     updateNowPlaying(data);
-
   } catch (err) {
     console.error("Error cargando Now Playing:", err);
   }
@@ -213,14 +143,3 @@ async function fetchNowPlaying() {
 ========================= */
 fetchNowPlaying();
 setInterval(fetchNowPlaying, 15000);
-
-/* =========================
-   CLEANUP VISIBILITY
-========================= */
-document.addEventListener("visibilitychange", () => {
-  if (document.hidden) {
-    stopProgress();
-  } else if (trackDuration && progressBarRef) {
-    animationFrame = requestAnimationFrame(updateProgress);
-  }
-});
