@@ -156,25 +156,27 @@ body {
 }
 /* ================= NOW INFO ================= */
 .now-info {
-	display: flex;
-	flex-direction: column;
-	gap: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;           /* Importante: esto hace que ocupe el espacio sobrante */
+    min-width: 0;      /* Crucial: permite que el texto se trunque en lugar de desbordar */
 }
-.now-label {
-	font-size: 0.8rem;
-	opacity: 0.6;
-}
+
 .now-title {
-	font-size: 1.1rem;
-	font-weight: 700;
+    font-size: 0.95rem; /* Reducimos ligeramente para mayor estabilidad */
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
+
 .now-artist {
-	font-size: 0.9rem;
-	opacity: 0.8;
-}
-.now-artist {
-	font-size: 0.9rem;
-	opacity: 0.8;
+    font-size: 0.85rem; /* Reducimos para diferenciar jerarquía */
+    opacity: 0.8;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* 📻 PROGRAMA */
