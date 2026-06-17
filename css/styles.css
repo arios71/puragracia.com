@@ -135,6 +135,11 @@ body {
 	position: relative;
 	overflow: hidden;
 	transition: all 0.3s ease;
+	
+/* --- AGREGA ESTAS DOS LÍNEAS --- */
+    width: 100%;       
+    max-width: 520px;  
+    /* ------------------------------- */
 }
 .now-card img {
 	width: 110px;
@@ -158,25 +163,27 @@ body {
 .now-info {
     display: flex;
     flex-direction: column;
-    gap: 2px;
-    flex: 1;           /* Importante: esto hace que ocupe el espacio sobrante */
-    min-width: 0;      /* Crucial: permite que el texto se trunque en lugar de desbordar */
+    justify-content: center;
+    gap: 4px;
+    flex: 1;           /* Ocupa el espacio restante al lado de la imagen */
+    min-width: 0;      /* IMPORTANTE: permite que el texto se encoja y se trunque */
+    overflow: hidden;  /* Evita que el texto largo se salga */
 }
 
 .now-title {
-    font-size: 0.95rem; /* Reducimos ligeramente para mayor estabilidad */
+    font-size: 0.95rem;
     font-weight: 700;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: nowrap;      /* Evita el salto de línea */
+    overflow: hidden;         /* Esconde el desborde */
+    text-overflow: ellipsis;  /* Añade los tres puntos ... */
 }
 
 .now-artist {
-    font-size: 0.85rem; /* Reducimos para diferenciar jerarquía */
+    font-size: 0.85rem;
     opacity: 0.8;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: nowrap;      /* Evita el salto de línea */
+    overflow: hidden;         /* Esconde el desborde */
+    text-overflow: ellipsis;  /* Añade los tres puntos ... */
 }
 
 /* 📻 PROGRAMA */
