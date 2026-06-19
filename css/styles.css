@@ -160,7 +160,7 @@ body {
 }
 
 .now-title {
-	font-size: 0.95rem;
+	font-size: 0.85rem;
 	font-weight: 700;
 	white-space: nowrap;
 	overflow: hidden;
@@ -170,7 +170,7 @@ body {
 }
 
 .now-artist {
-	font-size: 0.85rem;
+	font-size: 0.75rem;
 	opacity: 0.8;
 	white-space: nowrap;
 	overflow: hidden;
@@ -181,7 +181,7 @@ body {
 
 /* 📻 PROGRAMA */
 .now-program {
-	font-size: 0.7rem;
+	font-size: 0.6rem;
 	opacity: 0.65;
 	margin-top: 2px;
 	letter-spacing: 0.3px;
