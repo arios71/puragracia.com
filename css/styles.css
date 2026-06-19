@@ -135,55 +135,48 @@ body {
 	position: relative;
 	overflow: hidden;
 	transition: all 0.3s ease;
-	
-/* --- AGREGA ESTAS DOS LÍNEAS --- */
-    width: 100%;       
-    max-width: 520px;  
-    /* ------------------------------- */
+	width: 100%;       /* Asegura que no se salga del contenedor */
+	max-width: 520px;  /* Mantén tu límite original */
 }
+
 .now-card img {
 	width: 110px;
 	height: 110px;
 	border-radius: 14px;
 	object-fit: cover;
 	transition: all 0.3s ease;
+	flex-shrink: 0;    /* ESTO EVITA QUE LA IMAGEN SE DEFORME O ENCOJA */
 }
-.now-card img.default-cover {
-	opacity: 0.95;
-	border-radius: 14px;
-	border: 2px solid rgba(255, 255, 255, 0.25);
-	box-shadow: 0 8px 25px rgba(59, 130, 246, 0.25);
-}
-.now-card img.default-cover:hover {
-	opacity: 1;
-	border-color: rgba(255, 255, 255, 0.6);
-	box-shadow: 0 12px 35px rgba(59, 130, 246, 0.45);
-}
+
 /* ================= NOW INFO ================= */
 .now-info {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 4px;
-    flex: 1;           /* Ocupa el espacio restante al lado de la imagen */
-    min-width: 0;      /* IMPORTANTE: permite que el texto se encoja y se trunque */
-    overflow: hidden;  /* Evita que el texto largo se salga */
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 4px;
+	flex: 1;           /* Ocupa el espacio restante al lado de la imagen */
+	min-width: 0;      /* CRUCIAL: Permite que el texto se trunque */
+	overflow: hidden;  /* Evita desbordamiento */
 }
 
 .now-title {
-    font-size: 0.95rem;
-    font-weight: 700;
-    white-space: nowrap;      /* Evita el salto de línea */
-    overflow: hidden;         /* Esconde el desborde */
-    text-overflow: ellipsis;  /* Añade los tres puntos ... */
+	font-size: 0.95rem;
+	font-weight: 700;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: block;    /* Necesario para el truncamiento */
+	width: 100%;       /* Necesario para el truncamiento */
 }
 
 .now-artist {
-    font-size: 0.85rem;
-    opacity: 0.8;
-    white-space: nowrap;      /* Evita el salto de línea */
-    overflow: hidden;         /* Esconde el desborde */
-    text-overflow: ellipsis;  /* Añade los tres puntos ... */
+	font-size: 0.85rem;
+	opacity: 0.8;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: block;    /* Necesario para el truncamiento */
+	width: 100%;       /* Necesario para el truncamiento */
 }
 
 /* 📻 PROGRAMA */
