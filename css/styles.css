@@ -165,21 +165,17 @@ body {
 	opacity: 0.6;
 }
 .now-title {
-	font-size: 1.1rem;
+	font-size: 0.85rem;
 	font-weight: 700;
 }
 .now-artist {
-	font-size: 0.9rem;
-	opacity: 0.8;
-}
-.now-artist {
-	font-size: 0.9rem;
+	font-size: 0.75rem;
 	opacity: 0.8;
 }
 
 /* 📻 PROGRAMA */
 .now-program {
-	font-size: 0.7rem;
+	font-size: 0.65rem;
 	opacity: 0.65;
 	margin-top: 2px;
 	letter-spacing: 0.3px;
