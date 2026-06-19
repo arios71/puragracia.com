@@ -76,17 +76,51 @@ body {
 	align-items: center;
 	padding: 10px 20px 30px 20px;
 }
-/* ================= RADIO WRAPPER ================= */
+/* 1. Aseguramos que el wrapper sea el jefe */
 .radio-wrapper {
-	background: rgba(255, 255, 255, 0.05);
-	backdrop-filter: blur(18px);
-	border-radius: 22px;
-	padding: 18px;
-	max-width: 520px;
-	margin: 0 auto;
-	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
-	border: 1px solid rgba(255, 255, 255, 0.08);
-	transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(18px);
+    border-radius: 22px;
+    padding: 18px;
+    width: 100%;            /* Forzamos el 100% del espacio disponible */
+    max-width: 520px;       /* Mantenemos el límite máximo */
+    margin: 0 auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.3s ease;
+    overflow: hidden;       /* ESTO ES VITAL: Corta cualquier desborde hijo */
+}
+
+/* 2. Ahora, forzamos a que .now-card sea un hijo obediente */
+.now-card {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 18px;
+    padding: 14px;
+    width: 100%;            /* Ocupa el 100% de los 520px del wrapper */
+    box-sizing: border-box; /* Incluye el padding en el cálculo del ancho */
+    overflow: hidden;       /* No deja que nada de adentro sobresalga */
+}
+
+/* 3. Ahora el info simplemente se adapta al espacio sobrante */
+.now-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    flex: 1;                /* Se queda con el resto del espacio */
+    min-width: 0;           /* PERMITE EL TRUNCAMIENTO */
+    overflow: hidden;
+}
+
+.now-title, .now-artist {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    width: 100%;            /* Se ajusta al ancho del .now-info */
 }
 /* ================= PLAY BUTTON ================= */
 .play-btn, #playRadio {
