@@ -125,7 +125,7 @@ body {
 }
 /* ================= NOW CARD ================= */
 .now-card {
-	display: grid;
+	display: flex;
 	gap: 14px;
 	align-items: center;
 	background: rgba(0, 0, 0, 0.25);
