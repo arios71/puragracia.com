@@ -95,9 +95,9 @@
     {
       "@type": "AudioObject",
       "name": "Streaming en vivo Pura Gracia Radio",
-      "contentUrl": "https://playerservices.streamtheworld.com/api/livestream-redirect/SAM05AAC459_SC",
+      "contentUrl": "https://playerservices.streamtheworld.com/api/stream-redirect/SAM05AAC459_SC",
       "encodingFormat": "audio/mpeg",
-      "isLiveBroadcast": true,
+      "isBroadcast": true,
       "publisher": {
         "@id": "https://www.puragracia.com/#radio"
       }
@@ -161,11 +161,7 @@
           <div class="radio-wrapper">
             <button id="playRadio" class="play-btn">▶ Reproducir Radio</button>
             <p id="radioStatus" class="radio-status" style="display: none"></p>
-            <div class="live-row">
-              <div class="line"></div>
-              <span class="live-text">En vivo</span>
-              <div class="line"></div>
-            </div>
+            
             <div id="nowPlayingBox"></div>
             <audio id="radioAudio" preload="none"></audio>
           </div>
