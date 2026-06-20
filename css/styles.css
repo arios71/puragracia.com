@@ -879,3 +879,38 @@ html, body {
   font-size: 0.65rem;
   opacity: 0.75;
 }
+/* =========================
+   NOW PLAYING - CARÁTULA PROTAGONISTA
+========================= */
+
+.now-card {
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+}
+
+/* imagen más grande */
+.now-card img {
+	width: 160px;
+	height: 160px;
+}
+
+/* elimina separación lateral del layout viejo */
+.now-info {
+	align-items: center;
+}
+
+/* texto un poco más limpio visualmente */
+.now-title {
+	font-size: 0.95rem;
+}
+
+.now-artist {
+	font-size: 0.85rem;
+}
+
+/* opcional: programa más discreto */
+.now-program {
+	font-size: 0.7rem;
+	opacity: 0.6;
+}
