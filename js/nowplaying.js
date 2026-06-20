@@ -135,20 +135,12 @@ function updateNowPlaying(metadata) {
     progressContainer.appendChild(progressBar);
     progressBarRef = progressBar;
 
-    const equalizer = document.createElement("div");
-    equalizer.classList.add("equalizer");
-
-    for (let i = 0; i < 5; i++) {
-      equalizer.appendChild(document.createElement("span"));
-    }
-
     infoDiv.appendChild(label);
     infoDiv.appendChild(title);
     infoDiv.appendChild(artist);
     infoDiv.appendChild(program);
     infoDiv.appendChild(durationEl);
     infoDiv.appendChild(progressContainer);
-    infoDiv.appendChild(equalizer);
 
     card.appendChild(coverImg);
     card.appendChild(infoDiv);
