@@ -44,6 +44,18 @@ function stopProgress() {
    PROGRESS ENGINE (FLUIDO)
 ========================= */
 let progressBarRef = null;
+let elapsedTimeRef = null;
+
+function formatTime(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+
+  return (
+    String(mins).padStart(2, "0") +
+    ":" +
+    String(secs).padStart(2, "0")
+  );
+}
 
 function updateProgress() {
   if (!trackDuration || !progressBarRef) return;
@@ -52,6 +64,10 @@ function updateProgress() {
   const percent = Math.min((elapsed / trackDuration) * 100, 100);
 
   progressBarRef.style.width = percent + "%";
+
+  if (elapsedTimeRef) {
+    elapsedTimeRef.textContent = formatTime(elapsed);
+  }
 
   if (percent < 100) {
     animationFrame = requestAnimationFrame(updateProgress);
@@ -127,21 +143,36 @@ function updateNowPlaying(metadata) {
     durationEl.textContent = metadata.duration ? `⏱ ${metadata.duration}` : "";
 
     const progressContainer = document.createElement("div");
-    progressContainer.classList.add("now-progress");
+progressContainer.classList.add("now-progress");
 
-    const progressBar = document.createElement("div");
-    progressBar.classList.add("now-progress-bar");
+const progressBar = document.createElement("div");
+progressBar.classList.add("now-progress-bar");
 
-    progressContainer.appendChild(progressBar);
-    progressBarRef = progressBar;
+const progressTimes = document.createElement("div");
+progressTimes.classList.add("now-progress-times");
 
-    infoDiv.appendChild(label);
-    infoDiv.appendChild(title);
-    infoDiv.appendChild(artist);
-    infoDiv.appendChild(program);
-    infoDiv.appendChild(durationEl);
-    infoDiv.appendChild(progressContainer);
+const elapsedTime = document.createElement("span");
+elapsedTime.textContent = "00:00";
 
+const totalTime = document.createElement("span");
+totalTime.textContent = metadata.duration || "00:00";
+
+progressTimes.appendChild(elapsedTime);
+progressTimes.appendChild(totalTime);
+
+progressContainer.appendChild(progressBar);
+
+progressBarRef = progressBar;
+elapsedTimeRef = elapsedTime;
+
+infoDiv.appendChild(label);
+infoDiv.appendChild(title);
+infoDiv.appendChild(artist);
+infoDiv.appendChild(program);
+infoDiv.appendChild(durationEl);
+infoDiv.appendChild(progressContainer);
+infoDiv.appendChild(progressTimes);
+     
     card.appendChild(coverImg);
     card.appendChild(infoDiv);
 
