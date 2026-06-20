@@ -138,10 +138,6 @@ function updateNowPlaying(metadata) {
     program.classList.add("now-program");
     program.textContent = metadata.album || "Programa en vivo";
 
-    const durationEl = document.createElement("div");
-    durationEl.classList.add("now-duration");
-    durationEl.textContent = metadata.duration ? `⏱ ${metadata.duration}` : "";
-
     const progressContainer = document.createElement("div");
 progressContainer.classList.add("now-progress");
 
@@ -169,7 +165,6 @@ infoDiv.appendChild(label);
 infoDiv.appendChild(title);
 infoDiv.appendChild(artist);
 infoDiv.appendChild(program);
-infoDiv.appendChild(durationEl);
 infoDiv.appendChild(progressContainer);
 infoDiv.appendChild(progressTimes);
      
