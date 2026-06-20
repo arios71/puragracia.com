@@ -238,7 +238,10 @@ setInterval(fetchNowPlaying, 15000);
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
     stopProgress();
-  } else if (trackDuration && progressBarRef) {
-    animationFrame = requestAnimationFrame(updateProgress);
+  } else {
+    if (trackDuration && progressBarRef) {
+      // recalcula inmediatamente antes de reanudar
+      updateProgress();
+    }
   }
 });
