@@ -80,11 +80,16 @@ function updateProgress() {
 function updateNowPlaying(metadata) {
   if (!metadata) return;
 
-  const newTitle = metadata.title || "";
-  const newArtist = metadata.artist || "";
-  const newTrackId = normalize(newTitle) + "_" + normalize(newArtist);
+  const track = {
+  title: metadata.title || "En vivo",
+  artist: metadata.artist || "Pura Gracia Radio",
+  album: metadata.album || "Programa en vivo",
+  coverArt: metadata.coverArt || DEFAULT_COVER,
+  duration: parseDuration(metadata.duration || metadata.length)
+};
 
-  const duration = parseDuration(metadata.duration || metadata.length);
+const newTrackId =
+  normalize(track.title) + "_" + normalize(track.artist);
   const now = Date.now();
 
   // Evitar duplicación EXACTA
@@ -93,7 +98,7 @@ function updateNowPlaying(metadata) {
   // Aceptar cambio
   currentTrack = newTrackId;
   trackStartTime = now;
-  trackDuration = duration;
+  trackDuration = track.duration;
 
   stopProgress();
 
@@ -111,13 +116,13 @@ function updateNowPlaying(metadata) {
     card.classList.add("now-card");
 
     const coverImg = document.createElement("img");
-    coverImg.src = metadata.coverArt || DEFAULT_COVER;
+    coverImg.src = track.coverArt;
 
     if (!metadata.coverArt) {
       coverImg.classList.add("default-cover");
     }
 
-    coverImg.alt = metadata.album || "Álbum";
+    coverImg.alt = track.album;
 
     const infoDiv = document.createElement("div");
     infoDiv.classList.add("now-info");
@@ -128,15 +133,15 @@ function updateNowPlaying(metadata) {
 
     const title = document.createElement("div");
     title.classList.add("now-title");
-    title.textContent = metadata.title || "En vivo";
+    title.textContent = track.title;
 
     const artist = document.createElement("div");
     artist.classList.add("now-artist");
-    artist.textContent = metadata.artist || "Pura Gracia Radio";
+    artist.textContent = track.artist;
 
     const program = document.createElement("div");
     program.classList.add("now-program");
-    program.textContent = metadata.album || "Programa en vivo";
+    program.textContent = track.album;
 
     const progressContainer = document.createElement("div");
 progressContainer.classList.add("now-progress");
@@ -151,7 +156,9 @@ const elapsedTime = document.createElement("span");
 elapsedTime.textContent = "00:00";
 
 const totalTime = document.createElement("span");
-totalTime.textContent = metadata.duration || "00:00";
+totalTime.textContent = metadata.duration
+  ? formatTime(track.duration)
+  : "00:00";
 
 progressTimes.appendChild(elapsedTime);
 progressTimes.appendChild(totalTime);
@@ -179,12 +186,12 @@ infoDiv.appendChild(progressTimes);
 
     if ("mediaSession" in navigator) {
       navigator.mediaSession.metadata = new MediaMetadata({
-        title: metadata.title || "Pura Gracia Radio",
-        artist: metadata.artist || "En vivo",
-        album: metadata.album || "Pura Gracia Radio",
-        artwork: [
-          {
-            src: metadata.coverArt || DEFAULT_COVER,
+        title: track.title,
+artist: track.artist,
+album: track.album,
+artwork: [
+  {
+    src: track.coverArt,
             sizes: "512x512",
             type: "image/png"
           }
