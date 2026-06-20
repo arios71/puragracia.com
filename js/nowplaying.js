@@ -133,10 +133,6 @@ const newTrackId =
     const infoDiv = document.createElement("div");
     infoDiv.classList.add("now-info");
 
-    const label = document.createElement("div");
-    label.classList.add("now-label");
-    label.textContent = "Ahora";
-
     const title = document.createElement("div");
     title.classList.add("now-title");
     title.textContent = track.title;
@@ -174,7 +170,6 @@ progressContainer.appendChild(progressBar);
 progressBarRef = progressBar;
 elapsedTimeRef = elapsedTime;
 
-infoDiv.appendChild(label);
 infoDiv.appendChild(title);
 infoDiv.appendChild(artist);
 infoDiv.appendChild(program);
