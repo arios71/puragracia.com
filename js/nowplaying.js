@@ -79,10 +79,16 @@ function updateProgress() {
 ========================= */
 function updateNowPlaying(metadata) {
   if (!metadata) return;
+   const title = (metadata.title || "").trim();
+   const artist = (metadata.artist || "").trim();
+
+  // 🚨 BLOQUEO: evitar primer payload incompleto
+  if (!title) return;
+if (!artist) artist = "En vivo";
 
   const track = {
-  title: metadata.title || "En vivo",
-  artist: metadata.artist || "Pura Gracia Radio",
+  title: title,
+  artist: artist,
   album: metadata.album || "Programa en vivo",
   coverArt: metadata.coverArt || DEFAULT_COVER,
   duration: parseDuration(metadata.duration || metadata.length)
@@ -156,7 +162,7 @@ const elapsedTime = document.createElement("span");
 elapsedTime.textContent = "00:00";
 
 const totalTime = document.createElement("span");
-totalTime.textContent = metadata.duration
+totalTime.textContent = track.duration
   ? formatTime(track.duration)
   : "00:00";
 
