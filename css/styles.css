@@ -871,3 +871,15 @@ html, body {
   border-radius: 10px;
   transition: width 1s linear;
 }
+
+/* =========================
+   NOW PLAYING TIME COUNTERS
+========================= */
+
+.now-progress-times {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  font-size: 0.65rem;
+  opacity: 0.75;
+}
