@@ -44,18 +44,6 @@ function stopProgress() {
    PROGRESS ENGINE (FLUIDO)
 ========================= */
 let progressBarRef = null;
-let elapsedTimeRef = null;
-
-function formatTime(seconds) {
-  const mins = Math.floor(seconds / 60);
-  const secs = Math.floor(seconds % 60);
-
-  return (
-    String(mins).padStart(2, "0") +
-    ":" +
-    String(secs).padStart(2, "0")
-  );
-}
 
 function updateProgress() {
   if (!trackDuration || !progressBarRef) return;
@@ -64,10 +52,6 @@ function updateProgress() {
   const percent = Math.min((elapsed / trackDuration) * 100, 100);
 
   progressBarRef.style.width = percent + "%";
-
-  if (elapsedTimeRef) {
-    elapsedTimeRef.textContent = formatTime(elapsed);
-  }
 
   if (percent < 100) {
     animationFrame = requestAnimationFrame(updateProgress);
@@ -79,23 +63,27 @@ function updateProgress() {
 ========================= */
 function updateNowPlaying(metadata) {
   if (!metadata) return;
-   const title = (metadata.title || "").trim();
-   const artist = (metadata.artist || "").trim();
+
+  const rawTitle = (metadata.title || "").trim();
+  const rawArtist = (metadata.artist || "").trim();
 
   // 🚨 BLOQUEO: evitar primer payload incompleto
-  if (!title) return;
-if (!artist) artist = "En vivo";
+  if (!rawTitle) return;
+
+  let finalArtist = rawArtist;
+  if (!finalArtist) finalArtist = "En vivo";
 
   const track = {
-  title: title,
-  artist: artist,
-  album: metadata.album || "Programa en vivo",
-  coverArt: metadata.coverArt || DEFAULT_COVER,
-  duration: parseDuration(metadata.duration || metadata.length)
-};
+    title: rawTitle,
+    artist: finalArtist,
+    album: metadata.album || "Programa en vivo",
+    coverArt: metadata.coverArt || DEFAULT_COVER,
+    duration: parseDuration(metadata.duration || metadata.length)
+  };
 
-const newTrackId =
-  normalize(track.title) + "_" + normalize(track.artist);
+  const newTrackId =
+    normalize(track.title) + "_" + normalize(track.artist);
+
   const now = Date.now();
 
   // Evitar duplicación EXACTA
@@ -108,7 +96,7 @@ const newTrackId =
 
   stopProgress();
 
-  // reset visual inmediato (fix clave)
+  // reset visual inmediato
   if (progressBarRef) {
     progressBarRef.style.width = "0%";
   }
@@ -133,49 +121,33 @@ const newTrackId =
     const infoDiv = document.createElement("div");
     infoDiv.classList.add("now-info");
 
-    const title = document.createElement("div");
-    title.classList.add("now-title");
-    title.textContent = track.title;
+    const titleEl = document.createElement("div");
+    titleEl.classList.add("now-title");
+    titleEl.textContent = track.title;
 
-    const artist = document.createElement("div");
-    artist.classList.add("now-artist");
-    artist.textContent = track.artist;
+    const artistEl = document.createElement("div");
+    artistEl.classList.add("now-artist");
+    artistEl.textContent = track.artist;
 
-    const program = document.createElement("div");
-    program.classList.add("now-program");
-    program.textContent = track.album;
+    const programEl = document.createElement("div");
+    programEl.classList.add("now-program");
+    programEl.textContent = track.album;
 
     const progressContainer = document.createElement("div");
-progressContainer.classList.add("now-progress");
+    progressContainer.classList.add("now-progress");
 
-const progressBar = document.createElement("div");
-progressBar.classList.add("now-progress-bar");
+    const progressBar = document.createElement("div");
+    progressBar.classList.add("now-progress-bar");
 
-const progressTimes = document.createElement("div");
-progressTimes.classList.add("now-progress-times");
+    progressContainer.appendChild(progressBar);
 
-const elapsedTime = document.createElement("span");
-elapsedTime.textContent = "00:00";
+    progressBarRef = progressBar;
 
-const totalTime = document.createElement("span");
-totalTime.textContent = track.duration
-  ? formatTime(track.duration)
-  : "00:00";
+    infoDiv.appendChild(titleEl);
+    infoDiv.appendChild(artistEl);
+    infoDiv.appendChild(programEl);
+    infoDiv.appendChild(progressContainer);
 
-progressTimes.appendChild(elapsedTime);
-progressTimes.appendChild(totalTime);
-
-progressContainer.appendChild(progressBar);
-
-progressBarRef = progressBar;
-elapsedTimeRef = elapsedTime;
-
-infoDiv.appendChild(title);
-infoDiv.appendChild(artist);
-infoDiv.appendChild(program);
-infoDiv.appendChild(progressContainer);
-infoDiv.appendChild(progressTimes);
-     
     card.appendChild(coverImg);
     card.appendChild(infoDiv);
 
@@ -188,11 +160,11 @@ infoDiv.appendChild(progressTimes);
     if ("mediaSession" in navigator) {
       navigator.mediaSession.metadata = new MediaMetadata({
         title: track.title,
-artist: track.artist,
-album: track.album,
-artwork: [
-  {
-    src: track.coverArt,
+        artist: track.artist,
+        album: track.album,
+        artwork: [
+          {
+            src: track.coverArt,
             sizes: "512x512",
             type: "image/png"
           }
@@ -215,7 +187,6 @@ async function fetchNowPlaying() {
 
     const data = await res.json();
     updateNowPlaying(data);
-
   } catch (err) {
     console.error("Error cargando Now Playing:", err);
   }
@@ -235,7 +206,6 @@ document.addEventListener("visibilitychange", () => {
     stopProgress();
   } else {
     if (trackDuration && progressBarRef) {
-      // recalcula inmediatamente antes de reanudar
       updateProgress();
     }
   }
