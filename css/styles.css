@@ -180,12 +180,6 @@ body {
 	margin-top: 2px;
 	letter-spacing: 0.3px;
 }
-.now-program {
-	font-size: 0.65rem;
-	opacity: 0.8;
-	margin-top: 2px;
-	letter-spacing: 0.3px;
-}
 /* ================= EQUALIZER ================= */
 .equalizer {
 	display: flex;
