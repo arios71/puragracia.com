@@ -172,15 +172,17 @@ body {
 	font-size: 0.75rem;
 	opacity: 0.8;
 }
-.now-artist {
-	font-size: 0.75rem;
-	opacity: 0.8;
-}
 
 /* 📻 PROGRAMA */
 .now-program {
 	font-size: 0.65rem;
 	opacity: 0.65;
+	margin-top: 2px;
+	letter-spacing: 0.3px;
+}
+.now-program {
+	font-size: 0.65rem;
+	opacity: 0.8;
 	margin-top: 2px;
 	letter-spacing: 0.3px;
 }
