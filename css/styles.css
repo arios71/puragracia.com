@@ -182,7 +182,7 @@ body {
 }
 .now-duration {
   font-size: 0.65rem;
-  opacity: 0.6;
+  color: #fff;
   margin-top: 2px;
 }
 /* ================= EQUALIZER ================= */
