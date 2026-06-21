@@ -876,3 +876,40 @@ html, body {
 	font-size: 0.7rem;
 	opacity: 0.6;
 }
+/* =========================
+   NOW PLAYING - METADATA SCROLLER
+========================= */
+
+.np-meta-viewport {
+  height: 1.6em;
+  overflow: hidden;
+  width: 100%;
+}
+
+.np-meta-track {
+  display: flex;
+  flex-direction: column;
+  animation: metaScroll 9s infinite ease-in-out;
+  align-items: center;
+}
+
+.np-line {
+  height: 1.6em;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0.85;
+  text-align: center;
+}
+
+/* animación suave tipo radio */
+@keyframes metaScroll {
+  0%   { transform: translateY(0); }
+  35%  { transform: translateY(0); }
+
+  55%  { transform: translateY(-1.6em); }
+  80%  { transform: translateY(-1.6em); }
+
+  100% { transform: translateY(-3.2em); }
+}
