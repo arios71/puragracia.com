@@ -76,9 +76,8 @@ function updateNowPlaying(metadata) {
   const track = {
     title: rawTitle,
     artist: finalArtist,
-    album: metadata.album || "Programa en vivo",
+    // eliminado
     coverArt: metadata.coverArt || DEFAULT_COVER,
-    duration: parseDuration(metadata.duration || metadata.length)
   };
 
   const newTrackId =
@@ -92,7 +91,6 @@ function updateNowPlaying(metadata) {
   // Aceptar cambio
   currentTrack = newTrackId;
   trackStartTime = now;
-  trackDuration = track.duration;
 
   stopProgress();
 
@@ -129,10 +127,6 @@ function updateNowPlaying(metadata) {
     artistEl.classList.add("now-artist");
     artistEl.textContent = track.artist;
 
-    const programEl = document.createElement("div");
-    programEl.classList.add("now-program");
-    programEl.textContent = track.album;
-
     const progressContainer = document.createElement("div");
     progressContainer.classList.add("now-progress");
 
@@ -145,7 +139,6 @@ function updateNowPlaying(metadata) {
 
     infoDiv.appendChild(titleEl);
     infoDiv.appendChild(artistEl);
-    infoDiv.appendChild(programEl);
     infoDiv.appendChild(progressContainer);
 
     card.appendChild(coverImg);
@@ -205,7 +198,7 @@ document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
     stopProgress();
   } else {
-    if (trackDuration && progressBarRef) {
+    if (progressBarRef) {
       updateProgress();
     }
   }
