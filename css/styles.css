@@ -905,19 +905,15 @@ html, body {
 
 /* animación suave tipo radio */
 @keyframes metaScroll {
-  0% {
+  0%, 40% {
     transform: translateY(0);
   }
 
-  45% {
-    transform: translateY(0);
-  }
-
-  55% {
+  50%, 90% {
     transform: translateY(-1.6em);
   }
 
   100% {
-    transform: translateY(-1.6em);
+    transform: translateY(0);
   }
 }
