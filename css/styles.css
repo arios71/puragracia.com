@@ -141,8 +141,8 @@ body {
 	transition: all 0.3s ease;
 }
 .now-card img {
-	width: 88px;
-	height: 88px;
+	width: 72px;
+	height: 72px;
 	border-radius: 14px;
 	object-fit: cover;
 	transition: all 0.3s ease;
