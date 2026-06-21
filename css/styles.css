@@ -110,80 +110,74 @@ body {
 	background: linear-gradient(180deg, #4b8df7, #243f9c);
 	transform: translateY(-1px);
 }
-/* ================= EN VIVO ================= */
-.live-row {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 10px;
-	margin: 12px 0;
-}
-.live-row .line {
-	flex: 1;
-	height: 1px;
-	background: rgba(255, 255, 255, 0.2);
-}
-.live-text {
-	color: #ff3b3b;
-	font-weight: bold;
-}
-/* ================= NOW CARD ================= */
 .now-card {
 	display: flex;
-	gap: 14px;
 	align-items: center;
+	gap: 10px;
+	padding: 10px 12px;
 	background: rgba(0, 0, 0, 0.25);
-	border-radius: 18px;
-	padding: 14px;
+	border-radius: 16px;
 	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-	position: relative;
 	overflow: hidden;
-	transition: all 0.3s ease;
 }
+
+/* CARÁTULA MÁS CONTROLADA */
 .now-card img {
 	width: 72px;
 	height: 72px;
-	border-radius: 14px;
+	border-radius: 12px;
 	object-fit: cover;
-	transition: all 0.3s ease;
+	flex-shrink: 0;
 }
-.now-card img.default-cover {
-	opacity: 0.95;
-	border-radius: 14px;
-	border: 2px solid rgba(255, 255, 255, 0.25);
-	box-shadow: 0 8px 25px rgba(59, 130, 246, 0.25);
-}
-.now-card img.default-cover:hover {
-	opacity: 1;
-	border-color: rgba(255, 255, 255, 0.6);
-	box-shadow: 0 12px 35px rgba(59, 130, 246, 0.45);
-}
-/* ================= NOW INFO ================= */
+
+/* BLOQUE TEXTO CONTROLADO */
 .now-info {
 	display: flex;
 	flex-direction: column;
-	gap: 6px;
-}
-.now-title {
-	font-size: 0.80rem;
-	font-weight: 700;
-}
-.now-artist {
-	font-size: 0.75rem;
-	opacity: 0.8;
+	gap: 2px;
+	min-width: 0;
 }
 
-/* 📻 PROGRAMA */
-.now-program {
-	font-size: 0.65rem;
-	opacity: 0.65;
-	margin-top: 2px;
-	letter-spacing: 0.3px;
+/* TÍTULO NO PUEDE CRECER */
+.now-title {
+	font-size: 0.78rem;
+	font-weight: 700;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	line-height: 1.1;
 }
-.now-duration {
-  font-size: 0.65rem;
-  color: #fff;
-  margin-top: 2px;
+
+/* ARTISTA */
+.now-artist {
+	font-size: 0.7rem;
+	opacity: 0.8;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	line-height: 1.1;
+}
+
+/* PROGRAMA */
+.now-program {
+	font-size: 0.6rem;
+	opacity: 0.6;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/* BOTÓN PLAY/PAUSE MÁS PEQUEÑO (CLAVE) */
+#playRadio, .play-btn {
+	padding: 10px 12px;
+	font-size: 0.85rem;
+	border-radius: 10px;
+}
+
+/* EVITA QUE CREZCA CON CONTENIDO */
+.now-info {
+	max-height: 72px;
+	justify-content: center;
 }
 /* ================= PLAYING GLOW ================= */
 .playing .radio-wrapper {
