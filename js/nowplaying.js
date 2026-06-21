@@ -137,14 +137,9 @@ function updateNowPlaying(metadata) {
     line2.classList.add("np-line");
     line2.textContent = track.artist;
 
-    const line3 = document.createElement("div");
-    line3.classList.add("np-line");
-    line3.textContent = "En vivo";
-
     metaTrack.appendChild(line1);
     metaTrack.appendChild(line2);
-    metaTrack.appendChild(line3);
-
+     
     metaViewport.appendChild(metaTrack);
     infoDiv.appendChild(metaViewport);
 
