@@ -881,7 +881,7 @@ html, body {
 ========================= */
 
 .np-meta-viewport {
-  height: 1.6em;
+  height: 1.8em;
   overflow: hidden;
   width: 100%;
 }
@@ -894,8 +894,9 @@ html, body {
 }
 
 .np-line {
-  height: 1.6em;
+  height: 1.8em;
   font-size: 0.85rem;
+  line-height: 1.8em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -905,12 +906,12 @@ html, body {
 
 /* animación suave tipo radio */
 @keyframes metaScroll {
-  0%, 40% {
+  0%, 45% {
     transform: translateY(0);
   }
 
-  50%, 90% {
-    transform: translateY(-1.6em);
+  55%, 95% {
+    transform: translateY(-1.8em);
   }
 
   100% {
