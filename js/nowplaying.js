@@ -59,7 +59,7 @@ function updateProgress() {
 }
 
 /* =========================
-   UPDATE NOW PLAYING
+   UPDATE NOW PLAYING (MOD)
 ========================= */
 function updateNowPlaying(metadata) {
   if (!metadata) return;
@@ -76,7 +76,6 @@ function updateNowPlaying(metadata) {
   const track = {
     title: rawTitle,
     artist: finalArtist,
-    // eliminado
     coverArt: metadata.coverArt || DEFAULT_COVER,
   };
 
@@ -88,7 +87,6 @@ function updateNowPlaying(metadata) {
   // Evitar duplicación EXACTA
   if (currentTrack === newTrackId) return;
 
-  // Aceptar cambio
   currentTrack = newTrackId;
   trackStartTime = now;
 
@@ -107,6 +105,9 @@ function updateNowPlaying(metadata) {
     const card = document.createElement("div");
     card.classList.add("now-card");
 
+    /* =========================
+       COVER
+    ========================= */
     const coverImg = document.createElement("img");
     coverImg.src = track.coverArt;
 
@@ -114,19 +115,42 @@ function updateNowPlaying(metadata) {
       coverImg.classList.add("default-cover");
     }
 
-    coverImg.alt = track.album;
+    coverImg.alt = track.album || "";
 
+    /* =========================
+       INFO (NUEVO: METADATA ANIMADA)
+    ========================= */
     const infoDiv = document.createElement("div");
     infoDiv.classList.add("now-info");
 
-    const titleEl = document.createElement("div");
-    titleEl.classList.add("now-title");
-    titleEl.textContent = track.title;
+    const metaViewport = document.createElement("div");
+    metaViewport.classList.add("np-meta-viewport");
 
-    const artistEl = document.createElement("div");
-    artistEl.classList.add("now-artist");
-    artistEl.textContent = track.artist;
+    const metaTrack = document.createElement("div");
+    metaTrack.classList.add("np-meta-track");
 
+    const line1 = document.createElement("div");
+    line1.classList.add("np-line");
+    line1.textContent = track.title;
+
+    const line2 = document.createElement("div");
+    line2.classList.add("np-line");
+    line2.textContent = track.artist;
+
+    const line3 = document.createElement("div");
+    line3.classList.add("np-line");
+    line3.textContent = "En vivo";
+
+    metaTrack.appendChild(line1);
+    metaTrack.appendChild(line2);
+    metaTrack.appendChild(line3);
+
+    metaViewport.appendChild(metaTrack);
+    infoDiv.appendChild(metaViewport);
+
+    /* =========================
+       PROGRESS BAR (INTACTO)
+    ========================= */
     const progressContainer = document.createElement("div");
     progressContainer.classList.add("now-progress");
 
@@ -137,10 +161,11 @@ function updateNowPlaying(metadata) {
 
     progressBarRef = progressBar;
 
-    infoDiv.appendChild(titleEl);
-    infoDiv.appendChild(artistEl);
     infoDiv.appendChild(progressContainer);
 
+    /* =========================
+       CARD BUILD
+    ========================= */
     card.appendChild(coverImg);
     card.appendChild(infoDiv);
 
@@ -150,6 +175,9 @@ function updateNowPlaying(metadata) {
 
     animationFrame = requestAnimationFrame(updateProgress);
 
+    /* =========================
+       MEDIA SESSION (INTACTO)
+    ========================= */
     if ("mediaSession" in navigator) {
       navigator.mediaSession.metadata = new MediaMetadata({
         title: track.title,
@@ -159,14 +187,13 @@ function updateNowPlaying(metadata) {
           {
             src: track.coverArt,
             sizes: "512x512",
-            type: "image/png"
-          }
-        ]
+            type: "image/png",
+          },
+        ],
       });
     }
   }, 200);
 }
-
 /* =========================
    FETCH METADATA
 ========================= */
