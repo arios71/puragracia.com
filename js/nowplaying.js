@@ -1,41 +1,24 @@
 // js/nowplaying.js
-
 const nowPlayingBox = document.getElementById("nowPlayingBox");
 
-// 🔒 CONTROL DE TRACK
 let currentTrack = null;
-let animationFrame = null;
-
-// 🖼️ FALLBACK GLOBAL
-const DEFAULT_COVER = "/default-cover.png";
-
-// Normalizador
+const DEFAULT_COVER = "/default-cover.png"; // Asegúrate de que esta ruta sea correcta
 const normalize = (str) => (str || "").trim().toLowerCase();
 
 /* =========================
    UPDATE NOW PLAYING
 ========================= */
 function updateNowPlaying(metadata) {
-  if (!metadata) return;
+  // 🛡️ Si no hay título, mostramos valores por defecto en lugar de cancelar
+  const title = (metadata && metadata.title) ? metadata.title.trim() : "Pura Gracia Radio";
+  const artist = (metadata && metadata.artist) ? metadata.artist.trim() : "Transmisión en vivo";
+  const coverArt = (metadata && metadata.coverArt) ? metadata.coverArt : DEFAULT_COVER;
 
-  const rawTitle = (metadata.title || "").trim();
-  const rawArtist = (metadata.artist || "").trim();
-  if (!rawTitle) return;
-
-  const track = {
-    title: rawTitle,
-    artist: rawArtist || "En vivo",
-    coverArt: metadata.coverArt || DEFAULT_COVER,
-  };
-
-  const newTrackId = normalize(track.title) + "_" + normalize(track.artist);
-  
-  // Si es la misma canción, no hacemos nada para evitar parpadeos
+  const newTrackId = normalize(title) + "_" + normalize(artist);
   if (currentTrack === newTrackId) return;
-
   currentTrack = newTrackId;
 
-  // 1. Buscamos o creamos el contenedor
+  // 1. Aseguramos contenedor
   let card = nowPlayingBox.querySelector(".now-card");
   if (!card) {
     card = document.createElement("div");
@@ -43,19 +26,19 @@ function updateNowPlaying(metadata) {
     nowPlayingBox.appendChild(card);
   }
 
-  // 2. Actualizamos o creamos la imagen
+  // 2. Imagen (Usa DEFAULT_COVER si falla la carga o si no hay metadata)
   let coverImg = card.querySelector("img");
   if (!coverImg) {
     coverImg = document.createElement("img");
+    coverImg.onerror = () => { coverImg.src = DEFAULT_COVER; }; // Si la imagen da error, ponemos la default
     card.prepend(coverImg);
   }
   
-  // Solo cambiamos si es distinto para evitar parpadeo
-  if (coverImg.src !== track.coverArt) {
-      coverImg.src = track.coverArt;
+  if (coverImg.src !== coverArt) {
+    coverImg.src = coverArt;
   }
 
-  // 3. Actualizamos o creamos la info con las clases .title y .artist
+  // 3. Info
   let infoDiv = card.querySelector(".now-info");
   if (!infoDiv) {
     infoDiv = document.createElement("div");
@@ -63,22 +46,20 @@ function updateNowPlaying(metadata) {
     card.appendChild(infoDiv);
   }
   
-  // Inyectamos HTML con clases específicas para el CSS unificado
   infoDiv.innerHTML = `
     <div class="np-meta-viewport">
       <div class="np-meta-track">
-        <div class="np-line title">${track.title}</div>
-        <div class="np-line artist">${track.artist}</div>
+        <div class="np-line title">${title}</div>
+        <div class="np-line artist">${artist}</div>
       </div>
     </div>
   `;
 
-  // MediaSession
   if ("mediaSession" in navigator) {
     navigator.mediaSession.metadata = new MediaMetadata({
-      title: track.title,
-      artist: track.artist,
-      artwork: [{ src: track.coverArt, sizes: "512x512", type: "image/png" }],
+      title: title,
+      artist: artist,
+      artwork: [{ src: coverArt, sizes: "512x512", type: "image/png" }],
     });
   }
 }
@@ -88,25 +69,20 @@ function updateNowPlaying(metadata) {
 ========================= */
 async function fetchNowPlaying() {
   try {
-    // Usamos Math.random() para romper cualquier caché intermedia del servidor o navegador
-    const res = await fetch(
-      `https://pg-radio-webhook.vercel.app/api/nowplaying?cb=${Math.random()}`
-    );
-    
-    if (!res.ok) throw new Error("No se pudo obtener metadata");
-
+    const res = await fetch(`https://pg-radio-webhook.vercel.app/api/nowplaying?cb=${Math.random()}`);
+    if (!res.ok) throw new Error("Servidor no responde");
     const data = await res.json();
     updateNowPlaying(data);
   } catch (err) {
-    console.error("Error cargando Now Playing:", err);
+    console.warn("Error cargando metadata, usando estado por defecto:", err);
+    // 🛡️ Si falla el fetch, mostramos los valores por defecto
+    updateNowPlaying({ 
+      title: "Pura Gracia Radio", 
+      artist: "Transmisión en vivo", 
+      coverArt: DEFAULT_COVER 
+    });
   }
 }
 
-/* =========================
-   INIT
-========================= */
-// Carga inicial
 fetchNowPlaying();
-
-// Refresco cada 15 segundos
 setInterval(fetchNowPlaying, 15000);
