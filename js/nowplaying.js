@@ -2,16 +2,18 @@
 const nowPlayingBox = document.getElementById("nowPlayingBox");
 
 let currentTrack = null;
-const DEFAULT_COVER = "/default-cover.png"; // Asegúrate de que esta ruta sea correcta
+const DEFAULT_COVER = "/default-cover.png";
 const normalize = (str) => (str || "").trim().toLowerCase();
 
 /* =========================
    UPDATE NOW PLAYING
 ========================= */
 function updateNowPlaying(metadata) {
-  // 🛡️ Si no hay título, mostramos valores por defecto en lugar de cancelar
+  // Capturamos los 4 valores (Álbum y Duración ahora se incluyen)
   const title = (metadata && metadata.title) ? metadata.title.trim() : "Pura Gracia Radio";
   const artist = (metadata && metadata.artist) ? metadata.artist.trim() : "Transmisión en vivo";
+  const album = (metadata && metadata.album) ? metadata.album.trim() : "";
+  const duration = (metadata && metadata.duration) ? metadata.duration.trim() : "";
   const coverArt = (metadata && metadata.coverArt) ? metadata.coverArt : DEFAULT_COVER;
 
   const newTrackId = normalize(title) + "_" + normalize(artist);
@@ -26,19 +28,16 @@ function updateNowPlaying(metadata) {
     nowPlayingBox.appendChild(card);
   }
 
-  // 2. Imagen (Usa DEFAULT_COVER si falla la carga o si no hay metadata)
+  // 2. Imagen
   let coverImg = card.querySelector("img");
   if (!coverImg) {
     coverImg = document.createElement("img");
-    coverImg.onerror = () => { coverImg.src = DEFAULT_COVER; }; // Si la imagen da error, ponemos la default
+    coverImg.onerror = () => { coverImg.src = DEFAULT_COVER; };
     card.prepend(coverImg);
   }
-  
-  if (coverImg.src !== coverArt) {
-    coverImg.src = coverArt;
-  }
+  if (coverImg.src !== coverArt) coverImg.src = coverArt;
 
-  // 3. Info
+  // 3. Info (Ahora con 4 líneas fijas y marquesina en el título)
   let infoDiv = card.querySelector(".now-info");
   if (!infoDiv) {
     infoDiv = document.createElement("div");
@@ -48,17 +47,19 @@ function updateNowPlaying(metadata) {
   
   infoDiv.innerHTML = `
     <div class="np-meta-viewport">
-      <div class="np-meta-track">
-        <div class="np-line title">${title}</div>
-        <div class="np-line artist">${artist}</div>
-      </div>
+      <div class="np-line title">${title}</div>
     </div>
+    <div class="np-line artist">${artist}</div>
+    <div class="np-line album">${album}</div>
+    <div class="np-line duration">${duration}</div>
   `;
 
+  // MediaSession actualizado
   if ("mediaSession" in navigator) {
     navigator.mediaSession.metadata = new MediaMetadata({
       title: title,
       artist: artist,
+      album: album,
       artwork: [{ src: coverArt, sizes: "512x512", type: "image/png" }],
     });
   }
@@ -75,7 +76,6 @@ async function fetchNowPlaying() {
     updateNowPlaying(data);
   } catch (err) {
     console.warn("Error cargando metadata, usando estado por defecto:", err);
-    // 🛡️ Si falla el fetch, mostramos los valores por defecto
     updateNowPlaying({ 
       title: "Pura Gracia Radio", 
       artist: "Transmisión en vivo", 
