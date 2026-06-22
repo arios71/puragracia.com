@@ -75,57 +75,50 @@ main.app {
 /* ================= METADATA Y ANIMACIÓN (NUEVO/CORREGIDO) ================= */
 /* Soluciona puntos 2, 3 y 4 */
 
+/* ================= METADATA: 4 LÍNEAS FIJAS + MARQUESINA ================= */
+
 .now-info {
-  margin-top: 15px; /* Separa el texto de la carátula (Punto 2) */
+  margin-top: 20px;
   width: 90%;
   text-align: center;
-}
-
-/* Viewport para el scroll de metadata */
-.np-meta-viewport {
-  height: 2.2em; /* Un poco más alto para las dos líneas */
-  overflow: hidden;
-  width: 100%;
-}
-
-/* Contenedor que se mueve */
-.np-meta-track {
   display: flex;
   flex-direction: column;
-  /* Recuperamos la animación (Punto 3) */
-  animation: metaScroll 8s infinite ease-in-out;
-  align-items: center;
+  gap: 6px; /* Espacio entre las 4 líneas */
 }
 
-/* Estilos de línea generales */
+/* El viewport ahora solo sirve de contenedor para el efecto */
+.np-meta-viewport {
+  width: 100%;
+  overflow: hidden; 
+  white-space: nowrap;
+}
+
+/* Título: Con animación de marquesina horizontal */
+.np-line.title {
+  font-weight: 800;
+  color: #ffffff;
+  font-size: 1.2rem;
+  display: inline-block;
+  padding-left: 100%; /* Inicia fuera de la pantalla a la derecha */
+  animation: marquee 12s linear infinite;
+}
+
+@keyframes marquee {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-100%, 0); }
+}
+
+/* Estilos de líneas fijas (artista, álbum, duración) */
 .np-line {
-  height: 1.1em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
 }
 
-/* Título: Bold y Blanco Sólido (Punto 4) */
-.np-meta-track .title {
-  font-weight: 800;
-  color: #ffffff;
-  font-size: 1.1rem;
-}
-
-/* Artista: Más suave */
-.np-meta-track .artist {
-  font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.7);
-}
-
-/* Animación tipo radio */
-@keyframes metaScroll {
-  0%, 45% { transform: translateY(0); }
-  55%, 95% { transform: translateY(-1.1em); } /* Se mueve la altura de una línea */
-  100% { transform: translateY(0); }
-}
-
+.artist { font-size: 0.95rem; color: #fbac33; font-weight: 600; }
+.album { font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); }
+.duration { font-size: 0.8rem; color: rgba(255, 255, 255, 0.4); }
 /* ================= BOTÓN PLAY CIRCULAR ================= */
 #playRadio {
   width: 80px;
