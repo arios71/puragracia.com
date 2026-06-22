@@ -17,14 +17,15 @@ html, body {
 
 /* ================= HEADER LOGO ================= */
 .logo-header {
-  height: var(--header-height); /* Usamos la variable de 80px */
+  height: var(--header-height); /* Mantenemos 80px para no romper el cálculo */
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  padding-top: 30px; /* Bajamos el contenido del header 30px */
+  padding-bottom: 0;
 }
 .logo-header img {
-  height: 55px; /* Tamaño equilibrado */
+  height: 45px; /* Reduje ligeramente a 45px para que quepa bien con el nuevo padding */
   width: auto;
 }
 
