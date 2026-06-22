@@ -66,10 +66,10 @@ function updateUIPlayingState(state){
   isPlaying = state;
 
   if(state){
-    playBtn.textContent = '⏸ Pausar Radio';
+    playBtn.textContent = '⏸'; // Solo el icono
     body.classList.add('playing');
   } else {
-    playBtn.textContent = '▶ Reproducir Radio';
+    playBtn.textContent = '▶'; // Solo el icono
     body.classList.remove('playing');
   }
 }
