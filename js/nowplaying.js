@@ -59,135 +59,75 @@ function updateProgress() {
 }
 
 /* =========================
-   UPDATE NOW PLAYING (MOD)
+   UPDATE NOW PLAYING (MODIFICADO)
 ========================= */
 function updateNowPlaying(metadata) {
   if (!metadata) return;
 
   const rawTitle = (metadata.title || "").trim();
   const rawArtist = (metadata.artist || "").trim();
-
-  // 🚨 BLOQUEO: evitar primer payload incompleto
   if (!rawTitle) return;
 
-  let finalArtist = rawArtist;
-  if (!finalArtist) finalArtist = "En vivo";
-
+  let finalArtist = rawArtist || "En vivo";
   const track = {
     title: rawTitle,
     artist: finalArtist,
     coverArt: metadata.coverArt || DEFAULT_COVER,
   };
 
-  const newTrackId =
-    normalize(track.title) + "_" + normalize(track.artist);
-
-  const now = Date.now();
-
-  // Evitar duplicación EXACTA
+  const newTrackId = normalize(track.title) + "_" + normalize(track.artist);
   if (currentTrack === newTrackId) return;
 
   currentTrack = newTrackId;
-  trackStartTime = now;
-
+  trackStartTime = Date.now();
   stopProgress();
 
-  // reset visual inmediato
-  if (progressBarRef) {
-    progressBarRef.style.width = "0%";
+  // 1. Buscamos o creamos el contenedor de la card
+  let card = nowPlayingBox.querySelector(".now-card");
+  if (!card) {
+    card = document.createElement("div");
+    card.classList.add("now-card");
+    nowPlayingBox.appendChild(card);
   }
 
-  nowPlayingBox.style.opacity = 0;
+  // 2. Actualizamos o creamos la imagen
+  let coverImg = card.querySelector("img");
+  if (!coverImg) {
+    coverImg = document.createElement("img");
+    card.prepend(coverImg); // Asegura que la imagen sea lo primero
+  }
+  coverImg.src = track.coverArt;
 
-  setTimeout(() => {
-    nowPlayingBox.innerHTML = "";
-
-    const card = document.createElement("div");
-    card.classList.add("now-card");
-
-    /* =========================
-       COVER
-    ========================= */
-    const coverImg = document.createElement("img");
-    coverImg.src = track.coverArt;
-
-    if (!metadata.coverArt) {
-      coverImg.classList.add("default-cover");
-    }
-
-    coverImg.alt = track.album || "";
-
-    /* =========================
-       INFO (NUEVO: METADATA ANIMADA)
-    ========================= */
-    const infoDiv = document.createElement("div");
+  // 3. Actualizamos o creamos la info
+  let infoDiv = card.querySelector(".now-info");
+  if (!infoDiv) {
+    infoDiv = document.createElement("div");
     infoDiv.classList.add("now-info");
-
-    const metaViewport = document.createElement("div");
-    metaViewport.classList.add("np-meta-viewport");
-
-    const metaTrack = document.createElement("div");
-    metaTrack.classList.add("np-meta-track");
-
-    const line1 = document.createElement("div");
-    line1.classList.add("np-line");
-    line1.textContent = track.title;
-
-    const line2 = document.createElement("div");
-    line2.classList.add("np-line");
-    line2.textContent = track.artist;
-
-    metaTrack.appendChild(line1);
-    metaTrack.appendChild(line2);
-     
-    metaViewport.appendChild(metaTrack);
-    infoDiv.appendChild(metaViewport);
-
-    /* =========================
-       PROGRESS BAR (INTACTO)
-    ========================= */
-    const progressContainer = document.createElement("div");
-    progressContainer.classList.add("now-progress");
-
-    const progressBar = document.createElement("div");
-    progressBar.classList.add("now-progress-bar");
-
-    progressContainer.appendChild(progressBar);
-
-    progressBarRef = progressBar;
-
-    infoDiv.appendChild(progressContainer);
-
-    /* =========================
-       CARD BUILD
-    ========================= */
-    card.appendChild(coverImg);
     card.appendChild(infoDiv);
+  }
+  
+  // Limpiamos contenido de texto pero mantenemos la estructura
+  infoDiv.innerHTML = `
+    <div class="np-meta-viewport">
+      <div class="np-meta-track">
+        <div class="np-line">${track.title}</div>
+        <div class="np-line">${track.artist}</div>
+      </div>
+    </div>
+    <div class="now-progress"><div class="now-progress-bar"></div></div>
+  `;
 
-    nowPlayingBox.appendChild(card);
+  progressBarRef = infoDiv.querySelector(".now-progress-bar");
+  animationFrame = requestAnimationFrame(updateProgress);
 
-    nowPlayingBox.style.opacity = 1;
-
-    animationFrame = requestAnimationFrame(updateProgress);
-
-    /* =========================
-       MEDIA SESSION (INTACTO)
-    ========================= */
-    if ("mediaSession" in navigator) {
-      navigator.mediaSession.metadata = new MediaMetadata({
-        title: track.title,
-        artist: track.artist,
-        album: track.album,
-        artwork: [
-          {
-            src: track.coverArt,
-            sizes: "512x512",
-            type: "image/png",
-          },
-        ],
-      });
-    }
-  }, 200);
+  // MediaSession igual que antes
+  if ("mediaSession" in navigator) {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: track.title,
+      artist: track.artist,
+      artwork: [{ src: track.coverArt, sizes: "512x512", type: "image/png" }],
+    });
+  }
 }
 /* =========================
    FETCH METADATA
@@ -224,4 +164,18 @@ document.addEventListener("visibilitychange", () => {
       updateProgress();
     }
   }
+});
+document.addEventListener("DOMContentLoaded", () => {
+    const playBtn = document.getElementById("playRadio");
+    const audio = document.getElementById("radioAudio");
+
+    playBtn.addEventListener("click", () => {
+        if (audio.paused) {
+            audio.play();
+            playBtn.textContent = "⏸";
+        } else {
+            audio.pause();
+            playBtn.textContent = "▶";
+        }
+    });
 });
