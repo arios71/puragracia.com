@@ -2,11 +2,8 @@
 
 const nowPlayingBox = document.getElementById("nowPlayingBox");
 
-// 🔒 CONTROL DE TRACK (ANTI-METADATA ADELANTADA)
+// 🔒 CONTROL DE TRACK
 let currentTrack = null;
-let trackStartTime = 0;
-let trackDuration = 0;
-
 let animationFrame = null;
 
 // 🖼️ FALLBACK GLOBAL
@@ -16,50 +13,7 @@ const DEFAULT_COVER = "/default-cover.png";
 const normalize = (str) => (str || "").trim().toLowerCase();
 
 /* =========================
-   HELPERS
-========================= */
-function parseDuration(duration) {
-  if (!duration) return 0;
-  if (typeof duration === "number") return duration;
-
-  if (typeof duration === "string" && duration.includes(":")) {
-    const parts = duration.split(":");
-    return parseInt(parts[0]) * 60 + parseInt(parts[1]);
-  }
-
-  return parseInt(duration) || 0;
-}
-
-/* =========================
-   CLEAN PROGRESS
-========================= */
-function stopProgress() {
-  if (animationFrame) {
-    cancelAnimationFrame(animationFrame);
-    animationFrame = null;
-  }
-}
-
-/* =========================
-   PROGRESS ENGINE (FLUIDO)
-========================= */
-let progressBarRef = null;
-
-function updateProgress() {
-  if (!trackDuration || !progressBarRef) return;
-
-  const elapsed = (Date.now() - trackStartTime) / 1000;
-  const percent = Math.min((elapsed / trackDuration) * 100, 100);
-
-  progressBarRef.style.width = percent + "%";
-
-  if (percent < 100) {
-    animationFrame = requestAnimationFrame(updateProgress);
-  }
-}
-
-/* =========================
-   UPDATE NOW PLAYING (MODIFICADO)
+   UPDATE NOW PLAYING
 ========================= */
 function updateNowPlaying(metadata) {
   if (!metadata) return;
@@ -68,21 +22,20 @@ function updateNowPlaying(metadata) {
   const rawArtist = (metadata.artist || "").trim();
   if (!rawTitle) return;
 
-  let finalArtist = rawArtist || "En vivo";
   const track = {
     title: rawTitle,
-    artist: finalArtist,
+    artist: rawArtist || "En vivo",
     coverArt: metadata.coverArt || DEFAULT_COVER,
   };
 
   const newTrackId = normalize(track.title) + "_" + normalize(track.artist);
+  
+  // Si es la misma canción, no hacemos nada para evitar parpadeos
   if (currentTrack === newTrackId) return;
 
   currentTrack = newTrackId;
-  trackStartTime = Date.now();
-  stopProgress();
 
-  // 1. Buscamos o creamos el contenedor de la card
+  // 1. Buscamos o creamos el contenedor
   let card = nowPlayingBox.querySelector(".now-card");
   if (!card) {
     card = document.createElement("div");
@@ -94,11 +47,15 @@ function updateNowPlaying(metadata) {
   let coverImg = card.querySelector("img");
   if (!coverImg) {
     coverImg = document.createElement("img");
-    card.prepend(coverImg); // Asegura que la imagen sea lo primero
+    card.prepend(coverImg);
   }
-  coverImg.src = track.coverArt;
+  
+  // Solo cambiamos si es distinto para evitar parpadeo
+  if (coverImg.src !== track.coverArt) {
+      coverImg.src = track.coverArt;
+  }
 
-  // 3. Actualizamos o creamos la info
+  // 3. Actualizamos o creamos la info con las clases .title y .artist
   let infoDiv = card.querySelector(".now-info");
   if (!infoDiv) {
     infoDiv = document.createElement("div");
@@ -106,21 +63,17 @@ function updateNowPlaying(metadata) {
     card.appendChild(infoDiv);
   }
   
-  // Limpiamos contenido de texto pero mantenemos la estructura
+  // Inyectamos HTML con clases específicas para el CSS unificado
   infoDiv.innerHTML = `
     <div class="np-meta-viewport">
       <div class="np-meta-track">
-        <div class="np-line">${track.title}</div>
-        <div class="np-line">${track.artist}</div>
+        <div class="np-line title">${track.title}</div>
+        <div class="np-line artist">${track.artist}</div>
       </div>
     </div>
-    <div class="now-progress"><div class="now-progress-bar"></div></div>
   `;
 
-  progressBarRef = infoDiv.querySelector(".now-progress-bar");
-  animationFrame = requestAnimationFrame(updateProgress);
-
-  // MediaSession igual que antes
+  // MediaSession
   if ("mediaSession" in navigator) {
     navigator.mediaSession.metadata = new MediaMetadata({
       title: track.title,
@@ -129,15 +82,17 @@ function updateNowPlaying(metadata) {
     });
   }
 }
+
 /* =========================
    FETCH METADATA
 ========================= */
 async function fetchNowPlaying() {
   try {
+    // Usamos Math.random() para romper cualquier caché intermedia del servidor o navegador
     const res = await fetch(
-      "https://pg-radio-webhook.vercel.app/api/nowplaying?_=" + Date.now()
+      `https://pg-radio-webhook.vercel.app/api/nowplaying?cb=${Math.random()}`
     );
-
+    
     if (!res.ok) throw new Error("No se pudo obtener metadata");
 
     const data = await res.json();
@@ -150,19 +105,8 @@ async function fetchNowPlaying() {
 /* =========================
    INIT
 ========================= */
+// Carga inicial
 fetchNowPlaying();
+
+// Refresco cada 15 segundos
 setInterval(fetchNowPlaying, 15000);
-
-/* =========================
-   CLEANUP VISIBILITY
-========================= */
-document.addEventListener("visibilitychange", () => {
-  if (document.hidden) {
-    stopProgress();
-  } else {
-    if (progressBarRef) {
-      updateProgress();
-    }
-  }
-});
-
