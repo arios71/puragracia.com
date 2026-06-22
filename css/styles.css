@@ -52,10 +52,11 @@ body {
 	margin: 50px 0 10px 0;
 }
 .logo {
-	width: clamp(300px, 42vw, 460px);
+	width: 90%;
+	max-width: 320px;
 	height: auto;
-	margin-bottom: 10px;
-	filter: drop-shadow(0 8px 25px rgba(0, 0, 0, 0.6));
+	margin-bottom: 20px;
+	filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
 }
 /* ================= SEO TITLES ================= */
 .seo-title, .seo-subtitle {
@@ -93,22 +94,26 @@ body {
   gap: 12px;
 }
 /* ================= PLAY BUTTON ================= */
-.play-btn, #playRadio {
-	width: 100%;
-	padding: 16px;
-	border: none;
-	border-radius: 14px;
-	font-size: 1.1rem;
-	font-weight: 600;
-	color: #fff;
-	cursor: pointer;
-	background: linear-gradient(180deg, #3b82f6, #1e3a8a);
-	box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-	transition: all 0.3s ease;
+#playRadio {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: none;
+    background: #ffffff;
+    color: #111c2e;
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin: 10px auto;
+    transition: transform 0.2s;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 }
-.play-btn:hover, #playRadio:hover {
-	background: linear-gradient(180deg, #4b8df7, #243f9c);
-	transform: translateY(-1px);
+
+#playRadio:hover {
+    background: #f0f0f0;
+    transform: scale(1.05);
 }
 .now-card {
 	display: flex;
@@ -842,40 +847,33 @@ html, body {
   box-sizing: border-box;
 }
 
-/* =========================
-   NOW PLAYING - CARÁTULA PROTAGONISTA
-========================= */
+/* ========================================================
+   NUEVO DISEÑO: CARÁTULA PROTAGONISTA
+   ======================================================== */
 
 .now-card {
-	flex-direction: column;
-	align-items: center;
-	text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background: none; 
+    box-shadow: none;
+    padding: 0;
+    margin-bottom: 25px;
 }
 
-/* imagen más grande */
 .now-card img {
-	width: 160px;
-	height: 160px;
+    width: 280px;      /* Carátula grande */
+    height: 280px;
+    border-radius: 24px;
+    object-fit: cover;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    margin-bottom: 20px;
 }
 
-/* elimina separación lateral del layout viejo */
 .now-info {
-	align-items: center;
-}
-
-/* texto un poco más limpio visualmente */
-.now-title {
-	font-size: 0.95rem;
-}
-
-.now-artist {
-	font-size: 0.85rem;
-}
-
-/* opcional: programa más discreto */
-.now-program {
-	font-size: 0.7rem;
-	opacity: 0.6;
+    align-items: center;
+    width: 90%;
 }
 /* =========================
    NOW PLAYING - METADATA SCROLLER
