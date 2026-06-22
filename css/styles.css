@@ -1,25 +1,50 @@
+/* ================= RESET Y ESTRUCTURA APP ================= */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bottom-bar-height: 80px;
+  --header-height: 80px; /* Definimos esto para consistencia */
+  --bg-color: #0a0f1a;
+}
+
+html, body {
+  height: 100dvh;
+  overflow: hidden; /* Elimina scroll global */
+  font-family: 'Segoe UI', sans-serif;
+  background: var(--bg-color);
+  color: #fff;
+}
+
 /* ================= HEADER LOGO ================= */
 .logo-header {
-  height: 120px; /* Aumentamos la altura total para incluir el "aire" superior */
+  height: var(--header-height); /* Usamos la variable de 80px */
   display: flex;
   justify-content: center;
-  align-items: flex-end; /* Alinea el logo hacia abajo dentro de este espacio */
-  padding-bottom: 20px;  /* Espacio real entre el logo y el resto del contenido */
+  align-items: center;
+  padding: 10px;
 }
-
 .logo-header img {
-  height: 50px; /* Tamaño controlado y fijo */
+  height: 55px; /* Tamaño equilibrado */
   width: auto;
-  object-fit: contain;
 }
 
-/* ================= CONTENEDOR PRINCIPAL ================= */
+/* ================= CONTENEDOR PRINCIPAL (CORREGIDO) ================= */
 main.app {
-  /* Ajustamos el cálculo: 100dvh - altura del header (120px) - menú (80px) */
-  height: calc(100dvh - 120px - var(--bottom-bar-height));
+  /* Restamos la altura real del header (80px) y del menú inferior (80px) */
+  height: calc(100dvh - var(--header-height) - var(--bottom-bar-height));
   overflow: hidden;
   position: relative;
 }
+
+.section {
+  display: none;
+  height: 100%;
+  overflow-y: auto; /* Scroll solo dentro de la sección */
+  flex-direction: column;
+  padding: 20px;
+}
+
+.section.active { display: flex; }
 
 /* ================= CARÁTULA Y PLAYER (CENTRADOS) ================= */
 .player-container {
@@ -50,50 +75,57 @@ main.app {
 /* ================= METADATA Y ANIMACIÓN (NUEVO/CORREGIDO) ================= */
 /* Soluciona puntos 2, 3 y 4 */
 
-/* ================= METADATA: 4 LÍNEAS FIJAS + MARQUESINA ================= */
-
 .now-info {
-  margin-top: 20px;
+  margin-top: 15px; /* Separa el texto de la carátula (Punto 2) */
   width: 90%;
   text-align: center;
+}
+
+/* Viewport para el scroll de metadata */
+.np-meta-viewport {
+  height: 2.2em; /* Un poco más alto para las dos líneas */
+  overflow: hidden;
+  width: 100%;
+}
+
+/* Contenedor que se mueve */
+.np-meta-track {
   display: flex;
   flex-direction: column;
-  gap: 6px; /* Espacio entre las 4 líneas */
+  /* Recuperamos la animación (Punto 3) */
+  animation: metaScroll 8s infinite ease-in-out;
+  align-items: center;
 }
 
-/* El viewport ahora solo sirve de contenedor para el efecto */
-.np-meta-viewport {
-  width: 100%;
-  overflow: hidden; 
-  white-space: nowrap;
-}
-
-/* Título: Con animación de marquesina horizontal */
-.np-line.title {
-  font-weight: 800;
-  color: #ffffff;
-  font-size: 1.2rem;
-  display: inline-block;
-  padding-left: 100%; /* Inicia fuera de la pantalla a la derecha */
-  animation: marquee 12s linear infinite;
-}
-
-@keyframes marquee {
-  0% { transform: translate(0, 0); }
-  100% { transform: translate(-100%, 0); }
-}
-
-/* Estilos de líneas fijas (artista, álbum, duración) */
+/* Estilos de línea generales */
 .np-line {
+  height: 1.1em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
 }
 
-.artist { font-size: 0.95rem; color: #fbac33; font-weight: 600; }
-.album { font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); }
-.duration { font-size: 0.8rem; color: rgba(255, 255, 255, 0.4); }
+/* Título: Bold y Blanco Sólido (Punto 4) */
+.np-meta-track .title {
+  font-weight: 800;
+  color: #ffffff;
+  font-size: 1.1rem;
+}
+
+/* Artista: Más suave */
+.np-meta-track .artist {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Animación tipo radio */
+@keyframes metaScroll {
+  0%, 45% { transform: translateY(0); }
+  55%, 95% { transform: translateY(-1.1em); } /* Se mueve la altura de una línea */
+  100% { transform: translateY(0); }
+}
+
 /* ================= BOTÓN PLAY CIRCULAR ================= */
 #playRadio {
   width: 80px;
