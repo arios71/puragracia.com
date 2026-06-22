@@ -165,17 +165,4 @@ document.addEventListener("visibilitychange", () => {
     }
   }
 });
-document.addEventListener("DOMContentLoaded", () => {
-    const playBtn = document.getElementById("playRadio");
-    const audio = document.getElementById("radioAudio");
 
-    playBtn.addEventListener("click", () => {
-        if (audio.paused) {
-            audio.play();
-            playBtn.textContent = "⏸";
-        } else {
-            audio.pause();
-            playBtn.textContent = "▶";
-        }
-    });
-});
