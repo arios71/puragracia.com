@@ -94,5 +94,14 @@
     <script src="/js/menu.js"></script>
     <script src="/js/nowplaying.js"></script>
     <script src="/js/schedule.js"></script>
+
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .catch(err => console.log('PWA: Error registrando SW', err));
+        });
+      }
+    </script>
 </body>
 </html>
