@@ -1,47 +1,25 @@
-/* ================= RESET Y ESTRUCTURA APP ================= */
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-:root {
-  --bottom-bar-height: 80px;
-  --header-height: 80px; /* Definimos esto para consistencia */
-  --bg-color: #0a0f1a;
-}
-
-html, body {
-  height: 100dvh;
-  overflow: hidden; /* Elimina scroll global */
-  font-family: 'Segoe UI', sans-serif;
-  background: var(--bg-color);
-  color: #fff;
-}
-
 /* ================= HEADER LOGO ================= */
 .logo-header {
-  height: var(--header-height);
+  height: 120px; /* Aumentamos la altura total para incluir el "aire" superior */
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 10px;
-  margin-top: 40px; /* <--- ESTO ES LO QUE FALTA AÑADIR */
+  align-items: flex-end; /* Alinea el logo hacia abajo dentro de este espacio */
+  padding-bottom: 20px;  /* Espacio real entre el logo y el resto del contenido */
 }
 
-/* ================= CONTENEDOR PRINCIPAL (CORREGIDO) ================= */
+.logo-header img {
+  height: 50px; /* Tamaño controlado y fijo */
+  width: auto;
+  object-fit: contain;
+}
+
+/* ================= CONTENEDOR PRINCIPAL ================= */
 main.app {
-  /* Restamos la altura real del header (80px) y del menú inferior (80px) */
-  height: calc(100dvh - var(--header-height) - var(--bottom-bar-height));
+  /* Ajustamos el cálculo: 100dvh - altura del header (120px) - menú (80px) */
+  height: calc(100dvh - 120px - var(--bottom-bar-height));
   overflow: hidden;
   position: relative;
 }
-
-.section {
-  display: none;
-  height: 100%;
-  overflow-y: auto; /* Scroll solo dentro de la sección */
-  flex-direction: column;
-  padding: 20px;
-}
-
-.section.active { display: flex; }
 
 /* ================= CARÁTULA Y PLAYER (CENTRADOS) ================= */
 .player-container {
