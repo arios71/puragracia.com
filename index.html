@@ -152,21 +152,21 @@
     <main class="app">
       <!-- INICIO -->
       <section id="inicio" class="section active">
-        <div class="logo-container">
-          <img class="logo" src="/assets/branding/logo.webp" alt="Logo de Pura Gracia Radio" />
-          <h1 class="seo-title">Pura Gracia Radio</h1>
-          <h2 class="seo-subtitle">WRPG-DB</h2>
-        </div>
-        <section class="player-section">
-          <div class="radio-wrapper">
-            <button id="playRadio" class="play-btn">▶ Reproducir Radio</button>
-            <p id="radioStatus" class="radio-status" style="display: none"></p>
-            
-            <div id="nowPlayingBox"></div>
-            <audio id="radioAudio" preload="none"></audio>
-          </div>
-        </section>
-      </section>
+  <div class="logo-container">
+    <img class="logo-horizontal" src="/assets/branding/logo-horizontal.webp" alt="Pura Gracia Radio" />
+  </div>
+
+  <section class="player-section">
+    <div class="radio-wrapper">
+      <div id="nowPlayingBox"></div>
+      
+      <button id="playRadio" class="btn-circular">▶</button>
+      
+      <p id="radioStatus" class="radio-status" style="display: none"></p>
+      <audio id="radioAudio" preload="none"></audio>
+    </div>
+  </section>
+</section>
 
       <!-- PROGRAMACION -->
       <section id="programacion" class="section">
