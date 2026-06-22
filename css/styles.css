@@ -47,15 +47,15 @@ main.app {
 
 .section.active { display: flex; }
 
-/* ================= CARÁTULA Y PLAYER (CENTRADOS) ================= */
+/* ================= CARÁTULA Y PLAYER (RE-CENTRADOS) ================= */
 .player-container {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* Sube el contenido */
-  padding-top: 10px; /* Ajuste fino de espacio superior */
+  justify-content: center; /* <--- Cambiamos a centrado vertical */
+  padding-top: 20px; 
   align-items: center;
-  gap: 15px;
+  gap: 20px; /* Un poco más de aire entre elementos */
 }
 
 .now-card {
