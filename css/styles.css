@@ -17,15 +17,12 @@ html, body {
 
 /* ================= HEADER LOGO ================= */
 .logo-header {
-  height: var(--header-height); /* Usamos la variable de 80px */
+  height: var(--header-height);
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 10px;
-}
-.logo-header img {
-  height: 55px; /* Tamaño equilibrado */
-  width: auto;
+  margin-top: 40px; /* <--- ESTO ES LO QUE FALTA AÑADIR */
 }
 
 /* ================= CONTENEDOR PRINCIPAL (CORREGIDO) ================= */
