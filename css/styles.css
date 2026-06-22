@@ -52,11 +52,12 @@ body {
 	margin: 50px 0 10px 0;
 }
 .logo {
-	width: 90%;
-	max-width: 320px;
-	height: auto;
-	margin-bottom: 20px;
-	filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
+    width: 100%;
+    max-width: 320px; /* Esto limita el tamaño máximo en web */
+    height: auto;
+    display: block; /* Asegura que respete el contenedor */
+    margin: 0 auto 20px auto;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
 }
 /* ================= SEO TITLES ================= */
 .seo-title, .seo-subtitle {
