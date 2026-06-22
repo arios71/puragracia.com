@@ -337,3 +337,25 @@ main.app {
     border-radius: 5px;
   }
 }
+
+/* ================= HIGHLIGHT PROGRAMA EN VIVO ================= */
+.schedule-card.radio-active {
+  border: 2px solid #fbac33 !important; /* Borde naranja intenso */
+  background: rgba(251, 172, 51, 0.15) !important; /* Fondo con tinte naranja */
+  box-shadow: 0 0 15px rgba(251, 172, 51, 0.3); /* Resplandor suave */
+  transform: scale(1.02); /* Un poquito más grande */
+}
+
+/* Estilo para la etiqueta EN VIVO */
+.live-badge {
+  display: inline-block;
+  background: #fbac33;
+  color: #0a0f1a;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-top: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
