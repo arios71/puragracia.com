@@ -3,14 +3,52 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    
-    <link rel="manifest" href="/manifest.json" />
-    
+
+    <title>Pura Gracia Radio (WRPG-DB) | Radio cristiana 24 Horas</title>
+
+    <meta name="description" content="Pura Gracia Radio (WRPG-DB) transmite predicaciones de manera expositiva, enseñanza cristiana y música bíblica que expone el evangelio de Cristo, 24 horas del día." />
+
     <meta name="theme-color" content="#121212" />
-    
+
+    <link rel="canonical" href="https://puragracia.com/" />
+
+    <link rel="manifest" href="/manifest.json" />
+
     <link rel="apple-touch-icon" href="/assets/icons/logo-192.png" />
-    
-    <title>WRPG-DB Pura Gracia | Radio Cristiana Reformada</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Pura Gracia Radio" />
+    <meta property="og:description" content="Pura Gracia Radio transmite predicaciones expositivas, enseñanza cristiana y música bíblica que expone el evangelio de Cristo." />
+    <meta property="og:url" content="https://puragracia.com/" />
+    <meta property="og:image" content="https://puragracia.com/assets/icons/logo-512.png" />
+    <meta property="og:locale" content="es_PR" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Pura Gracia Radio" />
+    <meta name="twitter:description" content="Pura Gracia transmite predicaciones expositivas, enseñanza cristiana y música bíblica." />
+    <meta name="twitter:image" content="https://puragracia.com/assets/icons/logo-512.png" />
+
+    <!-- Datos estructurados -->
+    <script type="application/ld+json">
+    {
+      "@context":"https://schema.org",
+      "@type":"RadioStation",
+      "name":"Pura Gracia Radio",
+      "alternateName":"WRPG-DB",
+      "url":"https://puragracia.com/",
+      "logo":"https://puragracia.com/assets/icons/logo-512.png",
+      "description":"Radio cristiana reformada con predicación bíblica, música y enseñanza centrada en el evangelio.",
+      "publisher":{
+         "@type":"Organization",
+         "name":"Iglesia Bíblica Gracia Verdadera"
+      }
+    }
+    </script>
+
     <link rel="stylesheet" href="/css/styles.css" />
 </head>
 <body>
@@ -20,8 +58,9 @@
     </header>
 
     <main class="app">
-        
-        <section id="inicio" class="section active">
+    <h1 class="sr-only">Pura Gracia Radio - Radio Cristiana Reformada</h1>
+
+    <section id="inicio" class="section active">
             <div class="player-container">
                 <div id="nowPlayingBox"></div>
                 <button id="playRadio" class="btn-circular">▶</button>
