@@ -1,6 +1,18 @@
 /* ================= RESET Y ESTRUCTURA APP ================= */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+/* ================= SEO ================= */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
 :root {
   --bottom-bar-height: 80px;
   --header-height: 80px; /* Definimos esto para consistencia */
