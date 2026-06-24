@@ -395,6 +395,6 @@ main.app {
 }
 
 /* Ajuste de margen para secciones sin título */
-#programacion, #sermones {
+#programacion, #sermones, #contacto {
   padding-top: 40px;
 }
