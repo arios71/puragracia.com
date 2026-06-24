@@ -7,7 +7,7 @@ let programsList = []; // Aquí guardaremos la lista cargada del JSON
 // Cargar el JSON de programas al iniciar
 async function loadPrograms() {
     try {
-        const response = await fetch('/programs.json'); // Asegúrate que la ruta sea correcta
+        const response = await fetch('/data/programs.json'); // Asegúrate que la ruta sea correcta
         const data = await response.json();
         programsList = data.programs;
         console.log("Catálogo de programas cargado:", programsList.length);
