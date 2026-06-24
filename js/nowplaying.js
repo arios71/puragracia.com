@@ -38,15 +38,23 @@ function updateNowPlaying(metadata) {
     if (currentTrack === newTrackId) return;
     currentTrack = newTrackId;
 
+    // ... dentro de updateNowPlaying ...
+
     // 2. Construcción de la UI
     let card = nowPlayingBox.querySelector(".now-card") || document.createElement("div");
     card.className = "now-card";
     if (!nowPlayingBox.contains(card)) nowPlayingBox.appendChild(card);
 
-    let coverImg = card.querySelector("img") || document.createElement("img");
+    // NUEVO: Contenedor para la carátula con resplandor
+    let coverWrapper = card.querySelector(".cover-glow-wrapper") || document.createElement("div");
+    coverWrapper.className = "cover-glow-wrapper";
+    
+    let coverImg = coverWrapper.querySelector("img") || document.createElement("img");
     coverImg.onerror = () => { coverImg.src = DEFAULT_COVER; };
     coverImg.src = coverArt;
-    if (!card.contains(coverImg)) card.prepend(coverImg);
+    
+    if (!coverWrapper.contains(coverImg)) coverWrapper.appendChild(coverImg);
+    if (!card.contains(coverWrapper)) card.prepend(coverWrapper);
 
     let infoDiv = card.querySelector(".now-info") || document.createElement("div");
     infoDiv.className = "now-info";
