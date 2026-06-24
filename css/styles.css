@@ -172,16 +172,25 @@ main.app {
   backdrop-filter: blur(10px);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding-bottom: env(safe-area-inset-bottom);
-  z-index: 1000; /* Asegura que esté sobre el contenido */
+  z-index: 1000;
 }
 
 .menu-item {
   text-decoration: none;
   color: rgba(255, 255, 255, 0.6);
-  font-size: 11px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 4px; /* Espacio entre icono y texto */
+  transition: color 0.3s;
+}
+
+.menu-item i {
+  font-size: 20px; /* Tamaño del icono */
+}
+
+.menu-item span {
+  font-size: 10px; /* Tamaño del texto */
 }
 
 .menu-item.active { color: #fbac33; }
