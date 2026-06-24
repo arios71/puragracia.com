@@ -46,8 +46,8 @@ function updateNowPlaying(metadata) {
     card.appendChild(infoDiv);
   }
   
+  // Limpiamos y reinsertamos el HTML correctamente
   infoDiv.innerHTML = `
-    infoDiv.innerHTML = `
     <div class="np-meta-viewport">
       <div class="marquee-container">
         <div class="np-line title marquee">${title}</div>
