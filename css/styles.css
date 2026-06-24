@@ -27,18 +27,37 @@ html, body {
   color: #fff;
 }
 
-/* ================= HEADER LOGO ================= */
+/* ================= HEADER LOGO (Ajustado) ================= */
 .logo-header {
-  height: var(--header-height); /* Mantenemos 80px para no romper el cálculo */
+  height: var(--header-height);
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 30px; /* Bajamos el contenido del header 30px */
-  padding-bottom: 0;
+  padding-top: 30px; 
 }
+
 .logo-header img {
-  height: 45px; /* Reduje ligeramente a 45px para que quepa bien con el nuevo padding */
-  width: auto;
+  height: 65px; /* Aumentamos la altura para que se vea más grande */
+  width: auto;  /* Mantiene la proporción, esto evita que se vea "ancho" o estirado */
+  max-width: 80%; /* Asegura que nunca toque los bordes laterales */
+  object-fit: contain;
+}
+
+/* ================= BOTÓN PLAY (Reducido) ================= */
+#playRadio {
+  width: 65px;  /* Reducido de 80px a 65px para que sea más sutil */
+  height: 65px;
+  border-radius: 50%;
+  border: none;
+  background: #ffffff;
+  color: #111c2e;
+  font-size: 1.5rem; /* Ajustamos el tamaño del icono interior */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  transition: transform 0.2s;
 }
 
 /* ================= CONTENEDOR PRINCIPAL (CORREGIDO) ================= */
@@ -138,25 +157,6 @@ main.app {
   55%, 95% { transform: translateY(-1.1em); } /* Se mueve la altura de una línea */
   100% { transform: translateY(0); }
 }
-
-/* ================= BOTÓN PLAY CIRCULAR ================= */
-#playRadio {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  border: none;
-  background: #ffffff;
-  color: #111c2e;
-  font-size: 2rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-  transition: transform 0.2s;
-}
-
-#playRadio:hover { transform: scale(1.05); }
 
 /* ================= MENÚ INFERIOR FIJO ================= */
 .menu-principal {
