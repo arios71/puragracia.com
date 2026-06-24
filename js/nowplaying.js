@@ -1,118 +1,77 @@
 // js/nowplaying.js
 const nowPlayingBox = document.getElementById("nowPlayingBox");
-
-let currentTrack = null;
 const DEFAULT_COVER = "/default-cover.png";
-const normalize = (str) => (str || "").trim().toLowerCase();
+let currentTrack = null;
+let programsList = []; // Aquí guardaremos la lista cargada del JSON
 
-// Catálogo de programas
-const PROGRAM_DATA = [
-    { "name": "Lectura Pública Biblia", "artwork": "/data/caratulas/prog_001.jpg" },
-    { "name": "Iglesia Evangélica de la Gracia", "artwork": "/data/caratulas/prog_002.jpg" },
-    { "name": "Ruta 66", "artwork": "/data/caratulas/prog_003.jpg" },
-    { "name": "Grace Community Church", "artwork": "/data/caratulas/prog_004.jpg" },
-    { "name": "Coalición Podcast", "artwork": "/data/caratulas/prog_005.jpg" },
-    { "name": "Renovando tu Mente", "artwork": "/data/caratulas/prog_006.jpg" },
-    { "name": "A Través de la Biblia", "artwork": "/data/caratulas/prog_007.jpg" },
-    { "name": "5 Minutos Historia de la Iglesia", "artwork": "/data/caratulas/prog_008.jpg" },
-    { "name": "Deleite en la Palabra", "artwork": "/data/caratulas/prog_009.jpg" },
-    { "name": "Aviva Nuestros Corazones", "artwork": "/data/caratulas/prog_010.jpg" },
-    { "name": "Gracia a Vosotros", "artwork": "/data/caratulas/prog_011.jpg" },
-    { "name": "Abre la Biblia", "artwork": "/data/caratulas/prog_012.jpg" },
-    { "name": "Crianza Reverente", "artwork": "/data/caratulas/prog_013.jpg" },
-    { "name": "Entendiendo los Tiempos", "artwork": "/data/caratulas/prog_014.jpg" },
-    { "name": "Jungla Semántica", "artwork": "/data/caratulas/prog_015.jpg" },
-    { "name": "Iglesia Bautista Internacional", "artwork": "/data/caratulas/prog_017.jpg" },
-    { "name": "Iglesia Bíblica del Señor Jesucristo", "artwork": "/data/caratulas/prog_018.jpg" },
-    { "name": "Bite Project", "artwork": "/data/caratulas/prog_019.jpg" },
-    { "name": "Iglesia Gracia sobre Gracia", "artwork": "/data/caratulas/prog_020.jpg" },
-    { "name": "Iglesia Gracia y Verdad", "artwork": "/data/caratulas/prog_021.jpg" },
-    { "name": "Oye la Biblia", "artwork": "/data/caratulas/prog_022.jpg" },
-    { "name": "Iglesia Bíblica Sola Gracia", "artwork": "/data/caratulas/prog_023.jpg" },
-    { "name": "Iglesia Reforma", "artwork": "/data/caratulas/prog_024.jpg" },
-    { "name": "Iglesia Bíblica Berea", "artwork": "/data/caratulas/prog_025.jpg" },
-    { "name": "Iglesia del Centro", "artwork": "/data/caratulas/prog_026.jpg" },
-    { "name": "Cursos Third Mill", "artwork": "/data/caratulas/prog_027.jpg" },
-    { "name": "La Verdad en el Tubo de Ensayo", "artwork": "/data/caratulas/prog_028.jpg" },
-    { "name": "Confesión y Verdad", "artwork": "/data/caratulas/prog_030.jpg" },
-    { "name": "Iglesia Bíblica Gracia Verdadera", "artwork": "/data/caratulas/prog_031.jpg" },
-    { "name": "Solid Joys en Español", "artwork": "/data/caratulas/prog_032.jpg" }
-];
+// Cargar el JSON de programas al iniciar
+async function loadPrograms() {
+    try {
+        const response = await fetch('/programs.json'); // Asegúrate que la ruta sea correcta
+        const data = await response.json();
+        programsList = data.programs;
+        console.log("Catálogo de programas cargado:", programsList.length);
+    } catch (err) {
+        console.error("No se pudo cargar el catálogo de programas:", err);
+    }
+}
 
-/* =========================
-   UPDATE NOW PLAYING
-========================= */
 function updateNowPlaying(metadata) {
-  const title = (metadata && metadata.title) ? metadata.title.trim() : "Pura Gracia Radio";
-  const artist = (metadata && metadata.artist) ? metadata.artist.trim() : "Transmisión en vivo";
-  const album = (metadata && metadata.album) ? metadata.album.trim() : "";
-  
-  // Lógica de carátula: Webhook > Catálogo > Default
-  const programaEncontrado = PROGRAM_DATA.find(p => p.name.toLowerCase() === title.toLowerCase());
-  const coverArt = (metadata && metadata.coverArt && metadata.coverArt !== "") 
-                   ? metadata.coverArt 
-                   : (programaEncontrado ? programaEncontrado.artwork : DEFAULT_COVER);
+    const title = (metadata && metadata.title) ? metadata.title.trim() : "Pura Gracia Radio";
+    const artist = (metadata && metadata.artist) ? metadata.artist.trim() : "Transmisión en vivo";
+    const album = (metadata && metadata.album) ? metadata.album.trim() : "";
+    
+    // 1. Lógica de búsqueda de carátula
+    // Buscamos en el catálogo por nombre (usando includes para flexibilidad)
+    const prog = programsList.find(p => 
+        title.toLowerCase().includes(p.name.toLowerCase()) || 
+        p.name.toLowerCase().includes(title.toLowerCase())
+    );
 
-  const newTrackId = normalize(title) + "_" + normalize(artist) + "_" + normalize(album);
-  if (currentTrack === newTrackId) return;
-  currentTrack = newTrackId;
+    const coverArt = (metadata && metadata.coverArt && metadata.coverArt !== "") 
+                     ? metadata.coverArt 
+                     : (prog ? prog.artwork : DEFAULT_COVER);
 
-  // 1. Aseguramos contenedor
-  let card = nowPlayingBox.querySelector(".now-card");
-  if (!card) {
-    card = document.createElement("div");
-    card.classList.add("now-card");
-    nowPlayingBox.appendChild(card);
-  }
+    const newTrackId = `${title}_${artist}_${album}`.toLowerCase();
+    if (currentTrack === newTrackId) return;
+    currentTrack = newTrackId;
 
-  // 2. Imagen
-  let coverImg = card.querySelector("img");
-  if (!coverImg) {
-    coverImg = document.createElement("img");
+    // 2. Construcción de la UI
+    let card = nowPlayingBox.querySelector(".now-card") || document.createElement("div");
+    card.className = "now-card";
+    if (!nowPlayingBox.contains(card)) nowPlayingBox.appendChild(card);
+
+    let coverImg = card.querySelector("img") || document.createElement("img");
     coverImg.onerror = () => { coverImg.src = DEFAULT_COVER; };
-    card.prepend(coverImg);
-  }
-  if (coverImg.src !== coverArt) coverImg.src = coverArt;
+    coverImg.src = coverArt;
+    if (!card.contains(coverImg)) card.prepend(coverImg);
 
-  // 3. Info
-  let infoDiv = card.querySelector(".now-info");
-  if (!infoDiv) {
-    infoDiv = document.createElement("div");
-    infoDiv.classList.add("now-info");
-    card.appendChild(infoDiv);
-  }
-  
-  infoDiv.innerHTML = `
-    <div class="np-meta-viewport">
-      <div class="marquee-container">
-        <div class="np-line title marquee">${title}</div>
-      </div>
-      <div class="np-line artist">${artist}</div>
-      ${album ? `<div class="np-line album">${album}</div>` : ""}
-    </div>
-  `;
+    let infoDiv = card.querySelector(".now-info") || document.createElement("div");
+    infoDiv.className = "now-info";
+    infoDiv.innerHTML = `
+        <div class="np-meta-viewport">
+            <div class="marquee-container"><div class="np-line title marquee">${title}</div></div>
+            <div class="np-line artist">${artist}</div>
+            ${album ? `<div class="np-line album">${album}</div>` : ""}
+        </div>
+    `;
+    if (!card.contains(infoDiv)) card.appendChild(infoDiv);
 
-  if ("mediaSession" in navigator) {
-    navigator.mediaSession.metadata = new MediaMetadata({
-      title: title,
-      artist: artist,
-      album: album,
-      artwork: [{ src: coverArt, sizes: "512x512", type: "image/png" }],
-    });
-  }
+    if ("mediaSession" in navigator) {
+        navigator.mediaSession.metadata = new MediaMetadata({ title, artist, album, artwork: [{ src: coverArt, sizes: "512x512", type: "image/png" }] });
+    }
 }
 
 async function fetchNowPlaying() {
-  try {
-    const res = await fetch(`https://pg-radio-webhook.vercel.app/api/nowplaying?cb=${Math.random()}`);
-    if (!res.ok) throw new Error("Servidor no responde");
-    const data = await res.json();
-    updateNowPlaying(data);
-  } catch (err) {
-    console.warn("Error cargando metadata:", err);
-    updateNowPlaying({ title: "Pura Gracia Radio", artist: "Transmisión en vivo", coverArt: DEFAULT_COVER });
-  }
+    try {
+        const res = await fetch(`https://pg-radio-webhook.vercel.app/api/nowplaying?cb=${Math.random()}`);
+        const data = await res.json();
+        updateNowPlaying(data);
+    } catch (err) {
+        updateNowPlaying({ title: "Pura Gracia Radio", artist: "Transmisión en vivo" });
+    }
 }
 
-fetchNowPlaying();
+// Inicialización
+loadPrograms().then(fetchNowPlaying);
 setInterval(fetchNowPlaying, 15000);
