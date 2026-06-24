@@ -43,28 +43,29 @@ html, body {
   object-fit: contain;
 }
 
-/* ================= BOTÓN PLAY (Actualizado) ================= */
+/* ================= BOTÓN PLAY (CORREGIDO Y INTEGRADO) ================= */
 #playRadio {
-  width: 65px;
+  width: 65px; 
   height: 65px;
   border-radius: 50%;
   border: none;
-  background: #fbac33; /* Color dorado solicitado */
+  background-color: #fbac33; /* Color dorado exacto */
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  margin-top: 25px; /* Separación garantizada de la metadata */
   transition: transform 0.2s, background-color 0.2s;
-  padding-left: 5px; /* Pequeño ajuste para centrar visualmente el triángulo */
-  margin-top: 20px; /* Separación de la metadata */
+  padding: 0; /* Asegura que no haya relleno extra que descentre el icono */
 }
 
-/* Ajuste del tamaño del triángulo dentro del botón */
+/* Ajuste preciso para que el triángulo sea proporcional al botón */
 #playRadio svg {
-  width: 35px;  /* Aumentado para que sea proporcional */
+  width: 35px; /* Tamaño mayor para mejor proporción */
   height: 35px;
-  fill: #0a0f1a; /* Color oscuro para el interior */
+  fill: #000000; /* Color inicial del triángulo (negro) */
+  display: block;
 }
 
 /* ================= CONTENEDOR PRINCIPAL (CORREGIDO) ================= */
