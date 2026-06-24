@@ -5,7 +5,7 @@ let currentTrack = null;
 const DEFAULT_COVER = "/default-cover.png";
 const normalize = (str) => (str || "").trim().toLowerCase();
 
-// Catálogo de programas para buscar carátulas si el webhook no envía ninguna
+// Catálogo de programas
 const PROGRAM_DATA = [
     { "name": "Lectura Pública Biblia", "artwork": "/data/caratulas/prog_001.jpg" },
     { "name": "Iglesia Evangélica de la Gracia", "artwork": "/data/caratulas/prog_002.jpg" },
@@ -45,14 +45,15 @@ const PROGRAM_DATA = [
 function updateNowPlaying(metadata) {
   const title = (metadata && metadata.title) ? metadata.title.trim() : "Pura Gracia Radio";
   const artist = (metadata && metadata.artist) ? metadata.artist.trim() : "Transmisión en vivo";
+  const album = (metadata && metadata.album) ? metadata.album.trim() : "";
   
-  // 2. Lógica de imagen: Webhook > Catálogo interno > Default
+  // Lógica de carátula: Webhook > Catálogo > Default
   const programaEncontrado = PROGRAM_DATA.find(p => p.name.toLowerCase() === title.toLowerCase());
   const coverArt = (metadata && metadata.coverArt && metadata.coverArt !== "") 
                    ? metadata.coverArt 
                    : (programaEncontrado ? programaEncontrado.artwork : DEFAULT_COVER);
 
-  const newTrackId = normalize(title) + "_" + normalize(artist);
+  const newTrackId = normalize(title) + "_" + normalize(artist) + "_" + normalize(album);
   if (currentTrack === newTrackId) return;
   currentTrack = newTrackId;
 
@@ -71,10 +72,7 @@ function updateNowPlaying(metadata) {
     coverImg.onerror = () => { coverImg.src = DEFAULT_COVER; };
     card.prepend(coverImg);
   }
-  
-  if (coverImg.src !== coverArt) {
-    coverImg.src = coverArt;
-  }
+  if (coverImg.src !== coverArt) coverImg.src = coverArt;
 
   // 3. Info
   let infoDiv = card.querySelector(".now-info");
@@ -90,6 +88,7 @@ function updateNowPlaying(metadata) {
         <div class="np-line title marquee">${title}</div>
       </div>
       <div class="np-line artist">${artist}</div>
+      ${album ? `<div class="np-line album">${album}</div>` : ""}
     </div>
   `;
 
@@ -97,14 +96,12 @@ function updateNowPlaying(metadata) {
     navigator.mediaSession.metadata = new MediaMetadata({
       title: title,
       artist: artist,
+      album: album,
       artwork: [{ src: coverArt, sizes: "512x512", type: "image/png" }],
     });
   }
 }
 
-/* =========================
-   FETCH METADATA
-========================= */
 async function fetchNowPlaying() {
   try {
     const res = await fetch(`https://pg-radio-webhook.vercel.app/api/nowplaying?cb=${Math.random()}`);
@@ -112,12 +109,8 @@ async function fetchNowPlaying() {
     const data = await res.json();
     updateNowPlaying(data);
   } catch (err) {
-    console.warn("Error cargando metadata, usando estado por defecto:", err);
-    updateNowPlaying({ 
-      title: "Pura Gracia Radio", 
-      artist: "Transmisión en vivo", 
-      coverArt: DEFAULT_COVER 
-    });
+    console.warn("Error cargando metadata:", err);
+    updateNowPlaying({ title: "Pura Gracia Radio", artist: "Transmisión en vivo", coverArt: DEFAULT_COVER });
   }
 }
 
