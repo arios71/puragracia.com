@@ -22,10 +22,12 @@ function updateNowPlaying(metadata) {
     const album = (metadata && metadata.album) ? metadata.album.trim() : "";
     
     // 1. Lógica de búsqueda de carátula
-    // Buscamos en el catálogo por nombre (usando includes para flexibilidad)
+    // Buscamos en el catálogo por nombre, revisando tanto el título como el álbum
     const prog = programsList.find(p => 
         title.toLowerCase().includes(p.name.toLowerCase()) || 
-        p.name.toLowerCase().includes(title.toLowerCase())
+        p.name.toLowerCase().includes(title.toLowerCase()) ||
+        (album && album.toLowerCase().includes(p.name.toLowerCase())) ||
+        (album && p.name.toLowerCase().includes(album.toLowerCase()))
     );
 
     const coverArt = (metadata && metadata.coverArt && metadata.coverArt !== "") 
