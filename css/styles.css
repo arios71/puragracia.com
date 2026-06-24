@@ -104,58 +104,54 @@ main.app {
   box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
-/* ================= METADATA Y ANIMACIÓN (NUEVO/CORREGIDO) ================= */
-/* Soluciona puntos 2, 3 y 4 */
-
+/* ================= METADATA (CARRUSEL HORIZONTAL) ================= */
 .now-info {
-  margin-top: 15px; /* Separa el texto de la carátula (Punto 2) */
-  width: 90%;
+  margin-top: 15px;
+  width: 280px; /* Ancho fijo para limitar el área de visión */
   text-align: center;
-}
-
-/* Viewport para el scroll de metadata */
-.np-meta-viewport {
-  height: 2.2em; /* Un poco más alto para las dos líneas */
   overflow: hidden;
-  width: 100%;
 }
 
-/* Contenedor que se mueve */
-.np-meta-track {
+.np-meta-viewport {
   display: flex;
   flex-direction: column;
-  /* Recuperamos la animación (Punto 3) */
-  animation: metaScroll 8s infinite ease-in-out;
-  align-items: center;
+  gap: 4px;
 }
 
-/* Estilos de línea generales */
-.np-line {
-  height: 1.1em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+/* Contenedor del título con el efecto carrusel */
+.marquee-container {
   width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
-/* Título: Bold y Blanco Sólido (Punto 4) */
-.np-meta-track .title {
+.marquee {
+  display: inline-block;
+  padding-left: 100%; /* Empieza fuera de la pantalla a la derecha */
+  animation: marquee 10s linear infinite;
+}
+
+.np-line {
+  white-space: nowrap;
+}
+
+.title {
   font-weight: 800;
   color: #ffffff;
   font-size: 1.1rem;
 }
 
-/* Artista: Más suave */
-.np-meta-track .artist {
+.artist {
   font-size: 0.95rem;
   color: rgba(255, 255, 255, 0.7);
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* Animación tipo radio */
-@keyframes metaScroll {
-  0%, 45% { transform: translateY(0); }
-  55%, 95% { transform: translateY(-1.1em); } /* Se mueve la altura de una línea */
-  100% { transform: translateY(0); }
+@keyframes marquee {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-100%, 0); }
 }
 
 /* ================= MENÚ INFERIOR FIJO ================= */
