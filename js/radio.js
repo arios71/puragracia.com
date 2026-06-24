@@ -60,17 +60,25 @@ function setStatus(text, type = ""){
 }
 
 // -------------------------
-// UI UPDATE
+// UI UPDATE (ACTUALIZADA)
 // -------------------------
-function updateUIPlayingState(state){
+function updateUIPlayingState(state) {
   isPlaying = state;
+  body.classList.toggle('playing', state);
 
-  if(state){
-    playBtn.textContent = '⏸'; // Solo el icono
-    body.classList.add('playing');
+  if (state) {
+    // Modo PAUSA: Icono con dos barras blancas
+    playBtn.innerHTML = `
+      <svg viewBox="0 0 24 24" style="width: 35px; height: 35px; fill: #ffffff;">
+        <rect x="6" y="5" width="4" height="14"/>
+        <rect x="14" y="5" width="4" height="14"/>
+      </svg>`;
   } else {
-    playBtn.textContent = '▶'; // Solo el icono
-    body.classList.remove('playing');
+    // Modo PLAY: Triángulo negro
+    playBtn.innerHTML = `
+      <svg viewBox="0 0 24 24" style="width: 35px; height: 35px; fill: #000000;">
+        <path d="M8 5v14l11-7z"/>
+      </svg>`;
   }
 }
 
