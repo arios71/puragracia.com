@@ -47,11 +47,12 @@ function updateNowPlaying(metadata) {
   }
   
   infoDiv.innerHTML = `
+    infoDiv.innerHTML = `
     <div class="np-meta-viewport">
-      <div class="np-meta-track">
-        <div class="np-line title">${title}</div>
-        <div class="np-line artist">${artist}</div>
+      <div class="marquee-container">
+        <div class="np-line title marquee">${title}</div>
       </div>
+      <div class="np-line artist">${artist}</div>
     </div>
   `;
 
