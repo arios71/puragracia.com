@@ -381,3 +381,8 @@ main.app {
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
+
+/* Ajuste de margen para secciones sin título */
+#programacion, #sermones {
+  padding-top: 20px;
+}
