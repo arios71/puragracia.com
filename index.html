@@ -63,12 +63,18 @@
     <h1 class="sr-only">Pura Gracia Radio - Radio Cristiana Reformada</h1>
 
     <section id="inicio" class="section active">
-            <div class="player-container">
-                <div id="nowPlayingBox"></div>
-                <button id="playRadio" class="btn-circular">▶</button>
-                <audio id="radioAudio" preload="none"></audio>
-            </div>
-        </section>
+    <div class="player-container">
+        <div id="nowPlayingBox"></div>
+        
+        <button id="playRadio" class="btn-circular" aria-label="Reproducir/Pausar">
+            <svg id="playIcon" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z"/>
+            </svg>
+        </button>
+        
+        <audio id="radioAudio" preload="none"></audio>
+    </div>
+</section>
 
         <section id="programacion" class="section">
             <div id="scheduleContainer"></div>
