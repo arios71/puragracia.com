@@ -211,3 +211,49 @@ detectPWA();
 // -------------------------
 updateUIPlayingState(false);
 setStatus("");
+
+// -------------------------
+// PWA INSTALLATION LOGIC
+// -------------------------
+const installTrigger = document.getElementById('installTrigger');
+let deferredPrompt;
+
+// Escuchamos el evento que dispara el navegador cuando la app es instalable
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Prevenimos que se muestre el aviso automático (para mostrarlo con nuestro botón)
+    e.preventDefault();
+    deferredPrompt = e;
+    
+    // Si existe el botón en el header, lo mostramos
+    if (installTrigger) {
+        installTrigger.style.display = 'block';
+    }
+});
+
+// Lógica de clic del botón
+if (installTrigger) {
+    installTrigger.addEventListener('click', () => {
+        if (deferredPrompt) {
+            // Disparamos la ventana nativa de instalación
+            deferredPrompt.prompt();
+            
+            // Esperamos a ver qué hizo el usuario
+            deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    // Si aceptó, ocultamos el botón
+                    installTrigger.style.display = 'none';
+                }
+                deferredPrompt = null;
+            });
+        } else {
+            // Mensaje de ayuda si el navegador no disparó el evento antes
+            alert("Para instalar Pura Gracia Radio:\n\nAndroid: Toca los 3 puntos (⋮) en el menú del navegador y elige 'Instalar aplicación'.\n\niPhone: Toca el botón 'Compartir' (📤) y selecciona 'Agregar al inicio'.");
+        }
+    });
+}
+
+// Ocultar el botón si la app ya está instalada (por si acaso)
+window.addEventListener('appinstalled', () => {
+    if (installTrigger) installTrigger.style.display = 'none';
+    deferredPrompt = null;
+});
