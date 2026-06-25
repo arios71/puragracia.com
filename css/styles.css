@@ -43,6 +43,22 @@ html, body {
   object-fit: contain;
 }
 
+#installTrigger {
+    background: none;
+    border: none;
+    color: #fbac33; /* Tu dorado corporativo */
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 8px;
+    margin-right: 10px; /* Separación del borde derecho */
+    transition: transform 0.2s, color 0.2s;
+}
+
+#installTrigger:hover {
+    transform: scale(1.1);
+    color: #ffffff;
+}
+
 /* ================= BOTÓN PLAY (CORREGIDO Y INTEGRADO) ================= */
 #playRadio {
   width: 65px; 
