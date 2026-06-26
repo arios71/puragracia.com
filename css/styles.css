@@ -95,7 +95,8 @@ main.app {
 .section {
   display: none;
   height: 100%;
-  overflow-y: auto; /* Scroll solo dentro de la sección */
+  overflow-y: auto;
+  scroll-behavior: smooth; /* <--- Añade esta línea para suavidad nativa */
   flex-direction: column;
   padding: 20px;
 }
