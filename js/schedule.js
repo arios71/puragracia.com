@@ -211,32 +211,52 @@ function focusCard(card) {
 }
 
 /* =========================
-   FOCUS ENGINE
+   SCROLL ENGINE CORREGIDO
 ========================= */
 
+function focusCard(card) {
+  if (!card) return;
+
+  // Scroll vertical de la página (dentro de la sección)
+  const section = document.getElementById('programacion');
+  if (section) {
+    const cardTop = card.offsetTop;
+    section.scrollTo({
+      top: cardTop - 100, // Ajuste para que no quede pegado arriba
+      behavior: "smooth"
+    });
+  }
+
+  // Scroll horizontal de la fila
+  const row = card.closest(".day-row");
+  if (row) {
+    const cardLeft = card.offsetLeft;
+    const cardWidth = card.offsetWidth;
+    const rowWidth = row.clientWidth;
+    
+    row.scrollTo({
+      left: cardLeft - (rowWidth / 2) + (cardWidth / 2),
+      behavior: "smooth"
+    });
+  }
+}
+
 function runFocusEngine(force = false) {
-  let targetCard = null;
+  // Aseguramos que el DOM esté listo antes de buscar
+  setTimeout(() => {
+    let targetCard = currentLiveCard || getNextProgramCard();
+    if (!targetCard) return;
 
-  if (currentLiveCard) {
-    targetCard = currentLiveCard;
-  } else {
-    targetCard = getNextProgramCard();
-  }
+    if (!force && (userHasInteracted || targetCard === lastFocusedCard)) return;
 
-  if (!targetCard) return;
-
-  if (!force && userHasInteracted) return;
-  if (!force && targetCard === lastFocusedCard) return;
-
-  if (!initialAutoScrollDone) {
-    setTimeout(() => {
+    if (!initialAutoScrollDone) {
       scrollToTodayBlock();
-    }, 100);
-    initialAutoScrollDone = true;
-  }
+      initialAutoScrollDone = true;
+    }
 
-  focusCard(targetCard);
-  lastFocusedCard = targetCard;
+    focusCard(targetCard);
+    lastFocusedCard = targetCard;
+  }, 300); // 300ms garantiza que el renderizado terminó
 }
 
 /* =========================
