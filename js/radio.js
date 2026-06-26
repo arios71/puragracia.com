@@ -23,6 +23,13 @@ navLinks.forEach(link => {
       sec.classList.toggle('active', sec.id === target);
     });
 
+    // ✅ NUEVA LÓGICA: Si entramos a 'programacion', forzamos el scroll
+    if (target === 'programacion') {
+       if (typeof runFocusEngine === 'function') {
+           runFocusEngine(true); // El 'true' fuerza el scroll de inmediato
+       }
+    }
+
     trackPage(target);
   });
 });
