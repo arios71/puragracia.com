@@ -88,13 +88,17 @@ self.addEventListener('fetch', event => {
       }
 
       return fetch(event.request).then(networkResponse => {
-        // Guardar en cache dinámico
-        return caches.open(CACHE_NAME).then(cache => {
-          cache.put(event.request, networkResponse.clone());
-          return networkResponse;
-        });
-      }).catch(() => {
-        // fallback silencioso si falla la red
+        // ✅ SOLO cacheamos si es una petición GET (y no Analytics)
+        if (event.request.method === 'GET' && 
+            !event.request.url.includes('google-analytics') && 
+            !event.request.url.includes('googletagmanager')) {
+          
+          return caches.open(CACHE_NAME).then(cache => {
+            cache.put(event.request, networkResponse.clone());
+            return networkResponse;
+          });
+        }
+        return networkResponse;
       });
     })
   );
