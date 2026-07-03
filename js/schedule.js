@@ -176,41 +176,43 @@ function updateLiveStatus() {
    SCROLL ENGINE (ÚNICO Y FINAL)
 ========================= */
 
-/* =========================
-   SCROLL ENGINE (ÚNICO Y FINAL)
-========================= */
-
 function focusCard(card) {
   if (!card) return;
-  
+
   const section = document.getElementById('programacion');
-  
-  // Si la sección no tiene altura, reintentamos en 500ms (esto soluciona el "falla al abrir la PWA")
+
+  // Protección: Si el contenedor no tiene altura, reintentamos en 500ms
   if (!section || section.offsetHeight === 0) {
-      console.log("DEBUG: Contenedor no listo, reintentando...");
-      setTimeout(() => focusCard(card), 500);
-      return;
+    console.log("DEBUG: Contenedor no listo, reintentando...");
+    setTimeout(() => focusCard(card), 500);
+    return;
   }
 
   console.log("DEBUG: Intentando hacer scroll a:", card.innerText);
-  
-  // ... resto de tu código de focusCard (con el requestAnimationFrame) ...
-}
+
+  requestAnimationFrame(() => {
+    const cardTop = card.offsetTop;
+    section.scrollTo({
+      top: cardTop - 100,
+      behavior: 'smooth'
+    });
+    console.log("DEBUG: Scroll vertical ejecutado a:", cardTop - 100);
+  });
 
   // Scroll horizontal de la fila
   const row = card.closest(".day-row");
   if (row) {
     requestAnimationFrame(() => {
-        row.scrollTo({
-          left: card.offsetLeft - (row.clientWidth / 2) + (card.offsetWidth / 2),
-          behavior: 'smooth'
-        });
+      row.scrollTo({
+        left: card.offsetLeft - (row.clientWidth / 2) + (card.offsetWidth / 2),
+        behavior: 'smooth'
+      });
     });
   }
 }
 
 function runFocusEngine(force = false) {
-  // Aumentamos a 800ms para asegurar que el DOM esté estable tras la carga
+  // Mantenemos el tiempo de espera para estabilizar el DOM
   setTimeout(() => {
     let targetCard = currentLiveCard || getNextProgramCard();
     if (!targetCard) return;
@@ -219,7 +221,7 @@ function runFocusEngine(force = false) {
 
     focusCard(targetCard);
     lastFocusedCard = targetCard;
-  }, 800); 
+  }, 800);
 }
 
 /* =========================
