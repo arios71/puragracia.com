@@ -96,7 +96,7 @@ main.app {
   display: none;
   height: 100%;
   overflow-y: auto;
-  scroll-behavior: smooth; /* <--- Añade esta línea para suavidad nativa */
+  /* scroll-behavior: smooth; */ /* <--- ¡Coméntala así! */
   flex-direction: column;
   padding: 20px;
 }
