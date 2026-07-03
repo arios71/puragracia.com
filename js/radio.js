@@ -23,11 +23,14 @@ navLinks.forEach(link => {
       sec.classList.toggle('active', sec.id === target);
     });
 
-    // ✅ NUEVA LÓGICA: Si entramos a 'programacion', forzamos el scroll
+    // ✅ DISPARADOR FINAL (Sincronizado con el delay de 400ms del schedule.js)
     if (target === 'programacion') {
-       if (typeof runFocusEngine === 'function') {
-           runFocusEngine(true); // El 'true' fuerza el scroll de inmediato
-       }
+       // Le damos 50ms para que la clase 'active' se aplique y el navegador "dibuje" la sección
+       setTimeout(() => {
+           if (typeof runFocusEngine === 'function') {
+               runFocusEngine(true); 
+           }
+       }, 50); 
     }
 
     trackPage(target);
