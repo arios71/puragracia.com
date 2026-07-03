@@ -183,21 +183,19 @@ function updateLiveStatus() {
 function focusCard(card) {
   if (!card) return;
   
-  console.log("DEBUG: Intentando hacer scroll a:", card.innerText);
-
   const section = document.getElementById('programacion');
   
-  if (section) {
-    // requestAnimationFrame asegura que el navegador haya terminado de renderizar
-    requestAnimationFrame(() => {
-        const cardTop = card.offsetTop;
-        section.scrollTo({
-          top: cardTop - 100,
-          behavior: 'smooth'
-        });
-        console.log("DEBUG: Scroll vertical ejecutado a:", cardTop - 100);
-    });
+  // Si la sección no tiene altura, reintentamos en 500ms (esto soluciona el "falla al abrir la PWA")
+  if (!section || section.offsetHeight === 0) {
+      console.log("DEBUG: Contenedor no listo, reintentando...");
+      setTimeout(() => focusCard(card), 500);
+      return;
   }
+
+  console.log("DEBUG: Intentando hacer scroll a:", card.innerText);
+  
+  // ... resto de tu código de focusCard (con el requestAnimationFrame) ...
+}
 
   // Scroll horizontal de la fila
   const row = card.closest(".day-row");
