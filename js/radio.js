@@ -23,15 +23,15 @@ navLinks.forEach(link => {
       sec.classList.toggle('active', sec.id === target);
     });
 
-    // ✅ DISPARADOR FINAL (Sincronizado con el delay de 400ms del schedule.js)
-    if (target === 'programacion') {
-       // Le damos 50ms para que la clase 'active' se aplique y el navegador "dibuje" la sección
-       setTimeout(() => {
-           if (typeof runFocusEngine === 'function') {
-               runFocusEngine(true); 
-           }
-       }, 50); 
-    }
+    // ✅ DISPARADOR FINAL (Sincronizado con el delay de 800ms del schedule.js)
+if (target === 'programacion') {
+    // Aumentamos a 300ms para asegurar que la sección 'active' esté pintada
+    setTimeout(() => {
+        if (typeof runFocusEngine === 'function') {
+            runFocusEngine(true); 
+        }
+    }, 300); 
+}
 
     trackPage(target);
   });
