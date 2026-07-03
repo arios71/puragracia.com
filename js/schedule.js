@@ -176,31 +176,43 @@ function updateLiveStatus() {
    SCROLL ENGINE (ÚNICO Y FINAL)
 ========================= */
 
+/* =========================
+   SCROLL ENGINE (ÚNICO Y FINAL)
+========================= */
+
 function focusCard(card) {
   if (!card) return;
   
   console.log("DEBUG: Intentando hacer scroll a:", card.innerText);
 
-  // 1. Scroll vertical de la sección 'programacion'
   const section = document.getElementById('programacion');
+  
   if (section) {
-    // Calculamos la posición relativa al contenedor en lugar de al documento
-    const cardTop = card.getBoundingClientRect().top;
-    const containerTop = section.getBoundingClientRect().top;
-    
-    // El scroll nuevo es la posición actual + el desfase necesario
-    section.scrollTop += (cardTop - containerTop - 100);
+    // requestAnimationFrame asegura que el navegador haya terminado de renderizar
+    requestAnimationFrame(() => {
+        const cardTop = card.offsetTop;
+        section.scrollTo({
+          top: cardTop - 100,
+          behavior: 'smooth'
+        });
+        console.log("DEBUG: Scroll vertical ejecutado a:", cardTop - 100);
+    });
   }
 
-  // 2. Scroll horizontal de la fila correspondiente
+  // Scroll horizontal de la fila
   const row = card.closest(".day-row");
   if (row) {
-    row.scrollLeft = card.offsetLeft - (row.clientWidth / 2) + (card.offsetWidth / 2);
+    requestAnimationFrame(() => {
+        row.scrollTo({
+          left: card.offsetLeft - (row.clientWidth / 2) + (card.offsetWidth / 2),
+          behavior: 'smooth'
+        });
+    });
   }
 }
 
 function runFocusEngine(force = false) {
-  // Aumentamos a 800ms para asegurar que el DOM esté completamente listo
+  // Aumentamos a 800ms para asegurar que el DOM esté estable tras la carga
   setTimeout(() => {
     let targetCard = currentLiveCard || getNextProgramCard();
     if (!targetCard) return;
