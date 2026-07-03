@@ -173,90 +173,37 @@ function updateLiveStatus() {
 }
 
 /* =========================
-   SCROLL ENGINE
+   SCROLL ENGINE (ÚNICO Y FINAL)
 ========================= */
 
 function focusCard(card) {
   if (!card) return;
+  
+  console.log("DEBUG: Intentando hacer scroll a:", card.innerText);
 
-  const rect = card.getBoundingClientRect();
-  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-  const offsetTop =
-    rect.top + scrollTop - window.innerHeight / 2 + rect.height / 2;
-
-  window.scrollTo({
-    top: offsetTop,
-    behavior: "smooth"
-  });
-
-  const row = card.closest(".day-row");
-
-  if (row) {
-    const cardOffset = card.offsetLeft;
-    const cardWidth = card.offsetWidth;
-    const rowWidth = row.scrollWidth;
-    const rowVisibleWidth = row.clientWidth;
-
-    const scrollLeft = Math.min(
-      Math.max(cardOffset - rowVisibleWidth / 2 + cardWidth / 2, 0),
-      rowWidth - rowVisibleWidth
-    );
-
-    row.scrollTo({
-      left: scrollLeft,
-      behavior: "smooth"
-    });
-  }
-}
-
-/* =========================
-   SCROLL ENGINE CORREGIDO
-========================= */
-
-function focusCard(card) {
-  if (!card) return;
-
-  // Scroll vertical de la página (dentro de la sección)
+  // 1. Scroll vertical de la sección 'programacion'
   const section = document.getElementById('programacion');
   if (section) {
-    const cardTop = card.offsetTop;
-    section.scrollTo({
-      top: cardTop - 100, // Ajuste para que no quede pegado arriba
-      behavior: "smooth"
-    });
+    section.scrollTop = card.offsetTop - 100;
   }
 
-  // Scroll horizontal de la fila
+  // 2. Scroll horizontal de la fila correspondiente
   const row = card.closest(".day-row");
   if (row) {
-    const cardLeft = card.offsetLeft;
-    const cardWidth = card.offsetWidth;
-    const rowWidth = row.clientWidth;
-    
-    row.scrollTo({
-      left: cardLeft - (rowWidth / 2) + (cardWidth / 2),
-      behavior: "smooth"
-    });
+    row.scrollLeft = card.offsetLeft - (row.clientWidth / 2) + (card.offsetWidth / 2);
   }
 }
 
 function runFocusEngine(force = false) {
-  // Aseguramos que el DOM esté listo antes de buscar
   setTimeout(() => {
     let targetCard = currentLiveCard || getNextProgramCard();
     if (!targetCard) return;
 
     if (!force && (userHasInteracted || targetCard === lastFocusedCard)) return;
 
-    if (!initialAutoScrollDone) {
-      scrollToTodayBlock();
-      initialAutoScrollDone = true;
-    }
-
     focusCard(targetCard);
     lastFocusedCard = targetCard;
-  }, 300); // 300ms garantiza que el renderizado terminó
+  }, 400); 
 }
 
 /* =========================
