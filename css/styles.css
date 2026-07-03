@@ -293,8 +293,8 @@ main.app {
   gap: 15px;
   overflow-x: auto;
   padding: 10px 5px;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch; /* Suavidad en iOS */
+  /* scroll-snap-type: x mandatory; */
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Ocultar scrollbar pero mantener funcionalidad */
