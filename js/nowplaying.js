@@ -1,13 +1,13 @@
 // js/nowplaying.js
 const nowPlayingBox = document.getElementById("nowPlayingBox");
 const DEFAULT_COVER = "/default-cover.png";
+const SLOGAN = "Música y contenido en sintonía con el evangelio de Cristo"; 
 let currentTrack = null;
-let programsList = []; // Aquí guardaremos la lista cargada del JSON
+let programsList = [];
 
-// Cargar el JSON de programas al iniciar
 async function loadPrograms() {
     try {
-        const response = await fetch('/data/programs.json'); // Asegúrate que la ruta sea correcta
+        const response = await fetch('/data/programs.json');
         const data = await response.json();
         programsList = data.programs;
         console.log("Catálogo de programas cargado:", programsList.length);
@@ -17,12 +17,16 @@ async function loadPrograms() {
 }
 
 function updateNowPlaying(metadata) {
-    const title = (metadata && metadata.title) ? metadata.title.trim() : "Pura Gracia Radio";
-    const artist = (metadata && metadata.artist) ? metadata.artist.trim() : "Transmisión en vivo";
+    // 1. Definimos los textos
+    const title = (metadata && metadata.title && metadata.title.trim() !== "") ? metadata.title.trim() : "Pura Gracia Radio";
+    
+    // Lógica del eslogan: si el título es el default, usamos el SLOGAN.
+    const artist = (title === "Pura Gracia Radio") 
+                   ? SLOGAN 
+                   : ((metadata && metadata.artist) ? metadata.artist.trim() : "");
+    
     const album = (metadata && metadata.album) ? metadata.album.trim() : "";
     
-    // 1. Lógica de búsqueda de carátula
-    // Buscamos en el catálogo por nombre, revisando tanto el título como el álbum
     const prog = programsList.find(p => 
         title.toLowerCase().includes(p.name.toLowerCase()) || 
         p.name.toLowerCase().includes(title.toLowerCase()) ||
@@ -50,6 +54,7 @@ function updateNowPlaying(metadata) {
 
     let infoDiv = card.querySelector(".now-info") || document.createElement("div");
     infoDiv.className = "now-info";
+    
     infoDiv.innerHTML = `
         <div class="np-meta-viewport">
             <div class="marquee-container"><div class="np-line title marquee">${title}</div></div>
@@ -70,7 +75,9 @@ async function fetchNowPlaying() {
         const data = await res.json();
         updateNowPlaying(data);
     } catch (err) {
-        updateNowPlaying({ title: "Pura Gracia Radio", artist: "Transmisión en vivo" });
+        // Al enviar solo el título default, la función updateNowPlaying 
+        // detectará que debe mostrar el eslogan automáticamente.
+        updateNowPlaying({ title: "Pura Gracia Radio" });
     }
 }
 
