@@ -184,7 +184,12 @@ function focusCard(card) {
   // 1. Scroll vertical de la sección 'programacion'
   const section = document.getElementById('programacion');
   if (section) {
-    section.scrollTop = card.offsetTop - 100;
+    // Calculamos la posición relativa al contenedor en lugar de al documento
+    const cardTop = card.getBoundingClientRect().top;
+    const containerTop = section.getBoundingClientRect().top;
+    
+    // El scroll nuevo es la posición actual + el desfase necesario
+    section.scrollTop += (cardTop - containerTop - 100);
   }
 
   // 2. Scroll horizontal de la fila correspondiente
@@ -195,6 +200,7 @@ function focusCard(card) {
 }
 
 function runFocusEngine(force = false) {
+  // Aumentamos a 800ms para asegurar que el DOM esté completamente listo
   setTimeout(() => {
     let targetCard = currentLiveCard || getNextProgramCard();
     if (!targetCard) return;
@@ -203,7 +209,7 @@ function runFocusEngine(force = false) {
 
     focusCard(targetCard);
     lastFocusedCard = targetCard;
-  }, 400); 
+  }, 800); 
 }
 
 /* =========================
