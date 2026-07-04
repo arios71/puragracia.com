@@ -20,10 +20,10 @@ function updateNowPlaying(metadata) {
     // 1. Definimos los textos
     const title = (metadata && metadata.title && metadata.title.trim() !== "") ? metadata.title.trim() : "Pura Gracia Radio";
     
-    // Lógica del eslogan: si el título es el default, usamos el SLOGAN.
-    const artist = (title === "Pura Gracia Radio") 
-                   ? SLOGAN 
-                   : ((metadata && metadata.artist) ? metadata.artist.trim() : "");
+    // Si el título es la radio O el artista está vacío, mostramos el eslogan.
+const artist = (title === "Pura Gracia Radio" || !metadata.artist || metadata.artist.trim() === "") 
+               ? SLOGAN 
+               : metadata.artist.trim();
     
     const album = (metadata && metadata.album) ? metadata.album.trim() : "";
     
