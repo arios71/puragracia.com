@@ -55,13 +55,17 @@ const artist = (title === "Pura Gracia Radio" || !metadata.artist || metadata.ar
     let infoDiv = card.querySelector(".now-info") || document.createElement("div");
     infoDiv.className = "now-info";
     
+    const isSlogan = (artist === SLOGAN);
+    // ------------------------------------
+
     infoDiv.innerHTML = `
         <div class="np-meta-viewport">
             <div class="marquee-container"><div class="np-line title marquee">${title}</div></div>
-            <div class="np-line artist">${artist}</div>
+            <div class="np-line artist ${isSlogan ? 'slogan-text' : ''}">${artist}</div>
             ${album ? `<div class="np-line album">${album}</div>` : ""}
         </div>
     `;
+    
     if (!card.contains(infoDiv)) card.appendChild(infoDiv);
 
     if ("mediaSession" in navigator) {
