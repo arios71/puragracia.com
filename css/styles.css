@@ -415,3 +415,11 @@ main.app {
 #programacion, #sermones, #contacto {
   padding-top: 40px;
 }
+
+.slogan-text {
+    font-size: 0.85em;
+    white-space: normal;
+    line-height: 1.2;
+    text-align: center;
+    padding: 2px 5px;
+}
