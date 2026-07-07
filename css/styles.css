@@ -423,3 +423,24 @@ main.app {
     text-align: center;
     padding: 2px 5px;
 }
+
+.social-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    width: 100%;
+    max-width: 250px;
+    transition: background 0.3s;
+    border: 1px solid rgba(251, 172, 51, 0.2);
+}
+
+.social-btn:hover {
+    background: rgba(251, 172, 51, 0.1);
+}
+
+.social-btn i {
+    font-size: 1.5rem;
+}
