@@ -1,3 +1,29 @@
+/* --- CONFIGURACIONES GLOBALES Y RESET --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Esta es la regla que evita el resaltado azul al tocar botones/imágenes */
+img, button, a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* --- CONFIGURACIONES GLOBALES Y RESET --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Esta es la regla que evita el resaltado azul al tocar botones/imágenes */
+img, button, a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* ... resto de tu código CSS ... */
+
 /* ================= RESET Y ESTRUCTURA APP ================= */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -443,4 +469,11 @@ main.app {
 
 .social-btn i {
     font-size: 1.5rem;
+}
+
+/* Añade esto al final de tu archivo CSS */
+.now-card img:active {
+    transform: scale(0.98);
+    transition: transform 0.1s;
+    filter: brightness(0.8);
 }
