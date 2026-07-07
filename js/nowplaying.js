@@ -47,10 +47,20 @@ const artist = (title === "Pura Gracia Radio" || !metadata.artist || metadata.ar
     card.className = "now-card";
     if (!nowPlayingBox.contains(card)) nowPlayingBox.appendChild(card);
 
+    // ... (dentro de updateNowPlaying) ...
+
     let coverImg = card.querySelector("img") || document.createElement("img");
     coverImg.onerror = () => { coverImg.src = DEFAULT_COVER; };
     coverImg.src = coverArt;
+    
+    // --- ESTAS DOS LÍNEAS ACTIVAN EL COMPARTIR AL TOCAR LA CARÁTULA ---
+    coverImg.style.cursor = "pointer"; 
+    coverImg.onclick = ejecutarCompartir;
+    // ------------------------------------------------------------------
+
     if (!card.contains(coverImg)) card.prepend(coverImg);
+
+    // ... (resto del código) ...
 
     let infoDiv = card.querySelector(".now-info") || document.createElement("div");
     infoDiv.className = "now-info";
