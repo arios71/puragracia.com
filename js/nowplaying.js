@@ -88,3 +88,34 @@ async function fetchNowPlaying() {
 // Inicialización
 loadPrograms().then(fetchNowPlaying);
 setInterval(fetchNowPlaying, 15000);
+
+// Aseguramos que el botón exista antes de intentar añadirle el evento
+document.addEventListener('DOMContentLoaded', () => {
+    const btnCompartir = document.getElementById('btnCompartirDinamico');
+    
+    if (btnCompartir) {
+        btnCompartir.addEventListener('click', async () => {
+            // Captura el texto del reproductor y lo limpia de saltos de línea extraños
+            const trackInfo = document.getElementById('nowPlayingBox').innerText.replace(/\n/g, ' - ') || "música cristiana";
+            
+            const shareData = {
+                title: 'Pura Gracia Radio',
+                text: `Estoy escuchando "${trackInfo}" en Pura Gracia Radio:`,
+                url: 'https://puragracia.com/'
+            };
+
+            try {
+                if (navigator.share) {
+                    await navigator.share(shareData);
+                } else {
+                    // Fallback para navegadores que no soportan Web Share API
+                    const textToCopy = `${shareData.text} ${shareData.url}`;
+                    navigator.clipboard.writeText(textToCopy);
+                    alert('Enlace copiado al portapapeles');
+                }
+            } catch (err) {
+                console.log('Compartir cancelado o error:', err);
+            }
+        });
+    }
+});
