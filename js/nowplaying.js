@@ -89,14 +89,20 @@ async function fetchNowPlaying() {
 loadPrograms().then(fetchNowPlaying);
 setInterval(fetchNowPlaying, 15000);
 
-// Aseguramos que el botón exista antes de intentar añadirle el evento
 document.addEventListener('DOMContentLoaded', () => {
     const btnCompartir = document.getElementById('btnCompartirDinamico');
     
     if (btnCompartir) {
         btnCompartir.addEventListener('click', async () => {
-            // Captura el texto del reproductor y lo limpia de saltos de línea extraños
-            const trackInfo = document.getElementById('nowPlayingBox').innerText.replace(/\n/g, ' - ') || "música cristiana";
+            // EN LUGAR DE LEER EL DIV ENTERO, LEEMOS TUS VARIABLES DIRECTAS
+            // Asumimos que dentro de tu función updateNowPlaying, 'title' y 'artist' 
+            // son las variables que contienen la info limpia.
+            
+            // Si quieres algo sencillo, extraemos de los elementos específicos del DOM:
+            const title = document.querySelector('.np-line.title')?.innerText || "Programación";
+            const artist = document.querySelector('.np-line.artist')?.innerText || "";
+            
+            const trackInfo = artist ? `${title} - ${artist}` : title;
             
             const shareData = {
                 title: 'Pura Gracia Radio',
@@ -104,17 +110,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 url: 'https://puragracia.com/'
             };
 
+            // ... (resto del código igual)
             try {
                 if (navigator.share) {
                     await navigator.share(shareData);
                 } else {
-                    // Fallback para navegadores que no soportan Web Share API
-                    const textToCopy = `${shareData.text} ${shareData.url}`;
-                    navigator.clipboard.writeText(textToCopy);
+                    navigator.clipboard.writeText(`${shareData.text} ${shareData.url}`);
                     alert('Enlace copiado al portapapeles');
                 }
             } catch (err) {
-                console.log('Compartir cancelado o error:', err);
+                console.log('Error al compartir:', err);
             }
         });
     }
