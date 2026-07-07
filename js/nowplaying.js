@@ -89,38 +89,34 @@ async function fetchNowPlaying() {
 loadPrograms().then(fetchNowPlaying);
 setInterval(fetchNowPlaying, 15000);
 
+// Función centralizada para compartir (CÓDIGO NUEVO)
+async function ejecutarCompartir() {
+    const title = document.querySelector('.np-line.title')?.innerText || "Programación";
+    const artist = document.querySelector('.np-line.artist')?.innerText || "";
+    const trackInfo = artist ? `${title} - ${artist}` : title;
+
+    const shareData = {
+        title: 'Pura Gracia Radio',
+        text: `Estoy escuchando "${trackInfo}" en Pura Gracia Radio:`,
+        url: 'https://puragracia.com/'
+    };
+
+    try {
+        if (navigator.share) {
+            await navigator.share(shareData);
+        } else {
+            navigator.clipboard.writeText(`${shareData.text} ${shareData.url}`);
+            alert('Enlace copiado al portapapeles');
+        }
+    } catch (err) {
+        console.log('Error al compartir:', err);
+    }
+}
+
+// Inicialización de eventos al cargar el DOM
 document.addEventListener('DOMContentLoaded', () => {
     const btnCompartir = document.getElementById('btnCompartirDinamico');
-    
     if (btnCompartir) {
-        btnCompartir.addEventListener('click', async () => {
-            // EN LUGAR DE LEER EL DIV ENTERO, LEEMOS TUS VARIABLES DIRECTAS
-            // Asumimos que dentro de tu función updateNowPlaying, 'title' y 'artist' 
-            // son las variables que contienen la info limpia.
-            
-            // Si quieres algo sencillo, extraemos de los elementos específicos del DOM:
-            const title = document.querySelector('.np-line.title')?.innerText || "Programación";
-            const artist = document.querySelector('.np-line.artist')?.innerText || "";
-            
-            const trackInfo = artist ? `${title} - ${artist}` : title;
-            
-            const shareData = {
-                title: 'Pura Gracia Radio',
-                text: `Estoy escuchando "${trackInfo}" en Pura Gracia Radio:`,
-                url: 'https://puragracia.com/'
-            };
-
-            // ... (resto del código igual)
-            try {
-                if (navigator.share) {
-                    await navigator.share(shareData);
-                } else {
-                    navigator.clipboard.writeText(`${shareData.text} ${shareData.url}`);
-                    alert('Enlace copiado al portapapeles');
-                }
-            } catch (err) {
-                console.log('Error al compartir:', err);
-            }
-        });
+        btnCompartir.addEventListener('click', ejecutarCompartir);
     }
 });
