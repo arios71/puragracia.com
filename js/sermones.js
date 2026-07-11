@@ -29,9 +29,17 @@
             if (data.status === 'ok' && data.items && data.items.length > 0) {
                 const episodios = data.items;
                 
-                // 1. Cargar el sermón más reciente en el Player Principal
-                const urlMasReciente = episodios[0].enclosure?.url || episodios[0].link || "";
-                inyectarAudioSermon(episodios[0].title, urlMasReciente, false);
+                // 1. Extraer la URL multimedia del sermón más reciente de forma segura
+                const primerEpisodio = episodios[0];
+                let urlMasReciente = "";
+                
+                if (primerEpisodio.enclosure && primerEpisodio.enclosure.url) {
+                    urlMasReciente = primerEpisodio.enclosure.url;
+                } else if (primerEpisodio.link && !primerEpisodio.link.includes("googleusercontent.com")) {
+                    urlMasReciente = primerEpisodio.link;
+                }
+
+                inyectarAudioSermon(primerEpisodio.title, urlMasReciente, false);
                 
                 // 2. Renderizar la lista histórica de episodios anteriores
                 const archiveContainer = document.getElementById('sermons-archive-list');
@@ -44,6 +52,14 @@
                             month: 'short', day: 'numeric', year: 'numeric'
                         }) : "Pura Gracia Radio";
 
+                        // Determinar URL multimedia del historial
+                        let urlEpisodio = "";
+                        if (item.enclosure && item.enclosure.url) {
+                            urlEpisodio = item.enclosure.url;
+                        } else if (item.link && !item.link.includes("googleusercontent.com")) {
+                            urlEpisodio = item.link;
+                        }
+
                         const tarjeta = document.createElement('div');
                         tarjeta.style.cssText = "display: flex; align-items: center; background: #1a2436; padding: 12px; margin-bottom: 12px; border-radius: 8px; cursor: pointer; transition: transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-family: system-ui, sans-serif; width: 100%; box-sizing: border-box;";
                         
@@ -51,7 +67,10 @@
                         tarjeta.onmouseleave = () => tarjeta.style.transform = "scale(1)";
                         
                         tarjeta.onclick = () => {
-                            const urlEpisodio = item.enclosure?.url || item.link || "";
+                            if (!urlEpisodio) {
+                                alert("Este episodio no tiene un archivo de audio directo disponible.");
+                                return;
+                            }
                             inyectarAudioSermon(item.title, urlEpisodio, true);
                             const seccionSermones = document.getElementById('sermones');
                             if (seccionSermones) seccionSermones.scrollTo({ top: 0, behavior: 'smooth' });
@@ -87,39 +106,39 @@
         const titleEl = document.getElementById('custom-player-title');
         if (titleEl) titleEl.innerText = titulo;
         
-        if (sermonAudio && mp3Url) {
-            // 1. Detener por completo cualquier intento de carga anterior
+        if (!mp3Url) {
+            console.warn("URL de audio no válida o ausente.");
+            return;
+        }
+
+        if (sermonAudio) {
             sermonAudio.pause();
             
-            // 2. Forzar estrictamente HTTPS para evitar el bloqueo de contenido mixto
+            // Forzar estrictamente HTTPS para evitar bloqueos por contenido mixto
             let urlSegura = mp3Url.trim();
             if (urlSegura.startsWith("http://")) {
                 urlSegura = urlSegura.replace("http://", "https://");
             }
             
-            // 3. Reconfigurar el elemento de audio de forma segura
             sermonAudio.removeAttribute('src'); 
             sermonAudio.load();
             
-            // Asignar la URL limpia y forzar la recarga del buffer
             sermonAudio.src = urlSegura;
             sermonAudio.load();
             
             if (reproducirInmediatamente) {
-                // Pequeña pausa de 200ms para que el navegador procese el cambio de origen
                 setTimeout(() => {
                     sermonAudio.play()
                         .then(() => { 
                             if (sermonPlayIcon) sermonPlayIcon.className = "fas fa-pause"; 
                         })
                         .catch(e => {
-                            console.error("Error intentando reproducir el sermón:", e);
-                            // PLAN B: Si falla por CORS, intentamos recargar sin la restricción de crossorigin
+                            console.error("Fallo inicial de reproducción, ejecutando plan B sin restricción CORS:", e);
                             sermonAudio.removeAttribute('crossorigin');
                             sermonAudio.load();
                             sermonAudio.play().then(() => {
                                 if (sermonPlayIcon) sermonPlayIcon.className = "fas fa-pause";
-                            }).catch(err => console.log("Reproducción totalmente bloqueada por el navegador:", err));
+                            }).catch(err => console.log("Reproducción totalmente bloqueada:", err));
                         });
                 }, 200);
             } else {
@@ -129,10 +148,9 @@
     }
 
     function togglePlaySermon() {
-        if (!sermonAudio) return;
+        if (!sermonAudio || !sermonAudio.src) return;
         
         if (sermonAudio.paused) {
-            // Apagar la radio en vivo si está sonando para que no se pisen los flujos
             try {
                 const radioAudioEl = document.getElementById('radioAudio');
                 if (radioAudioEl && !radioAudioEl.paused) {
@@ -177,7 +195,7 @@
 
     function marcarError() {
         const titleEl = document.getElementById('custom-player-title');
-        if (titleEl) titleEl.innerText = "Sermones temporalmente no disponibles";
+        if (titleEl) titleEl.innerText = "Sermones no disponibles en este momento";
     }
 
     if (document.readyState === 'loading') {
