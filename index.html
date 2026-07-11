@@ -182,8 +182,6 @@
             .catch(err => console.log('PWA: Error registrando SW', err));
         });
       }
-    </script>
-    <!-- Script automatizado para la sección de Sermones -->
     <script>
     const RSS_FEED_URL = "https://anchor.fm/s/dc304bfc/podcast/rss";
     const CONVERTER_API = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_FEED_URL)}`;
@@ -249,8 +247,13 @@
 
     function actualizarReproductorPrincipal(linkAnchor) {
         const playerContainer = document.getElementById('main-player-container');
-        let embedUrl = linkAnchor.replace("podcasters.spotify.com/pod/show", "open.spotify.com/embed/episode")
-                         .replace("anchor.fm", "open.spotify.com/embed/episode");
+        
+        // Extraemos limpiamente el ID único al final de la URL de Anchor
+        const partesUrl = linkAnchor.split('/');
+        const episodioId = partesUrl[partesUrl.length - 1];
+
+        // Construimos el link de incrustación directo de Anchor (ahora con el $ corregido)
+        let embedUrl = `https://anchor.fm/puragraciaradio/embed/episodes/${episodioId}`;
 
         playerContainer.innerHTML = `
             <iframe 
@@ -272,7 +275,7 @@
 
     // Carga inicial al cargar el documento
     document.addEventListener('DOMContentLoaded', inicializarSermones);
-    </script>
+  </script>
     
 </body>
 </html>
