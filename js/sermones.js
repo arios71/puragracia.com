@@ -124,30 +124,31 @@
         if (sermonAudio && mp3Url) {
             sermonAudio.pause();
             
-            // ELIMINACIÓN CRUCIAL DE ATRIBUTOS CORS PARA PERMITIR REDIRECCIONES 302 DE ANCHOR
             sermonAudio.removeAttribute('crossorigin');
             sermonAudio.removeAttribute('src'); 
+            sermonAudio.preload = "metadata";
+            sermonAudio.volume = 1.0;
+            sermonAudio.muted = false;
             sermonAudio.load();
             
             sermonAudio.src = mp3Url;
             sermonAudio.load();
             
             if (reproducirInmediatamente) {
-                try {
-                    const radioAudioEl = document.getElementById('radioAudio');
-                    if (radioAudioEl && !radioAudioEl.paused) {
-                        radioAudioEl.pause();
-                        const radioIcon = document.getElementById('playIcon');
-                        if (radioIcon) radioIcon.innerHTML = '<path d="M8 5v14l11-7z"/>'; 
-                    }
-                } catch(e) {}
+                // APAGAR LA RADIO UTILIZANDO SU NUEVA FUNCIÓN CONTROLADA
+                if (typeof window.apagarRadioDesdeSermon === 'function') {
+                    window.apagarRadioDesdeSermon();
+                } else {
+                    try {
+                        const radioAudioEl = document.getElementById('radioAudio');
+                        if (radioAudioEl) radioAudioEl.pause();
+                    } catch(e) {}
+                }
 
                 setTimeout(() => {
                     sermonAudio.play()
                         .then(() => { if (sermonPlayIcon) sermonPlayIcon.className = "fas fa-pause"; })
-                        .catch(e => {
-                            console.log("Fallo en reproducción directa:", e);
-                        });
+                        .catch(e => console.log("Fallo reproducción:", e));
                 }, 200);
             } else {
                 if (sermonPlayIcon) sermonPlayIcon.className = "fas fa-play";
@@ -159,26 +160,25 @@
         if (!sermonAudio || !sermonAudio.src) return;
         
         if (sermonAudio.paused) {
-            try {
-                const radioAudioEl = document.getElementById('radioAudio');
-                if (radioAudioEl && !radioAudioEl.paused) {
-                    radioAudioEl.pause();
-                    const radioIcon = document.getElementById('playIcon');
-                    if (radioIcon) radioIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
-                }
-            } catch(e) {}
+            // APAGAR LA RADIO UTILIZANDO SU NUEVA FUNCIÓN CONTROLADA
+            if (typeof window.apagarRadioDesdeSermon === 'function') {
+                window.apagarRadioDesdeSermon();
+            } else {
+                try {
+                    const radioAudioEl = document.getElementById('radioAudio');
+                    if (radioAudioEl) radioAudioEl.pause();
+                } catch(e) {}
+            }
 
             sermonAudio.play()
                 .then(() => { if (sermonPlayIcon) sermonPlayIcon.className = "fas fa-pause"; })
-                .catch((err) => {
-                    console.log("Error al dar play manual:", err);
-                });
+                .catch(err => console.log("Error al reproducir manual:", err));
         } else {
             sermonAudio.pause();
             if (sermonPlayIcon) sermonPlayIcon.className = "fas fa-play";
         }
     }
-
+    
     function actualizarProgresoSermon() {
         if (sermonAudio && sermonAudio.duration) {
             const porcentaje = (sermonAudio.currentTime / sermonAudio.duration) * 100;
