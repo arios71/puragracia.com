@@ -1,6 +1,7 @@
 (function() {
+    // Usamos el proxy de Allorigins para saltar el CORS del XML directo de Anchor sin alterar el contenido
     const RSS_FEED_URL = "https://anchor.fm/s/dc304bfc/podcast/rss";
-    const CONVERTER_API = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_FEED_URL)}`;
+    const PROXY_API = `https://api.allorigins.win/raw?url=${encodeURIComponent(RSS_FEED_URL)}`;
 
     let sermonAudio, sermonPlayBtn, sermonPlayIcon, sermonProgressBar, sermonProgressContainer, sermonTimeDisplay;
 
@@ -20,59 +21,47 @@
         }
     }
 
-    // Filtro estricto para extraer ÚNICAMENTE URLs de audio legítimas
-    function obtenerUrlAudioValida(item) {
-        let candidatos = [];
-        
-        // Revisar todas las propiedades posibles donde rss2json vuelca datos
-        if (item.enclosure && item.enclosure.url) candidatos.push(item.enclosure.url);
-        if (item.guid) candidatos.push(item.guid);
-        if (item.link) candidatos.push(item.link);
-
-        for (let url of candidatos) {
-            if (url && typeof url === 'string') {
-                url = url.trim();
-                
-                // REGLA DE EXCLUSIÓN: Si tiene basura de googleusercontent o spotify simulado, se descarta fulminantemente
-                if (url.includes("googleusercontent.com") || url.includes("spotify.com/")) {
-                    continue;
-                }
-                
-                // REGLA DE INCLUSIÓN: Debe ser un MP3 o venir de servidores de hosting de audio conocidos (Anchor/Cloudfront)
-                if (url.includes(".mp3") || url.includes("cloudfront.net") || url.includes("anchor.fm") || url.includes("/episodes/")) {
-                    return url;
-                }
-            }
-        }
-        
-        // PLAN B: Si rss2json rompió los enlaces directos pero guardó el objeto nativo description o el enclosure tipo audio
-        if (item.enclosure && item.enclosure.type && item.enclosure.type.includes("audio")) {
-            if (item.enclosure.url && !item.enclosure.url.includes("googleusercontent")) {
-                return item.enclosure.url;
-            }
-        }
-        
-        return ""; 
-    }
-
     async function cargarPodcast() {
         vincularControles();
         try {
-            const response = await fetch(CONVERTER_API);
-            const data = await response.json();
+            // Buscamos el XML crudo directo
+            const response = await fetch(PROXY_API);
+            const xmlText = await response.text();
             
-            if (data.status === 'ok' && data.items && data.items.length > 0) {
-                const episodios = data.items;
+            // Parseamos el XML de forma nativa en el navegador
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(xmlText, "text/xml");
+            
+            const items = xmlDoc.getElementsByTagName("item");
+            
+            if (items && items.length > 0) {
+                const episodios = [];
                 
+                // Mapeamos el XML a un array limpio extrayendo los MP3 reales de las etiquetas <enclosure>
+                for (let i = 0; i < items.length; i++) {
+                    const item = items[i];
+                    const title = item.getElementsByTagName("title")[0]?.textContent || "Sermón sin título";
+                    const pubDate = item.getElementsByTagName("pubDate")[0]?.textContent || "";
+                    const enclosure = item.getElementsByTagName("enclosure")[0];
+                    const mp3Url = enclosure ? enclosure.getAttribute("url") : "";
+                    
+                    // Imagen del podcast o del episodio
+                    let thumbnail = xmlDoc.getElementsByTagName("image")[0]?.getElementsByTagName("url")[0]?.textContent || "/assets/icons/logo-192.png";
+                    const itunesImage = item.getElementsByTagName("itunes:image")[0];
+                    if (itunesImage) {
+                        thumbnail = itunesImage.getAttribute("href") || thumbnail;
+                    }
+
+                    episodios.push({ title, pubDate, mp3Url, thumbnail });
+                }
+
                 // 1. Cargar el sermón más reciente en el Player Principal
                 const primerEpisodio = episodios[0];
-                const urlMasReciente = obtenerUrlAudioValida(primerEpisodio);
-                
-                console.log("--- DEBUG SERMONES ---");
-                console.log("Objeto crudo del primer episodio:", primerEpisodio);
-                console.log("URL Limpia final asignada:", urlMasReciente);
-                
-                inyectarAudioSermon(primerEpisodio.title, urlMasReciente, false);
+                console.log("--- SOLUCIÓN XML NATIVA ---");
+                console.log("Sermón detectado legítimo:", primerEpisodio.title);
+                console.log("URL de MP3 REAL extraída:", primerEpisodio.mp3Url);
+
+                inyectarAudioSermon(primerEpisodio.title, primerEpisodio.mp3Url, false);
                 
                 // 2. Renderizar la lista histórica de episodios anteriores
                 const archiveContainer = document.getElementById('sermons-archive-list');
@@ -85,8 +74,6 @@
                             month: 'short', day: 'numeric', year: 'numeric'
                         }) : "Pura Gracia Radio";
 
-                        const urlEpisodio = obtenerUrlAudioValida(item);
-
                         const tarjeta = document.createElement('div');
                         tarjeta.style.cssText = "display: flex; align-items: center; background: #1a2436; padding: 12px; margin-bottom: 12px; border-radius: 8px; cursor: pointer; transition: transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-family: system-ui, sans-serif; width: 100%; box-sizing: border-box;";
                         
@@ -94,17 +81,17 @@
                         tarjeta.onmouseleave = () => tarjeta.style.transform = "scale(1)";
                         
                         tarjeta.onclick = () => {
-                            if (!urlEpisodio) {
-                                alert("Este episodio no tiene un archivo de audio directo reproducible en la web.");
+                            if (!item.mp3Url) {
+                                alert("Este episodio no cuenta con un archivo de audio directo.");
                                 return;
                             }
-                            inyectarAudioSermon(item.title, urlEpisodio, true);
+                            inyectarAudioSermon(item.title, item.mp3Url, true);
                             const seccionSermones = document.getElementById('sermones');
                             if (seccionSermones) seccionSermones.scrollTo({ top: 0, behavior: 'smooth' });
                         };
 
                         tarjeta.innerHTML = `
-                            <img src="${item.thumbnail || (data.feed && data.feed.image) || '/assets/icons/logo-192.png'}" alt="Portada" style="width: 50px; height: 50px; border-radius: 6px; margin-right: 12px; object-fit: cover; flex-shrink: 0;">
+                            <img src="${item.thumbnail}" alt="Portada" style="width: 50px; height: 50px; border-radius: 6px; margin-right: 12px; object-fit: cover; flex-shrink: 0;">
                             <div style="flex-grow: 1; min-width: 0; text-align: left;">
                                 <h4 style="color: #ffffff; margin: 0 0 4px 0; font-size: 0.95rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;">
                                     ${item.title}
@@ -124,7 +111,7 @@
                 marcarError();
             }
         } catch (error) {
-            console.error("Error procesando podcast:", error);
+            console.error("Error procesando XML del podcast:", error);
             marcarError();
         }
     }
@@ -134,7 +121,7 @@
         if (titleEl) titleEl.innerText = titulo;
         
         if (!mp3Url) {
-            if (titleEl) titleEl.innerText = titulo + " (Audio no enlazado)";
+            if (titleEl) titleEl.innerText = titulo + " (Audio no disponible)";
             return;
         }
 
@@ -159,11 +146,12 @@
                             if (sermonPlayIcon) sermonPlayIcon.className = "fas fa-pause"; 
                         })
                         .catch(e => {
+                            console.log("Reintentando play nativo alternativo sin crossorigin...");
                             sermonAudio.removeAttribute('crossorigin');
                             sermonAudio.load();
                             sermonAudio.play().then(() => {
                                 if (sermonPlayIcon) sermonPlayIcon.className = "fas fa-pause";
-                            }).catch(err => console.log("Bloqueo total de reproducción:", err));
+                            }).catch(err => console.log("Audio bloqueado:", err));
                         });
                 }, 200);
             } else {
@@ -173,7 +161,7 @@
     }
 
     function togglePlaySermon() {
-        if (!sermonAudio || !sermonAudio.src || sermonAudio.src.includes("googleusercontent")) return;
+        if (!sermonAudio || !sermonAudio.src) return;
         
         if (sermonAudio.paused) {
             try {
@@ -200,7 +188,7 @@
     function actualizarProgresoSermon() {
         if (sermonAudio && sermonAudio.duration) {
             const porcentaje = (sermonAudio.currentTime / sermonAudio.duration) * 100;
-            if (sermonProgressBar) sermonProgressBar.style.width = `${porcentaje}%`;
+            if (sermonProgressBar) sermonProgressBar.style.width = `${percentage}%`;
             
             const mins = Math.floor(sermonAudio.currentTime / 60);
             const secs = Math.floor(sermonAudio.currentTime % 60).toString().padStart(2, '0');
@@ -220,7 +208,7 @@
 
     function marcarError() {
         const titleEl = document.getElementById('custom-player-title');
-        if (titleEl) titleEl.innerText = "Sermones no disponibles en este momento";
+        if (titleEl) titleEl.innerText = "Sermones temporalmente fuera de línea";
     }
 
     if (document.readyState === 'loading') {
