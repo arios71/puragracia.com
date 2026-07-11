@@ -56,7 +56,6 @@
                     });
                 }
 
-                // Intentamos buscar el primer episodio que tenga MP3 válido
                 let episodioParaPlayer = episodios.find(ep => ep.mp3Url !== "");
                 if (!episodioParaPlayer) episodioParaPlayer = episodios[0];
 
@@ -124,6 +123,9 @@
         
         if (sermonAudio && mp3Url) {
             sermonAudio.pause();
+            
+            // ELIMINACIÓN CRUCIAL DE ATRIBUTOS CORS PARA PERMITIR REDIRECCIONES 302 DE ANCHOR
+            sermonAudio.removeAttribute('crossorigin');
             sermonAudio.removeAttribute('src'); 
             sermonAudio.load();
             
@@ -144,11 +146,7 @@
                     sermonAudio.play()
                         .then(() => { if (sermonPlayIcon) sermonPlayIcon.className = "fas fa-pause"; })
                         .catch(e => {
-                            sermonAudio.removeAttribute('crossorigin');
-                            sermonAudio.load();
-                            sermonAudio.play().then(() => {
-                                if (sermonPlayIcon) sermonPlayIcon.className = "fas fa-pause";
-                            }).catch(err => console.log("Reproducción bloqueada:", err));
+                            console.log("Fallo en reproducción directa:", e);
                         });
                 }, 200);
             } else {
@@ -172,9 +170,8 @@
 
             sermonAudio.play()
                 .then(() => { if (sermonPlayIcon) sermonPlayIcon.className = "fas fa-pause"; })
-                .catch(() => {
-                    sermonAudio.load();
-                    sermonAudio.play().then(() => { if (sermonPlayIcon) sermonPlayIcon.className = "fas fa-pause"; });
+                .catch((err) => {
+                    console.log("Error al dar play manual:", err);
                 });
         } else {
             sermonAudio.pause();
