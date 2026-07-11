@@ -1,7 +1,6 @@
 (function() {
-    // Usamos el proxy de Allorigins para saltar el CORS del XML directo de Anchor sin alterar el contenido
+    // Apuntamos directamente al feed real de Anchor sin intermediarios defectuosos
     const RSS_FEED_URL = "https://anchor.fm/s/dc304bfc/podcast/rss";
-    const PROXY_API = `https://api.allorigins.win/raw?url=${encodeURIComponent(RSS_FEED_URL)}`;
 
     let sermonAudio, sermonPlayBtn, sermonPlayIcon, sermonProgressBar, sermonProgressContainer, sermonTimeDisplay;
 
@@ -24,11 +23,13 @@
     async function cargarPodcast() {
         vincularControles();
         try {
-            // Buscamos el XML crudo directo
-            const response = await fetch(PROXY_API);
+            // Petición directa al servidor de Anchor
+            const response = await fetch(RSS_FEED_URL);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            
             const xmlText = await response.text();
             
-            // Parseamos el XML de forma nativa en el navegador
+            // Parseo nativo del XML estructurado
             const parser = new DOMParser();
             const xmlDoc = parser.parseFromString(xmlText, "text/xml");
             
@@ -37,30 +38,42 @@
             if (items && items.length > 0) {
                 const episodios = [];
                 
-                // Mapeamos el XML a un array limpio extrayendo los MP3 reales de las etiquetas <enclosure>
                 for (let i = 0; i < items.length; i++) {
                     const item = items[i];
                     const title = item.getElementsByTagName("title")[0]?.textContent || "Sermón sin título";
                     const pubDate = item.getElementsByTagName("pubDate")[0]?.textContent || "";
+                    
+                    // Extraer la URL directa del MP3 desde la etiqueta enclosure nativa
                     const enclosure = item.getElementsByTagName("enclosure")[0];
                     const mp3Url = enclosure ? enclosure.getAttribute("url") : "";
                     
-                    // Imagen del podcast o del episodio
+                    // Manejo de la portada del feed
                     let thumbnail = xmlDoc.getElementsByTagName("image")[0]?.getElementsByTagName("url")[0]?.textContent || "/assets/icons/logo-192.png";
                     const itunesImage = item.getElementsByTagName("itunes:image")[0];
                     if (itunesImage) {
                         thumbnail = itunesImage.getAttribute("href") || thumbnail;
                     }
 
-                    episodios.push({ title, pubDate, mp3Url, thumbnail });
+                    // Forzar HTTPS en los recursos visuales y de audio
+                    const asegurarHttps = (url) => url && url.startsWith("http://") ? url.replace("http://", "https://") : url;
+
+                    if (mp3Url) {
+                        episodios.push({ 
+                            title, 
+                            pubDate, 
+                            mp3Url: asegurarHttps(mp3Url), 
+                            thumbnail: asegurarHttps(thumbnail) 
+                        });
+                    }
+                }
+
+                if (episodios.length === 0) {
+                    marcarError();
+                    return;
                 }
 
                 // 1. Cargar el sermón más reciente en el Player Principal
                 const primerEpisodio = episodios[0];
-                console.log("--- SOLUCIÓN XML NATIVA ---");
-                console.log("Sermón detectado legítimo:", primerEpisodio.title);
-                console.log("URL de MP3 REAL extraída:", primerEpisodio.mp3Url);
-
                 inyectarAudioSermon(primerEpisodio.title, primerEpisodio.mp3Url, false);
                 
                 // 2. Renderizar la lista histórica de episodios anteriores
@@ -81,10 +94,6 @@
                         tarjeta.onmouseleave = () => tarjeta.style.transform = "scale(1)";
                         
                         tarjeta.onclick = () => {
-                            if (!item.mp3Url) {
-                                alert("Este episodio no cuenta con un archivo de audio directo.");
-                                return;
-                            }
                             inyectarAudioSermon(item.title, item.mp3Url, true);
                             const seccionSermones = document.getElementById('sermones');
                             if (seccionSermones) seccionSermones.scrollTo({ top: 0, behavior: 'smooth' });
@@ -111,7 +120,7 @@
                 marcarError();
             }
         } catch (error) {
-            console.error("Error procesando XML del podcast:", error);
+            console.error("Error procesando XML directo del podcast:", error);
             marcarError();
         }
     }
@@ -120,38 +129,24 @@
         const titleEl = document.getElementById('custom-player-title');
         if (titleEl) titleEl.innerText = titulo;
         
-        if (!mp3Url) {
-            if (titleEl) titleEl.innerText = titulo + " (Audio no disponible)";
-            return;
-        }
-
-        if (sermonAudio) {
+        if (sermonAudio && mp3Url) {
             sermonAudio.pause();
-            
-            let urlSegura = mp3Url.trim();
-            if (urlSegura.startsWith("http://")) {
-                urlSegura = urlSegura.replace("http://", "https://");
-            }
-            
             sermonAudio.removeAttribute('src'); 
             sermonAudio.load();
             
-            sermonAudio.src = urlSegura;
+            sermonAudio.src = mp3Url;
             sermonAudio.load();
             
             if (reproducirInmediatamente) {
                 setTimeout(() => {
                     sermonAudio.play()
-                        .then(() => { 
-                            if (sermonPlayIcon) sermonPlayIcon.className = "fas fa-pause"; 
-                        })
+                        .then(() => { if (sermonPlayIcon) sermonPlayIcon.className = "fas fa-pause"; })
                         .catch(e => {
-                            console.log("Reintentando play nativo alternativo sin crossorigin...");
                             sermonAudio.removeAttribute('crossorigin');
                             sermonAudio.load();
                             sermonAudio.play().then(() => {
                                 if (sermonPlayIcon) sermonPlayIcon.className = "fas fa-pause";
-                            }).catch(err => console.log("Audio bloqueado:", err));
+                            }).catch(err => console.log("Reproducción bloqueada:", err));
                         });
                 }, 200);
             } else {
@@ -188,7 +183,7 @@
     function actualizarProgresoSermon() {
         if (sermonAudio && sermonAudio.duration) {
             const porcentaje = (sermonAudio.currentTime / sermonAudio.duration) * 100;
-            if (sermonProgressBar) sermonProgressBar.style.width = `${percentage}%`;
+            if (sermonProgressBar) sermonProgressBar.style.width = `${porcentaje}%`;
             
             const mins = Math.floor(sermonAudio.currentTime / 60);
             const secs = Math.floor(sermonAudio.currentTime % 60).toString().padStart(2, '0');
@@ -208,9 +203,10 @@
 
     function marcarError() {
         const titleEl = document.getElementById('custom-player-title');
-        if (titleEl) titleEl.innerText = "Sermones temporalmente fuera de línea";
+        if (titleEl) titleEl.innerText = "Sermones temporalmente no disponibles";
     }
 
+    // Asegurar ejecución limpia esperando al DOM
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', cargarPodcast);
     } else {
