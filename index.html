@@ -182,6 +182,8 @@
             .catch(err => console.log('PWA: Error registrando SW', err));
         });
       }
+    </script>
+
     <script>
     const RSS_FEED_URL = "https://anchor.fm/s/dc304bfc/podcast/rss";
     const CONVERTER_API = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_FEED_URL)}`;
@@ -252,7 +254,7 @@
         const partesUrl = linkAnchor.split('/');
         const episodioId = partesUrl[partesUrl.length - 1];
 
-        // Construimos el link de incrustación directo de Anchor (ahora con el $ corregido)
+        // Construimos el link de incrustación directo de Anchor
         let embedUrl = `https://anchor.fm/puragraciaradio/embed/episodes/${episodioId}`;
 
         playerContainer.innerHTML = `
