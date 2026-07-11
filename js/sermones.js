@@ -20,26 +20,39 @@
         }
     }
 
-    // Función auxiliar para extraer una URL multimedia real y limpiar basura
+    // Filtro estricto para extraer ÚNICAMENTE URLs de audio legítimas
     function obtenerUrlAudioValida(item) {
         let candidatos = [];
         
+        // Revisar todas las propiedades posibles donde rss2json vuelca datos
         if (item.enclosure && item.enclosure.url) candidatos.push(item.enclosure.url);
+        if (item.guid) candidatos.push(item.guid);
         if (item.link) candidatos.push(item.link);
-        if (item.guid && item.guid.startsWith("http")) candidatos.push(item.guid);
 
         for (let url of candidatos) {
             if (url && typeof url === 'string') {
                 url = url.trim();
-                // Si contiene la URL de prueba de googleusercontent o spotify genérico, descartar
-                if (url.includes("googleusercontent.com") || url.includes("spotify.com/3") || url.includes("spotify.com/2")) {
-                    continue; 
+                
+                // REGLA DE EXCLUSIÓN: Si tiene basura de googleusercontent o spotify simulado, se descarta fulminantemente
+                if (url.includes("googleusercontent.com") || url.includes("spotify.com/")) {
+                    continue;
                 }
-                // Si pasa los filtros, devolvemos esta
-                return url;
+                
+                // REGLA DE INCLUSIÓN: Debe ser un MP3 o venir de servidores de hosting de audio conocidos (Anchor/Cloudfront)
+                if (url.includes(".mp3") || url.includes("cloudfront.net") || url.includes("anchor.fm") || url.includes("/episodes/")) {
+                    return url;
+                }
             }
         }
-        return ""; // No se encontró URL válida
+        
+        // PLAN B: Si rss2json rompió los enlaces directos pero guardó el objeto nativo description o el enclosure tipo audio
+        if (item.enclosure && item.enclosure.type && item.enclosure.type.includes("audio")) {
+            if (item.enclosure.url && !item.enclosure.url.includes("googleusercontent")) {
+                return item.enclosure.url;
+            }
+        }
+        
+        return ""; 
     }
 
     async function cargarPodcast() {
@@ -55,7 +68,10 @@
                 const primerEpisodio = episodios[0];
                 const urlMasReciente = obtenerUrlAudioValida(primerEpisodio);
                 
-                console.log("URL detectada para el sermón más reciente:", urlMasReciente);
+                console.log("--- DEBUG SERMONES ---");
+                console.log("Objeto crudo del primer episodio:", primerEpisodio);
+                console.log("URL Limpia final asignada:", urlMasReciente);
+                
                 inyectarAudioSermon(primerEpisodio.title, urlMasReciente, false);
                 
                 // 2. Renderizar la lista histórica de episodios anteriores
@@ -82,7 +98,6 @@
                                 alert("Este episodio no tiene un archivo de audio directo reproducible en la web.");
                                 return;
                             }
-                            console.log("Cargando desde el historial el episodio:", item.title, "URL:", urlEpisodio);
                             inyectarAudioSermon(item.title, urlEpisodio, true);
                             const seccionSermones = document.getElementById('sermones');
                             if (seccionSermones) seccionSermones.scrollTo({ top: 0, behavior: 'smooth' });
@@ -119,7 +134,7 @@
         if (titleEl) titleEl.innerText = titulo;
         
         if (!mp3Url) {
-            console.warn("Llamada a inyectarAudioSermon cancelada: URL vacía o filtrada.");
+            if (titleEl) titleEl.innerText = titulo + " (Audio no enlazado)";
             return;
         }
 
@@ -144,12 +159,11 @@
                             if (sermonPlayIcon) sermonPlayIcon.className = "fas fa-pause"; 
                         })
                         .catch(e => {
-                            console.error("Fallo inicial CORS, probando sin cabecera crossorigin:", e);
                             sermonAudio.removeAttribute('crossorigin');
                             sermonAudio.load();
                             sermonAudio.play().then(() => {
                                 if (sermonPlayIcon) sermonPlayIcon.className = "fas fa-pause";
-                            }).catch(err => console.log("Reproducción totalmente bloqueada en este navegador:", err));
+                            }).catch(err => console.log("Bloqueo total de reproducción:", err));
                         });
                 }, 200);
             } else {
@@ -159,7 +173,7 @@
     }
 
     function togglePlaySermon() {
-        if (!sermonAudio || !sermonAudio.src) return;
+        if (!sermonAudio || !sermonAudio.src || sermonAudio.src.includes("googleusercontent")) return;
         
         if (sermonAudio.paused) {
             try {
