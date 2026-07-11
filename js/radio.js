@@ -93,13 +93,30 @@ function updateUIPlayingState(state) {
 }
 
 // -------------------------
-// PLAY
+// PLAY (CORREGIDO: APAGA EL SERMÓN ANTES DE REPRODUCIR EN VIVO)
 // -------------------------
 function playLive() {
   isUserStopping = false;
 
   setStatus("Conectando...", "loading");
 
+  // DETENER EL REPRODUCTOR DE SERMONES DE RAÍZ SI ESTÁ SONANDO
+  try {
+    const sermonAudioEl = document.getElementById('audioSermonPlayer');
+    if (sermonAudioEl && !sermonAudioEl.paused) {
+        sermonAudioEl.pause();
+        
+        // Forzamos el icono del reproductor de sermones a que vuelva a "Play"
+        const sermonPlayIconEl = document.getElementById('custom-play-icon');
+        if (sermonPlayIconEl) {
+            sermonPlayIconEl.className = "fas fa-play";
+        }
+    }
+  } catch(e) {
+    console.log("No se pudo pausar el reproductor de sermones desde la radio:", e);
+  }
+
+  // Ahora sí, cargamos y reproducimos la emisora en vivo
   audio.src = STREAM_URL;
   audio.load();
 
