@@ -33,13 +33,11 @@
             const parser = new DOMParser();
             const xmlDoc = parser.parseFromString(xmlText, "text/xml");
             
-            // VOLVEMOS AL LECTOR ORIGINAL QUE NUNCA FALLABA
             const items = xmlDoc.querySelectorAll("item");
             
             if (items && items.length > 0) {
                 todosLosEpisodios = [];
                 
-                // Extraer la imagen por defecto del canal principal de la Iglesia
                 let defaultChannelImage = "/assets/icons/logo-192.png";
                 const channelImageEl = xmlDoc.querySelector("channel > image > url");
                 if (channelImageEl) {
@@ -52,13 +50,11 @@
                     const enclosure = item.querySelector("enclosure");
                     const mp3Url = enclosure ? enclosure.getAttribute("url") : "";
                     
-                    // Buscar la portada del episodio específico o heredar la del canal
                     let thumbnail = defaultChannelImage;
                     const itunesImage = item.getElementsByTagName("itunes:image")[0];
                     if (itunesImage) {
                         thumbnail = itunesImage.getAttribute("href") || thumbnail;
                     } else {
-                        // Intento alternativo por si viene con selector directo
                         const altImage = item.querySelector("image")?.getAttribute("href");
                         if (altImage) thumbnail = altImage;
                     }
@@ -73,7 +69,6 @@
                     });
                 });
 
-                // Asignar el episodio principal al reproductor
                 let episodioParaPlayer = todosLosEpisodios.find(ep => ep.mp3Url !== "");
                 if (!episodioParaPlayer) episodioParaPlayer = todosLosEpisodios[0];
 
@@ -99,7 +94,6 @@
 
         archiveContainer.innerHTML = '';
 
-        // Tomamos el bloque limitado por el "Ver más"
         const fragmentoEpisodios = todosLosEpisodios.slice(0, episodiosVisibles);
 
         fragmentoEpisodios.forEach(item => {
@@ -142,7 +136,6 @@
             archiveContainer.appendChild(tarjeta);
         });
 
-        // Botón elegante para expandir el scroll
         if (episodiosVisibles < todosLosEpisodios.length) {
             const btnVerMas = document.createElement('button');
             btnVerMas.innerText = "Ver más episodios";
@@ -170,16 +163,15 @@
         const titleEl = document.getElementById('custom-player-title');
         if (titleEl) titleEl.innerText = titulo;
         
+        // INYECCIÓN DE IMAGEN UTILIZANDO EL PADRE REAL DIRECTO DEL TÍTULO
         let playerCoverEl = document.getElementById('custom-player-cover');
-        if (!playerCoverEl) {
-            // Buscamos la caja del reproductor para inyectar la carátula arriba del título
-            const playerBox = document.querySelector('.custom-audio-player') || document.getElementById('sermones');
-            if (playerBox) {
-                playerCoverEl = document.createElement('img');
-                playerCoverEl.id = 'custom-player-cover';
-                playerCoverEl.style.cssText = "width: 160px; height: 160px; border-radius: 12px; object-fit: cover; margin: 0 auto 15px auto; display: block; box-shadow: 0 8px 16px rgba(0,0,0,0.3); border: 2px solid #2a364f;";
-                if (titleEl) playerBox.insertBefore(playerCoverEl, titleEl);
-            }
+        if (!playerCoverEl && titleEl && titleEl.parentNode) {
+            playerCoverEl = document.createElement('img');
+            playerCoverEl.id = 'custom-player-cover';
+            playerCoverEl.style.cssText = "width: 160px; height: 160px; border-radius: 12px; object-fit: cover; margin: 0 auto 15px auto; display: block; box-shadow: 0 8px 16px rgba(0,0,0,0.3); border: 2px solid #2a364f;";
+            
+            // Se inserta usando de pivote el contenedor real e inmediato del título
+            titleEl.parentNode.insertBefore(playerCoverEl, titleEl);
         }
         
         if (playerCoverEl && thumbnail) {
