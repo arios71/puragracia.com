@@ -477,7 +477,3 @@ main.app {
     transition: transform 0.1s;
     filter: brightness(0.8);
 }
-
-audio {
-    filter: invert(90%) hue-rotate(180deg);
-}
