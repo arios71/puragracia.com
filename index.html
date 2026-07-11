@@ -195,8 +195,8 @@
 
     let audioPlayer, playBtn, playIcon, progressBar, progressContainer, timeDisplay;
 
-    async function inicializarSermones() {
-        // Enlazar elementos del reproductor personalizado
+    // Configurar los controles solo cuando el DOM esté completamente listo
+    function prepararControlesReproductor() {
         audioPlayer = document.getElementById('audioSermonPlayer');
         playBtn = document.getElementById('custom-play-btn');
         playIcon = document.getElementById('custom-play-icon');
@@ -204,19 +204,32 @@
         progressContainer = document.getElementById('custom-progress-container');
         timeDisplay = document.getElementById('custom-player-time');
 
-        // Configurar los listeners del reproductor
-        playBtn.addEventListener('click', togglePlay);
-        audioPlayer.addEventListener('timeupdate', actualizarProgreso);
-        progressContainer.addEventListener('click', buscarTiempo);
-        audioPlayer.addEventListener('ended', () => {
-            playIcon.className = "fas fa-play";
-        });
+        if (playBtn && audioPlayer && progressContainer) {
+            // Remover listeners viejos para evitar duplicados si se rellama
+            playBtn.removeEventListener('click', togglePlay);
+            playBtn.addEventListener('click', togglePlay);
+            
+            audioPlayer.removeEventListener('timeupdate', actualizarProgreso);
+            audioPlayer.addEventListener('timeupdate', actualizarProgreso);
+            
+            progressContainer.removeEventListener('click', buscarTiempo);
+            progressContainer.addEventListener('click', buscarTiempo);
+            
+            audioPlayer.addEventListener('ended', () => {
+                if (playIcon) playIcon.className = "fas fa-play";
+            });
+        }
+    }
+
+    async function inicializarSermones() {
+        // Asegurar que los elementos del reproductor estén enlazados
+        prepararControlesReproductor();
 
         try {
             const response = await fetch(CONVERTER_API);
             const data = await response.json();
             
-            if (data.status === 'ok' && data.items.length > 0) {
+            if (data.status === 'ok' && data.items && data.items.length > 0) {
                 const episodios = data.items;
                 
                 // 1. Cargar el episodio más reciente arriba
@@ -224,42 +237,45 @@
                 
                 // 2. Generar el archivo histórico abajo
                 const archiveContainer = document.getElementById('sermons-archive-list');
-                archiveContainer.innerHTML = ''; 
+                if (archiveContainer) {
+                    archiveContainer.innerHTML = ''; 
 
-                const historial = episodios.slice(1);
-                
-                historial.forEach(item => {
-                    const fechaFormateada = new Date(item.pubDate).toLocaleDateString('es-ES', {
-                        month: 'short', day: 'numeric', year: 'numeric'
+                    const historial = episodios.slice(1);
+                    
+                    historial.forEach(item => {
+                        const fechaFormateada = new Date(item.pubDate).toLocaleDateString('es-ES', {
+                            month: 'short', day: 'numeric', year: 'numeric'
+                        });
+
+                        const tarjetaSermon = document.createElement('div');
+                        tarjetaSermon.style.cssText = "display: flex; align-items: center; background: #1a2436; padding: 12px; margin-bottom: 12px; border-radius: 8px; cursor: pointer; transition: transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-family: system-ui, sans-serif; width: 100%; box-sizing: border-box; overflow: hidden;";
+                        
+                        tarjetaSermon.onmouseenter = () => tarjetaSermon.style.transform = "scale(1.01)";
+                        tarjetaSermon.onmouseleave = () => tarjetaSermon.style.transform = "scale(1)";
+                        
+                        tarjetaSermon.onclick = () => {
+                            configurarNuevoAudio(item.title, item.enclosure.url, true);
+                            const seccionSermones = document.getElementById('sermones');
+                            if (seccionSermones) seccionSermones.scrollTo({ top: 0, behavior: 'smooth' });
+                        };
+
+                        tarjetaSermon.innerHTML = `
+                            <img src="${item.thumbnail || data.feed.image}" alt="Portada" style="width: 50px; height: 50px; border-radius: 6px; margin-right: 12px; object-fit: cover; flex-shrink: 0;">
+                            <div style="flex-grow: 1; min-width: 0; text-align: left;">
+                                <h4 style="color: #ffffff; margin: 0 0 4px 0; font-size: 0.95rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;">
+                                    ${item.title}
+                                </h4>
+                                <span style="color: #a0aec0; font-size: 0.8rem; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;">
+                                    ${fechaFormateada} • Pura Gracia Radio
+                                </span>
+                            </div>
+                            <div style="color: #fbac33; padding-left: 8px; display: flex; align-items: center; flex-shrink: 0;">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                            </div>
+                        `;
+                        archiveContainer.appendChild(tarjetaSermon);
                     });
-
-                    const tarjetaSermon = document.createElement('div');
-                    tarjetaSermon.style.cssText = "display: flex; align-items: center; background: #1a2436; padding: 12px; margin-bottom: 12px; border-radius: 8px; cursor: pointer; transition: transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-family: system-ui, sans-serif; width: 100%; box-sizing: border-box; overflow: hidden;";
-                    
-                    tarjetaSermon.onmouseenter = () => tarjetaSermon.style.transform = "scale(1.01)";
-                    tarjetaSermon.onmouseleave = () => tarjetaSermon.style.transform = "scale(1)";
-                    
-                    tarjetaSermon.onclick = () => {
-                        configurarNuevoAudio(item.title, item.enclosure.url, true);
-                        document.getElementById('sermones').scrollTo({ top: 0, behavior: 'smooth' });
-                    };
-
-                    tarjetaSermon.innerHTML = `
-                        <img src="${item.thumbnail || data.feed.image}" alt="Portada" style="width: 50px; height: 50px; border-radius: 6px; margin-right: 12px; object-fit: cover; flex-shrink: 0;">
-                        <div style="flex-grow: 1; min-width: 0; text-align: left;">
-                            <h4 style="color: #ffffff; margin: 0 0 4px 0; font-size: 0.95rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;">
-                                ${item.title}
-                            </h4>
-                            <span style="color: #a0aec0; font-size: 0.8rem; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;">
-                                ${fechaFormateada} • Pura Gracia Radio
-                            </span>
-                        </div>
-                        <div style="color: #fbac33; padding-left: 8px; display: flex; align-items: center; flex-shrink: 0;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
-                        </div>
-                    `;
-                    archiveContainer.appendChild(tarjetaSermon);
-                });
+                }
                 
             } else {
                 mostrarError();
@@ -271,43 +287,48 @@
     }
 
     function configurarNuevoAudio(titulo, mp3Url, debeReproducir) {
-        document.getElementById('custom-player-title').innerText = titulo;
-        audioPlayer.src = mp3Url;
-        audioPlayer.load();
+        const titleEl = document.getElementById('custom-player-title');
+        if (titleEl) titleEl.innerText = titulo;
         
-        if (debeReproducir) {
-            audioPlayer.play()
-                .then(() => { playIcon.className = "fas fa-pause"; })
-                .catch(err => console.log("Playback interactivo bloqueado:", err));
-        } else {
-            playIcon.className = "fas fa-play";
+        if (audioPlayer) {
+            audioPlayer.src = mp3Url;
+            audioPlayer.load();
+            
+            if (debeReproducir) {
+                audioPlayer.play()
+                    .then(() => { if (playIcon) playIcon.className = "fas fa-pause"; })
+                    .catch(err => console.log("Playback interactivo bloqueado:", err));
+            } else {
+                if (playIcon) playIcon.className = "fas fa-play";
+            }
         }
     }
 
     function togglePlay() {
+        if (!audioPlayer) return;
         if (audioPlayer.paused) {
             audioPlayer.play()
-                .then(() => { playIcon.className = "fas fa-pause"; })
+                .then(() => { if (playIcon) playIcon.className = "fas fa-pause"; })
                 .catch(err => console.log("Error al reproducir:", err));
         } else {
             audioPlayer.pause();
-            playIcon.className = "fas fa-play";
+            if (playIcon) playIcon.className = "fas fa-play";
         }
     }
 
     function actualizarProgreso() {
-        if (audioPlayer.duration) {
+        if (audioPlayer && audioPlayer.duration) {
             const porcentaje = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-            progressBar.style.width = `${porcentaje}%`;
+            if (progressBar) progressBar.style.width = `${porcentaje}%`;
             
-            // Formatear tiempo restante o actual (mm:ss)
             const mins = Math.floor(audioPlayer.currentTime / 60);
             const secs = Math.floor(audioPlayer.currentTime % 60).toString().padStart(2, '0');
-            timeDisplay.innerText = `${mins}:${secs}`;
+            if (timeDisplay) timeDisplay.innerText = `${mins}:${secs}`;
         }
     }
 
     function buscarTiempo(e) {
+        if (!audioPlayer || !progressContainer) return;
         const width = progressContainer.clientWidth;
         const clickX = e.offsetX;
         const duration = audioPlayer.duration;
@@ -317,9 +338,10 @@
     }
 
     function mostrarError() {
-        document.getElementById('custom-player-title').innerText = "Error de carga";
-        timeDisplay.style.display = 'none';
-        playBtn.style.display = 'none';
+        const titleEl = document.getElementById('custom-player-title');
+        if (titleEl) titleEl.innerText = "Error al cargar episodios";
+        if (timeDisplay) timeDisplay.style.display = 'none';
+        if (playBtn) playBtn.style.display = 'none';
     }
 
     document.addEventListener('DOMContentLoaded', inicializarSermones);
