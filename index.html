@@ -93,11 +93,28 @@
             <div id="scheduleContainer"></div>
         </section>
 
-        <section id="sermones" class="section" style="padding-bottom: 90px;">
-            <!-- Contenedor dinámico del Reproductor Principal -->
-            <div id="main-player-container" style="margin: 15px auto 25px auto; max-width: 600px; border-radius: 12px; overflow: hidden; background: #1a2436; box-shadow: 0 4px 15px rgba(0,0,0,0.3); min-height: 102px;">
-    <p style="color: #a0aec0; text-align: center; padding: 40px; margin: 0; font-family: system-ui, sans-serif;">Cargando sermón más reciente...</p>
-</div>
+        <section id="sermones" class="section" style="padding-bottom: 90px; padding-left: 15px; padding-right: 15px; box-sizing: border-box; overflow-x: hidden;">
+            <div style="max-width: 600px; margin: 15px auto 10px auto; text-align: left;">
+                <h3 id="titulo-reproductor-actual" style="color: #ffffff; font-size: 1.1rem; margin: 0; font-weight: 600; font-family: system-ui, sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    Cargando sermón más reciente...
+                </h3>
+            </div>
+
+            <div id="main-player-container" style="margin: 0 auto 25px auto; max-width: 600px; border-radius: 12px; padding: 15px; background: #1a2436; box-shadow: 0 4px 15px rgba(0,0,0,0.3); box-sizing: border-box;">
+                <audio id="audioSermonPlayer" controls style="width: 100%; display: block; outline: none;">
+                    Tu navegador no soporta el reproductor de audio.
+                </audio>
+            </div>
+
+            <div style="max-width: 600px; margin: 0 auto 15px auto;">
+                <h3 style="color: #ffffff; font-size: 1.15rem; margin: 0; font-weight: 600; border-left: 3px solid #fbac33; padding-left: 10px; font-family: system-ui, sans-serif; text-align: left;">
+                    Episodios Anteriores
+                </h3>
+            </div>
+            
+            <div id="sermons-archive-list" style="max-width: 600px; margin: 0 auto; width: 100%; box-sizing: border-box; display: flex; flex-direction: column;">
+                </div>
+        </section>
 
             <!-- Título del Archivo Histórico -->
             <div style="max-width: 600px; margin: 0 auto 15px auto; padding: 0 10px;">
@@ -187,8 +204,8 @@
             if (data.status === 'ok' && data.items.length > 0) {
                 const episodios = data.items;
                 
-                // 1. Cargar el episodio más reciente arriba
-                actualizarReproductorPrincipal(episodios[0].link);
+                // 1. Cargar el episodio más reciente arriba usando su archivo MP3 nativo
+                configurarNuevoAudio(episodios[0].title, episodios[0].enclosure.url, false);
                 
                 // 2. Generar el archivo histórico abajo
                 const archiveContainer = document.getElementById('sermons-archive-list');
@@ -202,13 +219,14 @@
                     });
 
                     const tarjetaSermon = document.createElement('div');
-                    tarjetaSermon.style.cssText = "display: flex; align-items: center; background: #1a2436; padding: 12px; margin-bottom: 12px; border-radius: 8px; cursor: pointer; transition: transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-family: system-ui, sans-serif;";
+                    // Usamos width: 100% y box-sizing para obligarlo a mantenerse dentro del layout móvil
+                    tarjetaSermon.style.cssText = "display: flex; align-items: center; background: #1a2436; padding: 12px; margin-bottom: 12px; border-radius: 8px; cursor: pointer; transition: transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-family: system-ui, sans-serif; width: 100%; box-sizing: border-box; overflow: hidden;";
                     
                     tarjetaSermon.onmouseenter = () => tarjetaSermon.style.transform = "scale(1.01)";
                     tarjetaSermon.onmouseleave = () => tarjetaSermon.style.transform = "scale(1)";
                     
                     tarjetaSermon.onclick = () => {
-                        actualizarReproductorPrincipal(item.link);
+                        configurarNuevoAudio(item.title, item.enclosure.url, true);
                         document.getElementById('sermones').scrollTo({ top: 0, behavior: 'smooth' });
                     };
 
@@ -218,7 +236,7 @@
                             <h4 style="color: #ffffff; margin: 0 0 4px 0; font-size: 0.95rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;">
                                 ${item.title}
                             </h4>
-                            <span style="color: #a0aec0; font-size: 0.8rem; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                            <span style="color: #a0aec0; font-size: 0.8rem; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;">
                                 ${fechaFormateada} • Pura Gracia Radio
                             </span>
                         </div>
@@ -238,30 +256,23 @@
         }
     }
 
-    function actualizarReproductorPrincipal(linkAnchor) {
-        const playerContainer = document.getElementById('main-player-container');
+    function configurarNuevoAudio(titulo, mp3Url, debeReproducir) {
+        // Actualizamos el título visible arriba de la barra
+        document.getElementById('titulo-reproductor-actual').innerText = titulo;
         
-        const partesUrl = linkAnchor.split('/');
-        const episodioId = partesUrl[partesUrl.length - 1];
-
-        let embedUrl = `https://anchor.fm/puragraciaradio/embed/episodes/${episodioId}`;
-
-        playerContainer.innerHTML = `
-            <iframe 
-                src="${embedUrl}" 
-                width="100%" 
-                height="102" 
-                frameborder="0" 
-                allowfullscreen="" 
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-                loading="lazy"
-                style="border: none; display: block;">
-            </iframe>
-        `;
+        const audioPlayer = document.getElementById('audioSermonPlayer');
+        audioPlayer.src = mp3Url;
+        audioPlayer.load();
+        
+        if (debeReproducir) {
+            // Si el usuario hizo clic en una tarjeta de abajo, reproduce automáticamente
+            audioPlayer.play().catch(err => console.log("Autoplay bloqueado por el navegador:", err));
+        }
     }
 
     function mostrarError() {
-        document.getElementById('main-player-container').innerHTML = `<p style="color: #e53e3e; text-align: center; padding: 20px; font-family: system-ui, sans-serif;">No se pudo cargar el reproductor principal.</p>`;
+        document.getElementById('titulo-reproductor-actual').innerText = "Error de carga";
+        document.getElementById('main-player-container').innerHTML = `<p style="color: #e53e3e; text-align: center; padding: 10px; margin:0; font-family: system-ui, sans-serif;">No se pudieron cargar los sermones.</p>`;
     }
 
     document.addEventListener('DOMContentLoaded', inicializarSermones);
