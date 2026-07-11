@@ -88,19 +88,40 @@
         if (titleEl) titleEl.innerText = titulo;
         
         if (sermonAudio && mp3Url) {
+            // 1. Detener por completo cualquier intento de carga anterior
             sermonAudio.pause();
-            sermonAudio.currentTime = 0;
             
-            // Forzar HTTPS seguro para prevenir bloqueos de contenido mixto
-            sermonAudio.src = mp3Url.replace("http://", "https://");
+            // 2. Forzar estrictamente HTTPS para evitar el bloqueo de contenido mixto
+            let urlSegura = mp3Url.trim();
+            if (urlSegura.startsWith("http://")) {
+                urlSegura = urlSegura.replace("http://", "https://");
+            }
+            
+            // 3. Reconfigurar el elemento de audio de forma segura
+            sermonAudio.removeAttribute('src'); 
+            sermonAudio.load();
+            
+            // Asignar la URL limpia y forzar la recarga del buffer
+            sermonAudio.src = urlSegura;
             sermonAudio.load();
             
             if (reproducirInmediatamente) {
+                // Pequeña pausa de 200ms para que el navegador procese el cambio de origen
                 setTimeout(() => {
                     sermonAudio.play()
-                        .then(() => { if (sermonPlayIcon) sermonPlayIcon.className = "fas fa-pause"; })
-                        .catch(e => console.log("Interacción de reproducción bloqueada:", e));
-                }, 150);
+                        .then(() => { 
+                            if (sermonPlayIcon) sermonPlayIcon.className = "fas fa-pause"; 
+                        })
+                        .catch(e => {
+                            console.error("Error intentando reproducir el sermón:", e);
+                            // PLAN B: Si falla por CORS, intentamos recargar sin la restricción de crossorigin
+                            sermonAudio.removeAttribute('crossorigin');
+                            sermonAudio.load();
+                            sermonAudio.play().then(() => {
+                                if (sermonPlayIcon) sermonPlayIcon.className = "fas fa-pause";
+                            }).catch(err => console.log("Reproducción totalmente bloqueada por el navegador:", err));
+                        });
+                }, 200);
             } else {
                 if (sermonPlayIcon) sermonPlayIcon.className = "fas fa-play";
             }
@@ -111,7 +132,7 @@
         if (!sermonAudio) return;
         
         if (sermonAudio.paused) {
-            // Apagar la radio en vivo si está sonando para que no se superpongan
+            // Apagar la radio en vivo si está sonando para que no se pisen los flujos
             try {
                 const radioAudioEl = document.getElementById('radioAudio');
                 if (radioAudioEl && !radioAudioEl.paused) {
