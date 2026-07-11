@@ -93,11 +93,32 @@
             <div id="scheduleContainer"></div>
         </section>
 
-        <section id="sermones" class="section">
-            <div class="iframe-wrapper pg-spotify-wrapper">
-                <iframe src="https://open.spotify.com/embed/show/7bCzhWNjuVzSWeTLXvk9vt" allow="autoplay; encrypted-media"></iframe>
+        <section id="sermones" class="section" style="padding-bottom: 90px; padding-left: 15px; padding-right: 15px; box-sizing: border-box; overflow-x: hidden;">
+    <!-- El reproductor del sermón más reciente -->
+    <div id="main-player-container" style="margin: 20px auto; max-width: 600px; border-radius: 12px; padding: 15px; background: #1a2436; box-shadow: 0 4px 15px rgba(0,0,0,0.3); box-sizing: border-box; font-family: system-ui, sans-serif;">
+        <h4 id="custom-player-title" style="color: #ffffff; margin: 0 0 12px 0; font-size: 0.95rem; font-weight: 600; text-align: left; line-height: 1.4; word-break: break-word;">
+            Cargando sermón más reciente...
+        </h4>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <button id="custom-play-btn" style="background: #fbac33; border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #121212; flex-shrink: 0;">
+                <i id="custom-play-icon" class="fas fa-play" style="font-size: 1rem; margin-left: 2px;"></i>
+            </button>
+            <div id="custom-progress-container" style="flex-grow: 1; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; cursor: pointer; position: relative;">
+                <div id="custom-progress-bar" style="width: 0%; height: 100%; background: #fbac33; border-radius: 3px;"></div>
             </div>
-        </section>
+            <span id="custom-player-time" style="color: #a0aec0; font-size: 0.75rem; min-width: 35px; text-align: right; font-variant-numeric: tabular-nums;">0:00</span>
+        </div>
+        <audio id="audioSermonPlayer" preload="metadata" crossorigin="anonymous"></audio>
+    </div>
+
+    <!-- Archivo de episodios anteriores -->
+    <div style="max-width: 600px; margin: 25px auto 15px auto;">
+        <h3 style="color: #ffffff; font-size: 1.15rem; margin: 0; font-weight: 600; border-left: 3px solid #fbac33; padding-left: 10px; font-family: system-ui, sans-serif; text-align: left;">
+            Episodios Anteriores
+        </h3>
+    </div>
+    <div id="sermons-archive-list" style="max-width: 600px; margin: 0 auto; width: 100%; box-sizing: border-box; display: flex; flex-direction: column;"></div>
+</section>
 
         <section id="contacto" class="section">
     <div class="contact-block">
@@ -161,6 +182,7 @@
     <script src="/js/radio.js"></script>
     <script src="/js/menu.js"></script>
     <script src="/js/nowplaying.js"></script>
+    <script src="/js/sermones.js"></script>
 
     <script>
       if ('serviceWorker' in navigator) {
