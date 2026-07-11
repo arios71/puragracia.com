@@ -145,26 +145,23 @@ playBtn.addEventListener('click', () => {
 });
 
 // -------------------------
-// AUDIO EVENTS
+// AUDIO EVENTS (CORREGIDOS PARA CONTROL CRUZADO)
 // -------------------------
 
 audio.addEventListener('play', () => {
   updateUIPlayingState(true);
   setStatus("🔴 En vivo", "live");
 
-  // ✅ sesión iniciada
   if (typeof gtag !== "undefined") {
     gtag('event', 'radio_session_start');
   }
 
-  // ✅ medir 30 segundos reales
   hasCounted30s = false;
   clearTimeout(listenTimer);
 
   listenTimer = setTimeout(() => {
     if (!hasCounted30s && !isUserStopping) {
       hasCounted30s = true;
-
       if (typeof gtag !== "undefined") {
         gtag('event', 'listened_30s');
       }
@@ -172,15 +169,13 @@ audio.addEventListener('play', () => {
   }, 30000);
 });
 
+// Corrección crucial: Si se pausa por cualquier motivo (interno o externo), actualizamos la UI
 audio.addEventListener('pause', () => {
-  if (isUserStopping) {
-    updateUIPlayingState(false);
-    setStatus("Pausado");
+  updateUIPlayingState(false);
+  setStatus("Pausado");
 
-    // ✅ sesión terminada
-    if (typeof gtag !== "undefined") {
-      gtag('event', 'radio_session_end');
-    }
+  if (typeof gtag !== "undefined" && isUserStopping) {
+    gtag('event', 'radio_session_end');
   }
 
   clearTimeout(listenTimer);
@@ -192,16 +187,22 @@ audio.addEventListener('ended', () => {
   clearTimeout(listenTimer);
 });
 
-// Error en stream
 audio.addEventListener('error', () => {
   if (isUserStopping) return;
-
   console.error("Error en el stream");
   updateUIPlayingState(false);
   setStatus("Error de conexión", "error");
-
   clearTimeout(listenTimer);
 });
+
+// HACEMOS LA FUNCIÓN DE DETENER LA RADIO ACCESIBLE PARA OTROS SCRIPTS
+window.apagarRadioDesdeSermon = function() {
+  isUserStopping = true;
+  audio.pause();
+  updateUIPlayingState(false);
+  setStatus("Pausado");
+  clearTimeout(listenTimer);
+};
 
 // -------------------------
 // PWA DETECTION
