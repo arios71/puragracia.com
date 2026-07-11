@@ -20,6 +20,28 @@
         }
     }
 
+    // Función auxiliar para extraer una URL multimedia real y limpiar basura
+    function obtenerUrlAudioValida(item) {
+        let candidatos = [];
+        
+        if (item.enclosure && item.enclosure.url) candidatos.push(item.enclosure.url);
+        if (item.link) candidatos.push(item.link);
+        if (item.guid && item.guid.startsWith("http")) candidatos.push(item.guid);
+
+        for (let url of candidatos) {
+            if (url && typeof url === 'string') {
+                url = url.trim();
+                // Si contiene la URL de prueba de googleusercontent o spotify genérico, descartar
+                if (url.includes("googleusercontent.com") || url.includes("spotify.com/3") || url.includes("spotify.com/2")) {
+                    continue; 
+                }
+                // Si pasa los filtros, devolvemos esta
+                return url;
+            }
+        }
+        return ""; // No se encontró URL válida
+    }
+
     async function cargarPodcast() {
         vincularControles();
         try {
@@ -29,16 +51,11 @@
             if (data.status === 'ok' && data.items && data.items.length > 0) {
                 const episodios = data.items;
                 
-                // 1. Extraer la URL multimedia del sermón más reciente de forma segura
+                // 1. Cargar el sermón más reciente en el Player Principal
                 const primerEpisodio = episodios[0];
-                let urlMasReciente = "";
+                const urlMasReciente = obtenerUrlAudioValida(primerEpisodio);
                 
-                if (primerEpisodio.enclosure && primerEpisodio.enclosure.url) {
-                    urlMasReciente = primerEpisodio.enclosure.url;
-                } else if (primerEpisodio.link && !primerEpisodio.link.includes("googleusercontent.com")) {
-                    urlMasReciente = primerEpisodio.link;
-                }
-
+                console.log("URL detectada para el sermón más reciente:", urlMasReciente);
                 inyectarAudioSermon(primerEpisodio.title, urlMasReciente, false);
                 
                 // 2. Renderizar la lista histórica de episodios anteriores
@@ -52,13 +69,7 @@
                             month: 'short', day: 'numeric', year: 'numeric'
                         }) : "Pura Gracia Radio";
 
-                        // Determinar URL multimedia del historial
-                        let urlEpisodio = "";
-                        if (item.enclosure && item.enclosure.url) {
-                            urlEpisodio = item.enclosure.url;
-                        } else if (item.link && !item.link.includes("googleusercontent.com")) {
-                            urlEpisodio = item.link;
-                        }
+                        const urlEpisodio = obtenerUrlAudioValida(item);
 
                         const tarjeta = document.createElement('div');
                         tarjeta.style.cssText = "display: flex; align-items: center; background: #1a2436; padding: 12px; margin-bottom: 12px; border-radius: 8px; cursor: pointer; transition: transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-family: system-ui, sans-serif; width: 100%; box-sizing: border-box;";
@@ -68,9 +79,10 @@
                         
                         tarjeta.onclick = () => {
                             if (!urlEpisodio) {
-                                alert("Este episodio no tiene un archivo de audio directo disponible.");
+                                alert("Este episodio no tiene un archivo de audio directo reproducible en la web.");
                                 return;
                             }
+                            console.log("Cargando desde el historial el episodio:", item.title, "URL:", urlEpisodio);
                             inyectarAudioSermon(item.title, urlEpisodio, true);
                             const seccionSermones = document.getElementById('sermones');
                             if (seccionSermones) seccionSermones.scrollTo({ top: 0, behavior: 'smooth' });
@@ -107,14 +119,13 @@
         if (titleEl) titleEl.innerText = titulo;
         
         if (!mp3Url) {
-            console.warn("URL de audio no válida o ausente.");
+            console.warn("Llamada a inyectarAudioSermon cancelada: URL vacía o filtrada.");
             return;
         }
 
         if (sermonAudio) {
             sermonAudio.pause();
             
-            // Forzar estrictamente HTTPS para evitar bloqueos por contenido mixto
             let urlSegura = mp3Url.trim();
             if (urlSegura.startsWith("http://")) {
                 urlSegura = urlSegura.replace("http://", "https://");
@@ -133,12 +144,12 @@
                             if (sermonPlayIcon) sermonPlayIcon.className = "fas fa-pause"; 
                         })
                         .catch(e => {
-                            console.error("Fallo inicial de reproducción, ejecutando plan B sin restricción CORS:", e);
+                            console.error("Fallo inicial CORS, probando sin cabecera crossorigin:", e);
                             sermonAudio.removeAttribute('crossorigin');
                             sermonAudio.load();
                             sermonAudio.play().then(() => {
                                 if (sermonPlayIcon) sermonPlayIcon.className = "fas fa-pause";
-                            }).catch(err => console.log("Reproducción totalmente bloqueada:", err));
+                            }).catch(err => console.log("Reproducción totalmente bloqueada en este navegador:", err));
                         });
                 }, 200);
             } else {
