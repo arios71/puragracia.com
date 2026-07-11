@@ -2,12 +2,13 @@
 <html lang="es">
 <head>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-GX4KQ87HQC"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-GX4KQ87HQC');
-    </script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-GX4KQ87HQC');
+</script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
@@ -25,6 +26,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/logo-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/logo-16.png">
 
+    <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Pura Gracia Radio" />
     <meta property="og:description" content="Pura Gracia Radio transmite predicaciones expositivas, enseñanza cristiana y música bíblica que expone el evangelio de Cristo." />
@@ -32,6 +34,7 @@
     <meta property="og:image" content="https://puragracia.com/assets/icons/logo-512.png" />
     <meta property="og:locale" content="es_PR" />
 
+    <!-- Twitter / X -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Pura Gracia Radio" />
     <meta name="twitter:description" content="Pura Gracia transmite predicaciones expositivas, enseñanza cristiana y música bíblica." />
@@ -39,6 +42,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- Datos estructurados -->
     <script type="application/ld+json">
     {
       "@context":"https://schema.org",
@@ -62,121 +66,96 @@
     <header class="logo-header">
         <img src="/assets/branding/logo-horizontal.webp" alt="Pura Gracia Radio" />
         
+        <!-- Botón discreto de instalación -->
         <button id="installTrigger" aria-label="Instalar App" style="display:none;">
             <i class="fas fa-download"></i>
         </button>
     </header>
 
     <main class="app">
-        <h1 class="sr-only">Pura Gracia Radio - Radio Cristiana Online 24/7</h1>
+    <h1 class="sr-only">Pura Gracia Radio - Radio Cristiana Online 24/7</h1>
 
-        <section id="inicio" class="section active">
-            <div class="player-container">
-                <div id="nowPlayingBox"></div>
-                
-                <button id="playRadio" class="btn-circular" aria-label="Reproducir/Pausar">
-                    <svg id="playIcon" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z"/>
-                    </svg>
-                </button>
-                
-                <audio id="radioAudio" preload="none"></audio>
-            </div>
-        </section>
+    <section id="inicio" class="section active">
+    <div class="player-container">
+        <div id="nowPlayingBox"></div>
+        
+        <button id="playRadio" class="btn-circular" aria-label="Reproducir/Pausar">
+            <svg id="playIcon" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z"/>
+            </svg>
+        </button>
+        
+        <audio id="radioAudio" preload="none"></audio>
+    </div>
+</section>
 
         <section id="programacion" class="section">
             <div id="scheduleContainer"></div>
         </section>
 
-        <section id="sermones" class="section" style="padding-bottom: 90px; padding-left: 15px; padding-right: 15px; box-sizing: border-box; overflow-x: hidden;">
-            
-            <div id="main-player-container" style="margin: 20px auto; max-width: 600px; border-radius: 12px; padding: 15px; background: #1a2436; box-shadow: 0 4px 15px rgba(0,0,0,0.3); box-sizing: border-box; font-family: system-ui, sans-serif;">
-                
-                <h4 id="custom-player-title" style="color: #ffffff; margin: 0 0 12px 0; font-size: 0.95rem; font-weight: 600; text-align: left; line-height: 1.4; word-break: break-word;">
-                    Cargando sermón más reciente...
-                </h4>
-                
-                <div style="display: flex; align-items: center; gap: 15px;">
-                    <button id="custom-play-btn" style="background: #fbac33; border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #121212; flex-shrink: 0; transition: transform 0.2s;">
-                        <i id="custom-play-icon" class="fas fa-play" style="font-size: 1rem; margin-left: 2px;"></i>
-                    </button>
-                    
-                    <div id="custom-progress-container" style="flex-grow: 1; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; cursor: pointer; position: relative;">
-                        <div id="custom-progress-bar" style="width: 0%; height: 100%; background: #fbac33; border-radius: 3px; transition: width 0.1s linear;"></div>
-                    </div>
-                    
-                    <span id="custom-player-time" style="color: #a0aec0; font-size: 0.75rem; min-width: 35px; text-align: right; font-variant-numeric: tabular-nums;">0:00</span>
-                </div>
-                
-                <audio id="audioSermonPlayer" preload="metadata" crossorigin="anonymous"></audio>
-            </div>
-
-            <div style="max-width: 600px; margin: 0 auto 15px auto;">
-                <h3 style="color: #ffffff; font-size: 1.15rem; margin: 0; font-weight: 600; border-left: 3px solid #fbac33; padding-left: 10px; font-family: system-ui, sans-serif; text-align: left;">
-                    Episodios Anteriores
-                </h3>
-            </div>
-            
-            <div id="sermons-archive-list" style="max-width: 600px; margin: 0 auto; width: 100%; box-sizing: border-box; display: flex; flex-direction: column;">
+        <section id="sermones" class="section">
+            <div class="iframe-wrapper pg-spotify-wrapper">
+                <iframe src="https://open.spotify.com/embed/show/7bCzhWNjuVzSWeTLXvk9vt" allow="autoplay; encrypted-media"></iframe>
             </div>
         </section>
 
         <section id="contacto" class="section">
-            <div class="contact-block">
-                <div class="contact-card">
-                    <h2 class="contact-title">📬 Contacto</h2>
-                    <p class="contact-text">
-                        <b>Escríbenos:</b><br>
-                        <a href="mailto:radio@puragracia.com">radio@puragracia.com</a>
-                    </p>
-                    <p class="contact-text">
-                        <b>Llámanos:</b><br>
-                        <a href="tel:+17872582480">(787) 258-2480</a>
-                    </p>
-                </div>
+    <div class="contact-block">
+        <div class="contact-card">
+            <h2 class="contact-title">📬 Contacto</h2>
+            <p class="contact-text">
+                <b>Escríbenos:</b><br>
+                <a href="mailto:radio@puragracia.com">radio@puragracia.com</a>
+            </p>
+            <p class="contact-text">
+                <b>Llámanos:</b><br>
+                <a href="tel:+17872582480">(787) 258-2480</a>
+            </p>
+        </div>
 
-                <div class="contact-card">
-                    <h2 class="contact-title"><i class="fas fa-users" style="color: #fbac33; margin-right: 10px;"></i> Síguenos en redes</h2>
-                    <div class="social-links" style="display: flex; flex-direction: column; gap: 15px; align-items: center; margin-top: 15px;">
-                        <a href="https://facebook.com/puragraciaradio" target="_blank" class="social-btn" style="text-decoration: none; color: #fff; display: flex; align-items: center; gap: 10px; padding: 12px 20px; background: rgba(255, 255, 255, 0.05); border-radius: 12px; width: 100%; max-width: 250px; border: 1px solid rgba(251, 172, 51, 0.2);">
-                            <i class="fab fa-facebook" style="color: #1877f2; font-size: 1.5rem;"></i> 
-                            <span>Facebook</span>
-                        </a>
-                        <a href="https://whatsapp.com/channel/0029VaAFdiO60eBjjXuyei1U" target="_blank" class="social-btn" style="text-decoration: none; color: #fff; display: flex; align-items: center; gap: 10px; padding: 12px 20px; background: rgba(255, 255, 255, 0.05); border-radius: 12px; width: 100%; max-width: 250px; border: 1px solid rgba(251, 172, 51, 0.2);">
-                            <i class="fab fa-whatsapp" style="color: #25d366; font-size: 1.5rem;"></i> 
-                            <span>Canal de WhatsApp</span>
-                        </a>
-                    </div>
-                </div>
-
-                <div style="text-align: center; margin-top: 20px;">
-                    <button id="btnCompartirDinamico" style="background: transparent; border: 1px solid #fbac33; color: #fbac33; padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
-                        <i class="fas fa-share-alt"></i> Compartir lo que escucho
-                    </button>
-                </div>
-                <p class="contact-footer">© 2026 Iglesia Bíblica Gracia Verdadera</p>
+       <div class="contact-card">
+            <h2 class="contact-title"><i class="fas fa-users" style="color: #fbac33; margin-right: 10px;"></i> Síguenos en redes</h2>
+            <div class="social-links" style="display: flex; flex-direction: column; gap: 15px; align-items: center; margin-top: 15px;">
+                <a href="https://facebook.com/puragraciaradio" target="_blank" class="social-btn" style="text-decoration: none; color: #fff; display: flex; align-items: center; gap: 10px; padding: 12px 20px; background: rgba(255, 255, 255, 0.05); border-radius: 12px; width: 100%; max-width: 250px; border: 1px solid rgba(251, 172, 51, 0.2);">
+                    <i class="fab fa-facebook" style="color: #1877f2; font-size: 1.5rem;"></i> 
+                    <span>Facebook</span>
+                </a>
+                <a href="https://whatsapp.com/channel/0029VaAFdiO60eBjjXuyei1U" target="_blank" class="social-btn" style="text-decoration: none; color: #fff; display: flex; align-items: center; gap: 10px; padding: 12px 20px; background: rgba(255, 255, 255, 0.05); border-radius: 12px; width: 100%; max-width: 250px; border: 1px solid rgba(251, 172, 51, 0.2);">
+                    <i class="fab fa-whatsapp" style="color: #25d366; font-size: 1.5rem;"></i> 
+                    <span>Canal de WhatsApp</span>
+                </a>
             </div>
-        </section>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px;">
+    <button id="btnCompartirDinamico" style="background: transparent; border: 1px solid #fbac33; color: #fbac33; padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
+        <i class="fas fa-share-alt"></i> Compartir lo que escucho
+    </button>
+</div>
+        <p class="contact-footer">© 2026 Iglesia Bíblica Gracia Verdadera</p>
+    </div>
+</section>
+
     </main>
 
     <nav class="menu-principal">
-        <a href="#" data-section="inicio" class="menu-item active">
-            <i class="fas fa-home"></i>
-            <span>Inicio</span>
-        </a>
-        <a href="#" data-section="programacion" class="menu-item">
-            <i class="fas fa-calendar-alt"></i>
-            <span>Prog.</span>
-        </a>
-        <a href="#" data-section="sermones" class="menu-item">
-            <i class="fas fa-microphone-lines"></i>
-            <span>Sermones</span>
-        </a>
-        <a href="#" data-section="contacto" class="menu-item">
-            <i class="fas fa-envelope"></i>
-            <span>Contacto</span>
-        </a>
-    </nav>
+  <a href="#" data-section="inicio" class="menu-item active">
+    <i class="fas fa-home"></i>
+    <span>Inicio</span>
+  </a>
+  <a href="#" data-section="programacion" class="menu-item">
+    <i class="fas fa-calendar-alt"></i>
+    <span>Prog.</span>
+  </a>
+  <a href="#" data-section="sermones" class="menu-item">
+    <i class="fas fa-microphone-lines"></i>
+    <span>Sermones</span>
+  </a>
+  <a href="#" data-section="contacto" class="menu-item">
+    <i class="fas fa-envelope"></i>
+    <span>Contacto</span>
+  </a>
+</nav>
 
     <script src="/js/schedule.js"></script>
     <script src="/js/radio.js"></script>
@@ -184,192 +163,12 @@
     <script src="/js/nowplaying.js"></script>
 
     <script>
-    (function() {
-        const RSS_FEED_URL = "https://anchor.fm/s/dc304bfc/podcast/rss";
-        const CONVERTER_API = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_FEED_URL)}`;
-
-        let sermonAudio, sermonPlayBtn, sermonPlayIcon, sermonProgressBar, sermonProgressContainer, sermonTimeDisplay;
-
-        function prepararControlesSermon() {
-            sermonAudio = document.getElementById('audioSermonPlayer');
-            sermonPlayBtn = document.getElementById('custom-play-btn');
-            sermonPlayIcon = document.getElementById('custom-play-icon');
-            sermonProgressBar = document.getElementById('custom-progress-bar');
-            sermonProgressContainer = document.getElementById('custom-progress-container');
-            sermonTimeDisplay = document.getElementById('custom-player-time');
-
-            if (sermonPlayBtn && sermonAudio && sermonProgressContainer) {
-                sermonPlayBtn.removeEventListener('click', togglePlaySermon);
-                sermonPlayBtn.addEventListener('click', togglePlaySermon);
-                
-                sermonAudio.removeEventListener('timeupdate', actualizarProgresoSermon);
-                sermonAudio.addEventListener('timeupdate', actualizarProgresoSermon);
-                
-                sermonProgressContainer.removeEventListener('click', buscarTiempoSermon);
-                sermonProgressContainer.addEventListener('click', buscarTiempoSermon);
-                
-                sermonAudio.addEventListener('ended', () => {
-                    if (sermonPlayIcon) sermonPlayIcon.className = "fas fa-play";
-                });
-            }
-        }
-
-        async function inicializarSermones() {
-            prepararControlesSermon();
-
-            try {
-                const response = await fetch(CONVERTER_API);
-                const data = await response.json();
-                
-                if (data.status === 'ok' && data.items && data.items.length > 0) {
-                    const episodios = data.items;
-                    
-                    // 1. Cargar el episodio más reciente arriba
-                    configurarNuevoSermonAudio(episodios[0].title, episodios[0].enclosure.url, false);
-                    
-                    // 2. Generar el archivo histórico abajo
-                    const archiveContainer = document.getElementById('sermons-archive-list');
-                    if (archiveContainer) {
-                        archiveContainer.innerHTML = ''; 
-
-                        const historial = episodios.slice(1);
-                        
-                        historial.forEach(item => {
-                            const fechaFormateada = new Date(item.pubDate).toLocaleDateString('es-ES', {
-                                month: 'short', day: 'numeric', year: 'numeric'
-                            });
-
-                            const tarjetaSermon = document.createElement('div');
-                            tarjetaSermon.style.cssText = "display: flex; align-items: center; background: #1a2436; padding: 12px; margin-bottom: 12px; border-radius: 8px; cursor: pointer; transition: transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-family: system-ui, sans-serif; width: 100%; box-sizing: border-box; overflow: hidden;";
-                            
-                            tarjetaSermon.onmouseenter = () => tarjetaSermon.style.transform = "scale(1.01)";
-                            tarjetaSermon.onmouseleave = () => tarjetaSermon.style.transform = "scale(1)";
-                            
-                            tarjetaSermon.onclick = () => {
-                                configurarNuevoSermonAudio(item.title, item.enclosure.url, true);
-                                const seccionSermones = document.getElementById('sermones');
-                                if (seccionSermones) seccionSermones.scrollTo({ top: 0, behavior: 'smooth' });
-                            };
-
-                            tarjetaSermon.innerHTML = `
-                                <img src="${item.thumbnail || (data.feed && data.feed.image) || '/assets/icons/logo-192.png'}" alt="Portada" style="width: 50px; height: 50px; border-radius: 6px; margin-right: 12px; object-fit: cover; flex-shrink: 0;">
-                                <div style="flex-grow: 1; min-width: 0; text-align: left;">
-                                    <h4 style="color: #ffffff; margin: 0 0 4px 0; font-size: 0.95rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;">
-                                        ${item.title}
-                                    </h4>
-                                    <span style="color: #a0aec0; font-size: 0.8rem; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;">
-                                        ${fechaFormateada} • Pura Gracia Radio
-                                    </span>
-                                </div>
-                                <div style="color: #fbac33; padding-left: 8px; display: flex; align-items: center; flex-shrink: 0;">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
-                                </div>
-                            `;
-                            archiveContainer.appendChild(tarjetaSermon);
-                        });
-                    }
-                    
-                } else {
-                    mostrarErrorSermon();
-                }
-            } catch (error) {
-                console.error("Error procesando el feed:", error);
-                mostrarErrorSermon();
-            }
-        }
-
-        function configurarNuevoSermonAudio(titulo, mp3Url, debeReproducir) {
-            const titleEl = document.getElementById('custom-player-title');
-            if (titleEl) titleEl.innerText = titulo;
-            
-            if (sermonAudio) {
-                // Detener búfer anterior antes del cambio de src
-                sermonAudio.pause();
-                sermonAudio.currentTime = 0;
-
-                // CORRECCIÓN: Forzar protocolo seguro para evitar bloqueos por Contenido Mixto
-                const urlSegura = mp3Url.replace("http://", "https://");
-                
-                sermonAudio.src = urlSegura;
-                sermonAudio.load();
-                
-                if (debeReproducir) {
-                    // Pequeña pausa táctica de 150ms para que el navegador asimile la nueva fuente externa
-                    setTimeout(() => {
-                        sermonAudio.play()
-                            .then(() => { if (sermonPlayIcon) sermonPlayIcon.className = "fas fa-pause"; })
-                            .catch(err => console.log("Playback interactivo bloqueado por origen cruzado o foco:", err));
-                    }, 150);
-                } else {
-                    if (sermonPlayIcon) sermonPlayIcon.className = "fas fa-play";
-                }
-            }
-        }
-
-        function togglePlaySermon() {
-            if (!sermonAudio) return;
-            
-            if (sermonAudio.paused) {
-                // INTENTO DE DESBLOQUEO: Si el reproductor de la radio en vivo está corriendo, lo pausamos primero para liberar el hilo de audio
-                try {
-                    const radioAudioEl = document.getElementById('radioAudio');
-                    if (radioAudioEl && !radioAudioEl.paused) {
-                        radioAudioEl.pause();
-                        // Resetear icono de play de la radio si aplica
-                        const radioIcon = document.getElementById('playIcon');
-                        if (radioIcon) radioIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
-                    }
-                } catch(e) { console.log("No se pudo pausar la radio o no estaba activa."); }
-
-                sermonAudio.play()
-                    .then(() => { if (sermonPlayIcon) sermonPlayIcon.className = "fas fa-pause"; })
-                    .catch(err => {
-                        console.log("Error al reproducir, forzando recarga de recurso:", err);
-                        sermonAudio.load();
-                        sermonAudio.play().then(() => { if (sermonPlayIcon) sermonPlayIcon.className = "fas fa-pause"; });
-                    });
-            } else {
-                sermonAudio.pause();
-                if (sermonPlayIcon) sermonPlayIcon.className = "fas fa-play";
-            }
-        }
-
-        function actualizarProgresoSermon() {
-            if (sermonAudio && sermonAudio.duration) {
-                const porcentaje = (sermonAudio.currentTime / sermonAudio.duration) * 100;
-                if (sermonProgressBar) sermonProgressBar.style.width = `${porcentaje}%`;
-                
-                const mins = Math.floor(sermonAudio.currentTime / 60);
-                const secs = Math.floor(sermonAudio.currentTime % 60).toString().padStart(2, '0');
-                if (sermonTimeDisplay) sermonTimeDisplay.innerText = `${mins}:${secs}`;
-            }
-        }
-
-        function buscarTiempoSermon(e) {
-            if (!sermonAudio || !sermonProgressContainer) return;
-            const width = sermonProgressContainer.clientWidth;
-            const clickX = e.offsetX;
-            const duration = sermonAudio.duration;
-            if (duration) {
-                sermonAudio.currentTime = (clickX / width) * duration;
-            }
-        }
-
-        function mostrarErrorSermon() {
-            const titleEl = document.getElementById('custom-player-title');
-            if (titleEl) titleEl.innerText = "Error al cargar episodios";
-            if (sermonTimeDisplay) sermonTimeDisplay.style.display = 'none'; // <-- CORREGIDO AQUÍ
-            if (sermonPlayBtn) sermonPlayBtn.style.display = 'none';
-        }
-
-        // Ejecutar al cargar la página de forma segura
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', inicializarSermones);
-        } else {
-            inicializarSermones();
-        }
-    })();
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .catch(err => console.log('PWA: Error registrando SW', err));
+        });
+      }
     </script>
-    
 </body>
 </html>
