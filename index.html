@@ -94,16 +94,26 @@
         </section>
 
         <section id="sermones" class="section" style="padding-bottom: 90px; padding-left: 15px; padding-right: 15px; box-sizing: border-box; overflow-x: hidden;">
-            <div style="max-width: 600px; margin: 15px auto 10px auto; text-align: left;">
-                <h3 id="titulo-reproductor-actual" style="color: #ffffff; font-size: 1.1rem; margin: 0; font-weight: 600; font-family: system-ui, sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+            
+            <div id="main-player-container" style="margin: 20px auto; max-width: 600px; border-radius: 12px; padding: 15px; background: #1a2436; box-shadow: 0 4px 15px rgba(0,0,0,0.3); box-sizing: border-box; font-family: system-ui, sans-serif;">
+                
+                <h4 id="custom-player-title" style="color: #ffffff; margin: 0 0 12px 0; font-size: 0.95rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left;">
                     Cargando sermón más reciente...
-                </h3>
-            </div>
-
-            <div id="main-player-container" style="margin: 0 auto 25px auto; max-width: 600px; border-radius: 12px; padding: 15px; background: #1a2436; box-shadow: 0 4px 15px rgba(0,0,0,0.3); box-sizing: border-box;">
-                <audio id="audioSermonPlayer" controls style="width: 100%; display: block; outline: none;">
-                    Tu navegador no soporta el reproductor de audio.
-                </audio>
+                </h4>
+                
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <button id="custom-play-btn" style="background: #fbac33; border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #121212; flex-shrink: 0; transition: transform 0.2s;">
+                        <i id="custom-play-icon" class="fas fa-play" style="font-size: 1rem; margin-left: 2px;"></i>
+                    </button>
+                    
+                    <div id="custom-progress-container" style="flex-grow: 1; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; cursor: pointer; position: relative;">
+                        <div id="custom-progress-bar" style="width: 0%; height: 100%; background: #fbac33; border-radius: 3px; transition: width 0.1s linear;"></div>
+                    </div>
+                    
+                    <span id="custom-player-time" style="color: #a0aec0; font-size: 0.75rem; min-width: 35px; text-align: right; font-variant-numeric: tabular-nums;">0:00</span>
+                </div>
+                
+                <audio id="audioSermonPlayer" preload="metadata"></audio>
             </div>
 
             <div style="max-width: 600px; margin: 0 auto 15px auto;">
@@ -114,19 +124,6 @@
             
             <div id="sermons-archive-list" style="max-width: 600px; margin: 0 auto; width: 100%; box-sizing: border-box; display: flex; flex-direction: column;">
                 </div>
-        </section>
-
-            <!-- Título del Archivo Histórico -->
-            <div style="max-width: 600px; margin: 0 auto 15px auto; padding: 0 10px;">
-                <h3 style="color: #ffffff; font-size: 1.15rem; margin: 0; font-weight: 600; border-left: 3px solid #fbac33; padding-left: 10px; font-family: system-ui, sans-serif;">
-                    Episodios Anteriores
-                </h3>
-            </div>
-            
-            <!-- Contenedor donde se dibuja la lista de episodios -->
-            <div id="sermons-archive-list" style="max-width: 600px; margin: 0 auto; padding: 0 10px;">
-                <!-- Las tarjetas se generarán aquí automáticamente -->
-            </div>
         </section>
 
         <section id="contacto" class="section">
@@ -196,7 +193,25 @@
     const RSS_FEED_URL = "https://anchor.fm/s/dc304bfc/podcast/rss";
     const CONVERTER_API = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_FEED_URL)}`;
 
+    let audioPlayer, playBtn, playIcon, progressBar, progressContainer, timeDisplay;
+
     async function inicializarSermones() {
+        // Enlazar elementos del reproductor personalizado
+        audioPlayer = document.getElementById('audioSermonPlayer');
+        playBtn = document.getElementById('custom-play-btn');
+        playIcon = document.getElementById('custom-play-icon');
+        progressBar = document.getElementById('custom-progress-bar');
+        progressContainer = document.getElementById('custom-progress-container');
+        timeDisplay = document.getElementById('custom-player-time');
+
+        // Configurar los listeners del reproductor
+        playBtn.addEventListener('click', togglePlay);
+        audioPlayer.addEventListener('timeupdate', actualizarProgreso);
+        progressContainer.addEventListener('click', buscarTiempo);
+        audioPlayer.addEventListener('ended', () => {
+            playIcon.className = "fas fa-play";
+        });
+
         try {
             const response = await fetch(CONVERTER_API);
             const data = await response.json();
@@ -204,7 +219,7 @@
             if (data.status === 'ok' && data.items.length > 0) {
                 const episodios = data.items;
                 
-                // 1. Cargar el episodio más reciente arriba usando su archivo MP3 nativo
+                // 1. Cargar el episodio más reciente arriba
                 configurarNuevoAudio(episodios[0].title, episodios[0].enclosure.url, false);
                 
                 // 2. Generar el archivo histórico abajo
@@ -219,7 +234,6 @@
                     });
 
                     const tarjetaSermon = document.createElement('div');
-                    // Usamos width: 100% y box-sizing para obligarlo a mantenerse dentro del layout móvil
                     tarjetaSermon.style.cssText = "display: flex; align-items: center; background: #1a2436; padding: 12px; margin-bottom: 12px; border-radius: 8px; cursor: pointer; transition: transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-family: system-ui, sans-serif; width: 100%; box-sizing: border-box; overflow: hidden;";
                     
                     tarjetaSermon.onmouseenter = () => tarjetaSermon.style.transform = "scale(1.01)";
@@ -257,22 +271,55 @@
     }
 
     function configurarNuevoAudio(titulo, mp3Url, debeReproducir) {
-        // Actualizamos el título visible arriba de la barra
-        document.getElementById('titulo-reproductor-actual').innerText = titulo;
-        
-        const audioPlayer = document.getElementById('audioSermonPlayer');
+        document.getElementById('custom-player-title').innerText = titulo;
         audioPlayer.src = mp3Url;
         audioPlayer.load();
         
         if (debeReproducir) {
-            // Si el usuario hizo clic en una tarjeta de abajo, reproduce automáticamente
-            audioPlayer.play().catch(err => console.log("Autoplay bloqueado por el navegador:", err));
+            audioPlayer.play()
+                .then(() => { playIcon.className = "fas fa-pause"; })
+                .catch(err => console.log("Playback interactivo bloqueado:", err));
+        } else {
+            playIcon.className = "fas fa-play";
+        }
+    }
+
+    function togglePlay() {
+        if (audioPlayer.paused) {
+            audioPlayer.play()
+                .then(() => { playIcon.className = "fas fa-pause"; })
+                .catch(err => console.log("Error al reproducir:", err));
+        } else {
+            audioPlayer.pause();
+            playIcon.className = "fas fa-play";
+        }
+    }
+
+    function actualizarProgreso() {
+        if (audioPlayer.duration) {
+            const porcentaje = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+            progressBar.style.width = `${porcentaje}%`;
+            
+            // Formatear tiempo restante o actual (mm:ss)
+            const mins = Math.floor(audioPlayer.currentTime / 60);
+            const secs = Math.floor(audioPlayer.currentTime % 60).toString().padStart(2, '0');
+            timeDisplay.innerText = `${mins}:${secs}`;
+        }
+    }
+
+    function buscarTiempo(e) {
+        const width = progressContainer.clientWidth;
+        const clickX = e.offsetX;
+        const duration = audioPlayer.duration;
+        if (duration) {
+            audioPlayer.currentTime = (clickX / width) * duration;
         }
     }
 
     function mostrarError() {
-        document.getElementById('titulo-reproductor-actual').innerText = "Error de carga";
-        document.getElementById('main-player-container').innerHTML = `<p style="color: #e53e3e; text-align: center; padding: 10px; margin:0; font-family: system-ui, sans-serif;">No se pudieron cargar los sermones.</p>`;
+        document.getElementById('custom-player-title').innerText = "Error de carga";
+        timeDisplay.style.display = 'none';
+        playBtn.style.display = 'none';
     }
 
     document.addEventListener('DOMContentLoaded', inicializarSermones);
