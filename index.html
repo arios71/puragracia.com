@@ -252,7 +252,7 @@
                             };
 
                             tarjetaSermon.innerHTML = `
-                                <img src="${item.thumbnail || data.feed.image}" alt="Portada" style="width: 50px; height: 50px; border-radius: 6px; margin-right: 12px; object-fit: cover; flex-shrink: 0;">
+                                <img src="${item.thumbnail || (data.feed && data.feed.image) || '/assets/icons/logo-192.png'}" alt="Portada" style="width: 50px; height: 50px; border-radius: 6px; margin-right: 12px; object-fit: cover; flex-shrink: 0;">
                                 <div style="flex-grow: 1; min-width: 0; text-align: left;">
                                     <h4 style="color: #ffffff; margin: 0 0 4px 0; font-size: 0.95rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;">
                                         ${item.title}
@@ -358,7 +358,7 @@
         function mostrarErrorSermon() {
             const titleEl = document.getElementById('custom-player-title');
             if (titleEl) titleEl.innerText = "Error al cargar episodios";
-            if (sermonTimeDisplay) sermonTimeDisplay.style.display = 'none';
+            if (sermonTimeDisplay) sermonTimeDisplay.style.display = 'none'; // <-- CORREGIDO AQUÍ
             if (sermonPlayBtn) sermonPlayBtn.style.display = 'none';
         }
 
