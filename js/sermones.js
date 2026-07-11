@@ -3,9 +3,9 @@
 
     let sermonAudio, sermonPlayBtn, sermonPlayIcon, sermonProgressBar, sermonProgressContainer, sermonTimeDisplay;
     
-    // VARIABLES PARA LA PAGINACIÓN
+    // Variables para controlar la paginación limpia
     let todosLosEpisodios = [];
-    let episodiosVisibles = 5; // Cuántos se muestran al principio
+    let episodiosVisibles = 5;
 
     function vincularControles() {
         sermonAudio = document.getElementById('audioSermonPlayer');
@@ -32,23 +32,35 @@
             const xmlText = await response.text();
             const parser = new DOMParser();
             const xmlDoc = parser.parseFromString(xmlText, "text/xml");
-            const items = xmlDoc.getElementsByTagName("item");
+            
+            // VOLVEMOS AL LECTOR ORIGINAL QUE NUNCA FALLABA
+            const items = xmlDoc.querySelectorAll("item");
             
             if (items && items.length > 0) {
                 todosLosEpisodios = [];
                 
-                for (let i = 0; i < items.length; i++) {
-                    const item = items[i];
-                    const title = item.getElementsByTagName("title")[0]?.textContent || "Sermón sin título";
-                    const pubDate = item.getElementsByTagName("pubDate")[0]?.textContent || "";
-                    const enclosure = item.getElementsByTagName("enclosure")[0];
+                // Extraer la imagen por defecto del canal principal de la Iglesia
+                let defaultChannelImage = "/assets/icons/logo-192.png";
+                const channelImageEl = xmlDoc.querySelector("channel > image > url");
+                if (channelImageEl) {
+                    defaultChannelImage = channelImageEl.textContent;
+                }
+
+                items.forEach(item => {
+                    const title = item.querySelector("title")?.textContent || "Sermón sin título";
+                    const pubDate = item.querySelector("pubDate")?.textContent || "";
+                    const enclosure = item.querySelector("enclosure");
                     const mp3Url = enclosure ? enclosure.getAttribute("url") : "";
                     
-                    // Logo por defecto de la app / radio si no hay portada
-                    let thumbnail = xmlDoc.getElementsByTagName("image")[0]?.getElementsByTagName("url")[0]?.textContent || "/assets/icons/logo-192.png";
+                    // Buscar la portada del episodio específico o heredar la del canal
+                    let thumbnail = defaultChannelImage;
                     const itunesImage = item.getElementsByTagName("itunes:image")[0];
                     if (itunesImage) {
                         thumbnail = itunesImage.getAttribute("href") || thumbnail;
+                    } else {
+                        // Intento alternativo por si viene con selector directo
+                        const altImage = item.querySelector("image")?.getAttribute("href");
+                        if (altImage) thumbnail = altImage;
                     }
 
                     const asegurarHttps = (url) => url && url.startsWith("http://") ? url.replace("http://", "https://") : url;
@@ -59,19 +71,16 @@
                         mp3Url: mp3Url ? asegurarHttps(mp3Url) : "", 
                         thumbnail: asegurarHttps(thumbnail) 
                     });
-                }
+                });
 
-                // Asignación inteligente del reproductor principal
+                // Asignar el episodio principal al reproductor
                 let episodioParaPlayer = todosLosEpisodios.find(ep => ep.mp3Url !== "");
                 if (!episodioParaPlayer) episodioParaPlayer = todosLosEpisodios[0];
 
-                console.log("--- CONTROL DE AUDIO PRINCIPAL ---");
-                console.log("Asignado al Player Principal:", episodioParaPlayer.title);
-
-                // Inyectamos el reproductor con su carátula correspondiente
+                // Inyectar el reproductor con su carátula
                 inyectarAudioSermon(episodioParaPlayer.title, episodioParaPlayer.mp3Url, episodioParaPlayer.thumbnail, false);
                 
-                // Renderizar el primer bloque de la lista historial
+                // Mostrar los primeros 5 episodios en el historial
                 episodiosVisibles = 5; 
                 renderizarListaHistorial();
                 
@@ -79,7 +88,7 @@
                 marcarError();
             }
         } catch (error) {
-            console.error("Error procesando XML directo del podcast:", error);
+            console.error("Error procesando XML del podcast:", error);
             marcarError();
         }
     }
@@ -88,10 +97,9 @@
         const archiveContainer = document.getElementById('sermons-archive-list');
         if (!archiveContainer) return;
 
-        // Limpiamos el contenedor original
         archiveContainer.innerHTML = '';
 
-        // Tomamos solo el subgrupo de episodios permitidos por la paginación
+        // Tomamos el bloque limitado por el "Ver más"
         const fragmentoEpisodios = todosLosEpisodios.slice(0, episodiosVisibles);
 
         fragmentoEpisodios.forEach(item => {
@@ -107,7 +115,7 @@
             
             tarjeta.onclick = () => {
                 if (!item.mp3Url) {
-                    alert("Este episodio aún se está procesando en la plataforma de distribución.");
+                    alert("Este episodio aún se está procesando.");
                     return;
                 }
                 inyectarAudioSermon(item.title, item.mp3Url, item.thumbnail, true);
@@ -134,7 +142,7 @@
             archiveContainer.appendChild(tarjeta);
         });
 
-        // AGREGAR BOTÓN "VER MÁS EPISODIOS" SI QUEDAN ELEMENTOS POR CARGAR
+        // Botón elegante para expandir el scroll
         if (episodiosVisibles < todosLosEpisodios.length) {
             const btnVerMas = document.createElement('button');
             btnVerMas.innerText = "Ver más episodios";
@@ -150,7 +158,7 @@
             };
 
             btnVerMas.onclick = () => {
-                episodiosVisibles += 5; // Incrementamos de 5 en 5
+                episodiosVisibles += 5; 
                 renderizarListaHistorial();
             };
 
@@ -162,16 +170,14 @@
         const titleEl = document.getElementById('custom-player-title');
         if (titleEl) titleEl.innerText = titulo;
         
-        // MANEJO E INYECCIÓN DINÁMICA DE LA CARÁTULA PRINCIPAL
         let playerCoverEl = document.getElementById('custom-player-cover');
         if (!playerCoverEl) {
-            // Si el elemento img no existe en tu HTML dentro del player, lo creamos dinámicamente arriba del título
+            // Buscamos la caja del reproductor para inyectar la carátula arriba del título
             const playerBox = document.querySelector('.custom-audio-player') || document.getElementById('sermones');
             if (playerBox) {
                 playerCoverEl = document.createElement('img');
                 playerCoverEl.id = 'custom-player-cover';
                 playerCoverEl.style.cssText = "width: 160px; height: 160px; border-radius: 12px; object-fit: cover; margin: 0 auto 15px auto; display: block; box-shadow: 0 8px 16px rgba(0,0,0,0.3); border: 2px solid #2a364f;";
-                // Lo insertamos justo antes del título para mantener el orden visual elegante
                 if (titleEl) playerBox.insertBefore(playerCoverEl, titleEl);
             }
         }
@@ -182,13 +188,11 @@
         
         if (sermonAudio && mp3Url) {
             sermonAudio.pause();
-            
             sermonAudio.removeAttribute('crossorigin');
             sermonAudio.removeAttribute('src'); 
             sermonAudio.preload = "metadata";
             sermonAudio.volume = 1.0;
             sermonAudio.muted = false;
-            sermonAudio.load();
             
             sermonAudio.src = mp3Url;
             sermonAudio.load();
