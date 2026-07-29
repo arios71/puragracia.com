@@ -4,6 +4,7 @@ const DEFAULT_COVER = "/default-cover.png";
 const SLOGAN = "Música y contenido en sintonía con el evangelio de Cristo"; 
 let currentTrack = null;
 let programsList = [];
+let lastActiveProgram = null;
 
 async function loadPrograms() {
     try {
@@ -18,7 +19,7 @@ async function loadPrograms() {
 
 function updateNowPlaying(metadata) {
     // 1. Definimos los textos
-    const title = (metadata && metadata.title && metadata.title.trim() !== "") ? metadata.title.trim() : "Pura Gracia Radio";
+    let title = (metadata && metadata.title && metadata.title.trim() !== "") ? metadata.title.trim() : "Pura Gracia Radio";
     
     // Si el título es la radio O el artista está vacío, mostramos el eslogan.
 const artist = (title === "Pura Gracia Radio" || !metadata.artist || metadata.artist.trim() === "") 
@@ -33,6 +34,17 @@ const artist = (title === "Pura Gracia Radio" || !metadata.artist || metadata.ar
         (album && album.toLowerCase().includes(p.name.toLowerCase())) ||
         (album && p.name.toLowerCase().includes(album.toLowerCase()))
     );
+
+    // --- LÓGICA DE RETENCIÓN DE PROGRAMA ---
+    if (!prog && title === "Pura Gracia Radio" && lastActiveProgram) {
+        prog = lastActiveProgram;
+        title = prog.name; 
+    } else if (prog) {
+        lastActiveProgram = prog;
+    } else if (title === "Pura Gracia Radio") {
+        lastActiveProgram = null;
+    }
+    // ----------------------------------------
 
     const coverArt = (metadata && metadata.coverArt && metadata.coverArt !== "") 
                      ? metadata.coverArt 
