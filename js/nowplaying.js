@@ -28,7 +28,7 @@ const artist = (title === "Pura Gracia Radio" || !metadata.artist || metadata.ar
     
     const album = (metadata && metadata.album) ? metadata.album.trim() : "";
     
-    const prog = programsList.find(p => 
+    let prog = programsList.find(p => 
         title.toLowerCase().includes(p.name.toLowerCase()) || 
         p.name.toLowerCase().includes(title.toLowerCase()) ||
         (album && album.toLowerCase().includes(p.name.toLowerCase())) ||
@@ -97,7 +97,7 @@ const artist = (title === "Pura Gracia Radio" || !metadata.artist || metadata.ar
 
 async function fetchNowPlaying() {
     try {
-        const res = await fetch(`https://pg-radio-webhook.vercel.app/api/nowplaying?cb=${Math.random()}`);
+        const res = await fetch(`https://pg-radio-webhook-ji26cdibb-antolins-projects-3931f532.vercel.app/api/radioboss-nowplaying?cb=${Math.random()}`);
         const data = await res.json();
         updateNowPlaying(data);
     } catch (err) {
