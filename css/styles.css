@@ -477,3 +477,85 @@ main.app {
     transition: transform 0.1s;
     filter: brightness(0.8);
 }
+
+
+/* =====================================================
+   PURA GRACIA RADIO 2.0 — HOME HÍBRIDO (PRUEBA)
+===================================================== */
+:root {
+  --hybrid-bg: #080f19;
+  --hybrid-panel: #111d2b;
+  --hybrid-panel-2: #172638;
+  --hybrid-gold: #d5a64a;
+  --hybrid-gold-light: #edc779;
+  --hybrid-muted: #a8b3c1;
+}
+.logo-header {
+  position: relative;
+  z-index: 5;
+  height: 76px;
+  padding: 8px 18px 0;
+  background: linear-gradient(180deg, #0b1421 0%, rgba(11,20,33,.96) 100%);
+}
+.logo-header img { height: 56px; max-width: 76%; }
+main.app { height: calc(100dvh - var(--header-height) - var(--bottom-bar-height)); }
+#inicio.section { padding: 16px 18px 28px; }
+.home-shell { width: 100%; max-width: 680px; margin: 0 auto; }
+.home-intro { text-align: center; padding: 2px 8px 18px; }
+.live-label { display: inline-flex; align-items: center; gap: 8px; color: var(--hybrid-gold-light); font-size: .68rem; font-weight: 800; letter-spacing: .15em; }
+.live-dot, .on-air-mark i { width: 7px; height: 7px; display: inline-block; border-radius: 50%; background: #d95757; box-shadow: 0 0 10px rgba(217,87,87,.65); }
+.home-kicker { margin-top: 10px; color: #8392a4; font-size: .67rem; font-weight: 700; letter-spacing: .2em; }
+.home-kicker span { color: var(--hybrid-gold); padding: 0 3px; }
+.home-intro h2 { max-width: 440px; margin: 7px auto 0; color: #f5f3ee; font-size: clamp(1rem, 3.8vw, 1.22rem); line-height: 1.45; font-weight: 500; }
+.player-panel { padding: 17px 17px 15px; border: 1px solid rgba(213,166,74,.22); border-radius: 23px; background: radial-gradient(circle at 50% 0%, rgba(213,166,74,.09), transparent 42%), linear-gradient(145deg, #172638, #0e1927 72%); box-shadow: 0 16px 42px rgba(0,0,0,.34); }
+.player-panel-heading { display: flex; justify-content: space-between; align-items: center; color: #9ba9b8; font-size: .65rem; font-weight: 800; letter-spacing: .13em; }
+.on-air-mark { display: inline-flex; align-items: center; gap: 6px; color: #e9c77f; font-size: .62rem; letter-spacing: .1em; }
+.on-air-mark i { width: 6px; height: 6px; }
+#nowPlayingBox { width: 100%; }
+#nowPlayingBox .now-card { width: 100%; margin: 17px auto 0; }
+#nowPlayingBox .now-card img { width: min(68vw, 270px); height: min(68vw, 270px); border-radius: 17px; border: 1px solid rgba(255,255,255,.1); box-shadow: 0 12px 28px rgba(0,0,0,.42); }
+#nowPlayingBox .now-info { width: 100%; max-width: 420px; margin: 16px auto 0; }
+#nowPlayingBox .title { font-size: clamp(1.05rem, 4vw, 1.3rem); color: #fff; }
+#nowPlayingBox .artist { color: #c0cad5; font-size: .94rem; }
+#nowPlayingBox .album { color: #8795a5; }
+.live-controls { display: flex; align-items: center; gap: 13px; margin-top: 18px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,.09); }
+#playRadio { flex: 0 0 58px; width: 58px; height: 58px; margin: 0; background: linear-gradient(145deg, #edc779, #c89537); box-shadow: 0 5px 18px rgba(213,166,74,.24); }
+#playRadio svg { width: 29px; height: 29px; }
+.live-control-copy { display: flex; flex-direction: column; gap: 4px; text-align: left; }
+.live-control-copy strong { color: #f2f0eb; font-size: .87rem; }
+.radio-status { color: #9ba9b8; font-size: .75rem; }
+.radio-status.live { color: #e7c77f; }
+.radio-status.error { color: #f28a8a; }
+.equalizer { display: flex; align-items: center; gap: 3px; height: 22px; margin-left: auto; opacity: .45; }
+.equalizer i { display: block; width: 3px; height: 7px; border-radius: 3px; background: var(--hybrid-gold); }
+.equalizer i:nth-child(2), .equalizer i:nth-child(4) { height: 15px; }
+.equalizer i:nth-child(3) { height: 21px; }
+.home-section-heading { display: flex; justify-content: space-between; align-items: end; margin: 24px 2px 12px; }
+.home-section-heading span { color: var(--hybrid-gold); font-size: .62rem; font-weight: 800; letter-spacing: .17em; }
+.home-section-heading h3 { margin-top: 4px; color: #f2f0eb; font-size: 1.08rem; }
+.home-feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; }
+.home-feature { min-width: 0; display: flex; align-items: center; gap: 10px; padding: 14px 12px; border: 1px solid rgba(255,255,255,.08); border-radius: 15px; background: linear-gradient(145deg, #172638, #111c2a); color: inherit; text-decoration: none; transition: border-color .2s, transform .2s; }
+.home-feature:active { transform: scale(.98); border-color: rgba(213,166,74,.5); }
+.feature-icon { flex: 0 0 36px; width: 36px; height: 36px; display: grid; place-items: center; border-radius: 11px; color: var(--hybrid-gold-light); background: rgba(213,166,74,.12); font-size: 1rem; }
+.feature-copy { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.feature-copy strong { color: #f2f0eb; font-size: .78rem; }
+.feature-copy small { color: #9ba9b8; font-size: .65rem; line-height: 1.35; }
+.feature-arrow { margin-left: auto; color: #8d9aaa; font-size: .7rem; }
+.home-footnote { padding: 16px 8px 4px; color: #738194; font-size: .68rem; line-height: 1.5; text-align: center; }
+.menu-principal { background: rgba(9,16,26,.97); border-top: 1px solid rgba(213,166,74,.18); }
+.menu-item.active { color: var(--hybrid-gold-light); }
+@media (min-width: 700px) {
+  #inicio.section { padding-top: 22px; }
+  .home-intro { padding-bottom: 22px; }
+  .player-panel { padding: 20px 24px 18px; }
+  #nowPlayingBox .now-card img { width: 250px; height: 250px; }
+  .home-feature-grid { gap: 14px; }
+}
+@media (max-height: 740px) {
+  #inicio.section { padding-top: 8px; }
+  .home-intro { padding-bottom: 10px; }
+  .home-intro h2 { font-size: .95rem; }
+  #nowPlayingBox .now-card { margin-top: 10px; }
+  #nowPlayingBox .now-card img { width: min(54vw, 210px); height: min(54vw, 210px); }
+  .home-section-heading { margin-top: 16px; }
+}
