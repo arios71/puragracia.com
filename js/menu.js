@@ -1,8 +1,9 @@
 // Navegación del menú
 
 const menuLinks = document.querySelectorAll('nav a[data-section]');
+const sectionLinks = document.querySelectorAll('[data-section]');
 
-menuLinks.forEach(link => {
+sectionLinks.forEach(link => {
   link.addEventListener('click', e => {
     e.preventDefault();
 
