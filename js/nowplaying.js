@@ -97,7 +97,7 @@ const artist = (title === "Pura Gracia Radio" || !metadata.artist || metadata.ar
 
 async function fetchNowPlaying() {
     try {
-        const res = await fetch(`https://pg-radio-webhook-ji26cdibb-antolins-projects-3931f532.vercel.app/api/radioboss-nowplaying?cb=${Math.random()}`);
+        const res = await fetch(`https://pg-radio-webhook.vercel.app/api/nowplaying?cb=${Math.random()}`);
         const data = await res.json();
         updateNowPlaying(data);
     } catch (err) {
