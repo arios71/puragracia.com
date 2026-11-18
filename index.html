@@ -76,16 +76,45 @@
     <h1 class="sr-only">Pura Gracia Radio - Radio Cristiana Online 24/7</h1>
 
     <section id="inicio" class="section active">
-    <div class="player-container">
-        <div id="nowPlayingBox"></div>
-        
-        <button id="playRadio" class="btn-circular" aria-label="Reproducir/Pausar">
-            <svg id="playIcon" viewBox="0 0 24 24">
-                <path d="M8 5v14l11-7z"/>
-            </svg>
-        </button>
-        
-        <audio id="radioAudio" preload="none"></audio>
+    <div class="home-shell">
+        <div class="home-intro">
+            <div class="live-label"><span class="live-dot"></span> TRANSMISIÓN EN VIVO</div>
+            <p class="home-kicker">PURA GRACIA RADIO <span>·</span> WRPG-DB</p>
+            <h2>Música y contenido en sintonía con el evangelio de Cristo</h2>
+        </div>
+        <div class="player-panel">
+            <div class="player-panel-heading">
+                <span>AHORA EN LA RADIO</span><span class="on-air-mark"><i></i> EN VIVO</span>
+            </div>
+            <div id="nowPlayingBox"></div>
+            <div class="live-controls">
+                <button id="playRadio" class="btn-circular" aria-label="Reproducir/Pausar">
+                    <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+                <div class="live-control-copy">
+                    <strong>Escucha nuestra señal</strong>
+                    <span id="radioStatus" class="radio-status">Lista para reproducir</span>
+                </div>
+                <span class="equalizer" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+            </div>
+            <audio id="radioAudio" preload="none"></audio>
+        </div>
+        <div class="home-section-heading">
+            <div><span>DESCUBRE</span><h3>Explora Pura Gracia</h3></div>
+        </div>
+        <div class="home-feature-grid">
+            <a href="#programacion" data-section="programacion" class="home-feature">
+                <span class="feature-icon"><i class="fas fa-calendar-days"></i></span>
+                <span class="feature-copy"><strong>Programación</strong><small>Conoce lo que está al aire y lo que viene.</small></span>
+                <i class="fas fa-arrow-right feature-arrow"></i>
+            </a>
+            <a href="#sermones" data-section="sermones" class="home-feature">
+                <span class="feature-icon"><i class="fas fa-book-open"></i></span>
+                <span class="feature-copy"><strong>Sermones</strong><small>Escucha enseñanza bíblica y predicación.</small></span>
+                <i class="fas fa-arrow-right feature-arrow"></i>
+            </a>
+        </div>
+        <p class="home-footnote">Una radio centrada en Cristo y en la exposición fiel de las Escrituras.</p>
     </div>
 </section>
 
