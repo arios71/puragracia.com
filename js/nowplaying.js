@@ -7,7 +7,7 @@ const resolveNowPlayingAsset = path => /^https?:\/\//i.test(path || "")
     : new URL(String(path || "").replace(/^\/+/, ""), NOWPLAYING_APP_BASE).href;
 const DEFAULT_COVER = new URL("assets/branding/default-cover.png", NOWPLAYING_APP_BASE).href;
 const SLOGAN = "Música y contenido en sintonía con el evangelio de Cristo";
-const NOWPLAYING_URL = "https://puragracia-radio-preview-vercel-pre.vercel.app/api/radioboss-nowplaying";
+const NOWPLAYING_URL = "https://puragracia-radio-api.vercel.app/api/radioboss-nowplaying";
 let currentTrack = null;
 let programsList = [];
 let lastActiveProgram = null;
