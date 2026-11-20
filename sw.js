@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pgr-radioboss-migration-v1';
+const CACHE_NAME = 'pgr-radioboss-migration-v2';
 const APP_BASE = new URL('./', self.location.href);
 const STATIC_ASSETS = [
   '',
