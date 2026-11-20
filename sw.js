@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pgr-radioboss-migration-v2';
+const CACHE_NAME = 'pgr-v58';
 const APP_BASE = new URL('./', self.location.href);
 const STATIC_ASSETS = [
   '',
@@ -38,7 +38,7 @@ self.addEventListener('install', event => {
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(names => Promise.all(
-      names.filter(name => name.startsWith('pgr-radioboss-migration-') && name !== CACHE_NAME)
+      names.filter(name => name.startsWith('pgr-') && name !== CACHE_NAME)
         .map(name => caches.delete(name))
     )).then(() => self.clients.claim())
   );
