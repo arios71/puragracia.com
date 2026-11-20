@@ -1,6 +1,7 @@
 const ALLOWED_ORIGINS = new Set([
   "https://www.puragracia.com",
-  "https://puragracia.com"
+  "https://puragracia.com",
+  "https://arios71.github.io"
 ]);
 
 const PRODUCTION_FOLDERS = new Set([
