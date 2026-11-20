@@ -483,8 +483,7 @@ main.app {
 #articulos.section.active { display: block; overflow-y: auto; padding: 30px 16px 100px; -webkit-overflow-scrolling: touch; }
 .articles-block { width: 100%; max-width: 680px; margin: 0 auto; }
 .articles-heading { text-align: center; margin-bottom: 24px; }
-.articles-heading > span { color: #fbac33; font-size: .65rem; font-weight: 800; letter-spacing: .17em; }
-.articles-heading h2 { color: #f2f0eb; font-size: 1.45rem; margin-top: 5px; }
+.articles-heading h2 { color: #f2f0eb; font-size: 1.45rem; margin-top: 0; }
 .articles-heading p { color: #9ba9b8; font-size: .88rem; margin-top: 8px; }
 .article-list-view, .article-reader-view { width: 100%; }
 .article-list-view { display: grid; gap: 12px; }
@@ -589,3 +588,23 @@ main.app {
     font-size: 1.1rem;
   }
 }
+
+
+/* Compartir artículos individuales */
+.article-share {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  margin: 0 0 18px 10px;
+  padding: 9px 15px;
+  border: 1px solid rgba(213,166,74,.4);
+  border-radius: 22px;
+  background: rgba(213,166,74,.1);
+  color: #edc779;
+  font: inherit;
+  font-size: .82rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.article-share:active { transform: scale(.98); }
