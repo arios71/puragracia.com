@@ -58,7 +58,7 @@ module.exports = async function handler(req, res) {
     const image = absoluteUrl(article.cover_image_url || DEFAULT_IMAGE);
     const articleId = article.slug || article.id;
     const canonical = PWA_URL + "?articulo=" + encodeURIComponent(articleId) + "#articulos";
-    const shareUrl = "https://puragracia-radio-api.vercel.app/api/article-share?article=" + encodeURIComponent(articleId);
+    const shareUrl = "https://puragracia-radio-api-nine.vercel.app/api/article-share?article=" + encodeURIComponent(articleId);
 
     const html = `<!doctype html>
 <html lang="es">
