@@ -1,64 +1,61 @@
-# Migración RadioBOSS — rama de lanzamiento
+# Migración RadioBOSS — estado de lanzamiento
 
 ## Estado general
 
-- Rama de trabajo: `migracion-radioboss`.
-- La última comparación con `main` confirmó 31 commits por delante y 0 por detrás antes de esta actualización de notas; consultar GitHub para el conteo vigente.
-- El usuario aprobó la PWA probada en Vercel, incluyendo reproducción, sección de artículos, apertura de artículos y acceso al panel editorial.
-- La implementación de RadioBOSS y el panel editorial se conservan; no alterar la lógica de metadata ya validada.
-- El dominio público todavía no se ha cambiado de proveedor/DNS. La publicación bajo `www.puragracia.com` requiere completar la asignación del dominio en Vercel y actualizar los registros DNS en el proveedor del dominio.
+- La migración `migracion-radioboss` fue integrada en `main` mediante PR #1.
+- Commit de integración: `008fddb1979fd3fcc6c975b4ad41b3238647c375`.
+- El usuario aprobó la PWA probada en Vercel, incluidos reproducción, artículos y panel editorial.
+- El último deployment de `main` quedó `READY` en Vercel.
+- El dominio oficial ya está asociado al proyecto Vercel; falta cambiar los registros DNS externos para que el tráfico deje GitHub Pages y llegue a Vercel.
 
 ## RadioBOSS y API
 
 - Stream: `https://c23.radioboss.fm/stream/296`.
-- Endpoint consumido por la PWA: `https://puragracia-radio-api-nine.vercel.app/api/radioboss-nowplaying`.
-- Proyecto Vercel: `puragracia-radio-api`, vinculado al repositorio `arios71/puragracia.com`.
-- La clave de RadioBOSS se utiliza únicamente en el backend mediante `RADIOBOSS_API_URL` y `RADIOBOSS_API_KEY`; no se expone al navegador.
-- Las variables están configuradas para Production y Preview. No documentar sus valores.
-- Se mantiene el filtro de carpetas de producción: Jingles, Station ID, Stingers y Sweepers.
-- CORS permite explícitamente `https://www.puragracia.com`, `https://puragracia.com`, `https://arios71.github.io` y el origen de preview Vercel utilizado en la prueba.
+- Endpoint de metadata: `https://puragracia-radio-api-nine.vercel.app/api/radioboss-nowplaying`.
+- Proyecto Vercel: `puragracia-radio-api`, vinculado a `arios71/puragracia.com`.
+- Las credenciales RadioBOSS permanecen exclusivamente en backend mediante `RADIOBOSS_API_URL` y `RADIOBOSS_API_KEY`; no se exponen al navegador.
+- Las variables están configuradas para Production y Preview.
+- Se conserva el filtro de producción para Jingles, Station ID, Stingers y Sweepers.
+- No alterar la lógica de metadata validada por el usuario.
 
 ## Artículos y panel editorial
 
-- La sección pública consulta los artículos publicados en Supabase.
-- El botón Compartir permanece dentro del artículo abierto.
-- `api/article-share.js` genera los metadatos Open Graph/Twitter y ahora dirige al artículo en `https://www.puragracia.com/`.
-- El usuario confirmó previamente las vistas previas en WhatsApp y Facebook; la actualización del destino final se preparó para el lanzamiento.
-- El panel editorial se mantiene en `/admin.html`; su etiqueta `noindex,nofollow` se conserva intencionalmente.
-- Supabase y su bucket `articles-images` siguen siendo la fuente de datos y almacenamiento editorial.
+- Los artículos publicados se consultan desde Supabase.
+- El botón Compartir está dentro del artículo abierto.
+- `api/article-share.js` genera Open Graph/Twitter y redirige al artículo en `https://www.puragracia.com/`.
+- El usuario confirmó anteriormente las vistas previas de compartir en WhatsApp y Facebook.
+- El panel editorial está en `/admin.html` y conserva `noindex,nofollow`.
+- Supabase y el bucket `articles-images` siguen siendo la fuente editorial.
 
-## Preparación de lanzamiento aplicada en la rama
+## Cambios finales integrados
 
-- [x] Se retiró `noindex,nofollow` de la página principal para permitir indexación.
+- [x] Se retiró `noindex,nofollow` de la página principal.
 - [x] Se conservó `noindex,nofollow` en el panel editorial.
-- [x] Se cambió el destino de compartir artículos a `https://www.puragracia.com/`.
-- [x] Se incrementó el caché del Service Worker de `pgr-v58` a `pgr-v59` para que las instalaciones reciban los recursos actualizados.
-- [x] Se conservó el canonical de la página principal en `https://www.puragracia.com/`.
-- [x] Se verificó que los archivos estáticos precargados, iconos, JSON de programación, catálogo de 30 programas y carátulas existen y son válidos.
-- [x] Se verificó que el último deployment de la rama quedó `READY`.
+- [x] Compartir artículos apunta a `https://www.puragracia.com/`.
+- [x] Service Worker actualizado a `pgr-v59`.
+- [x] Canonical de la página principal: `https://www.puragracia.com/`.
+- [x] Recursos, iconos, JSON de programación, catálogo de 30 programas y carátulas verificados.
+- [x] PR #1 integrado en `main`.
+- [x] Deployment de producción de `main` en Vercel: `READY`.
 
-## Pendiente de infraestructura del dominio
+## Vercel y dominio oficial
 
-- [ ] Añadir `www.puragracia.com` al proyecto Vercel de la PWA y obtener la configuración DNS requerida.
-- [ ] Configurar el dominio raíz `puragracia.com` para redirigir a `www.puragracia.com`, si el panel de dominio lo permite.
-- [ ] Actualizar los registros DNS en el proveedor donde se administra el dominio.
-- [ ] Verificar HTTPS, redirección y carga de la PWA una vez propagado DNS.
-- [ ] Confirmar que la rama de producción del proyecto Vercel quede alineada con `main` después de la integración.
+- [x] Proyecto Vercel: `puragracia-radio-api`.
+- [x] `www.puragracia.com` añadido al proyecto y verificado por Vercel.
+- [x] `puragracia.com` añadido como redirección 308 a `www.puragracia.com`.
+- [ ] DNS externo pendiente: la configuración actual todavía apunta a GitHub Pages.
+- [ ] En DNS, sustituir CNAME de `www` (`arios71.github.io`) por `52e112caba599478.vercel-dns-017.com`.
+- [ ] En el apex `@`, sustituir los A de GitHub Pages (`185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`) por `216.198.79.1` y `64.29.17.1`.
+- [ ] En Vercel Settings > Environments > Production > Branch Tracking, cambiar la rama de producción a `main` para que futuras actualizaciones de `main` se desplieguen automáticamente a producción.
+- [ ] Tras DNS: verificar HTTPS, redirección apex/www, reproducción, metadata, artículos, compartir y PWA instalada en `www.puragracia.com`.
 
-## Servicios externos
+## Servicios externos aplazados
 
-- Las credenciales Partner ID/Partner Key de TuneIn ya fueron introducidas en RadioBOSS. La recepción de metadata por TuneIn queda como verificación externa separada; no se deben volver a introducir credenciales.
-- La posible integración HTTP GET/POST directa desde Radio Voice Cloud queda aplazada hasta después de la migración.
+- Las credenciales Partner ID/Partner Key de TuneIn ya están introducidas en RadioBOSS. La recepción de metadata por TuneIn queda como comprobación externa separada.
+- La posible integración HTTP GET/POST directa desde Radio Voice Cloud se evaluará después de la migración.
 
-## Cierre
+## Protección y rollback
 
-1. Validación del código y preparación de lanzamiento: completada.
-2. Prueba funcional de la PWA en el enlace Vercel, incluida la sección de artículos y el panel editorial: aprobada por el usuario.
-3. Ajustes finales de lanzamiento en la rama: completados.
-4. Integración de `migracion-radioboss` en `main`: autorizada por el usuario y pendiente de ejecutarse.
-
-## Protección
-
-- No se han modificado los archivos de `main` hasta la integración.
-- El archivo `CNAME` conserva `www.puragracia.com`; por sí solo no cambia el DNS.
-- No modificar la lógica de metadata de RadioBOSS que ya funciona.
+- El deployment aprobado de Vercel continúa disponible en el historial del proyecto.
+- El archivo `CNAME` de GitHub se conserva para facilitar rollback si fuera necesario; el registro DNS determina qué plataforma recibe el tráfico.
+- No cambiar la configuración de RadioBOSS que ya funciona correctamente.
