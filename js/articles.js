@@ -6,6 +6,7 @@
 
   const staticCatalogUrl = './data/articles.json';
   let articles = [];
+  let activeArticleHistoryKey = null;
 
   const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
@@ -23,9 +24,14 @@
 
   function updateArticleUrl(article, method = 'pushState') {
     const url = new URL(window.location.href);
-    if (article) url.searchParams.set('articulo', article.slug || article.id);
-    else url.searchParams.delete('articulo');
-    window.history[method]({ article: article ? (article.slug || article.id) : null }, '', url);
+    if (article) {
+      activeArticleHistoryKey = article.slug || article.id;
+      url.searchParams.set('articulo', activeArticleHistoryKey);
+    } else {
+      activeArticleHistoryKey = null;
+      url.searchParams.delete('articulo');
+    }
+    window.history[method]({ article: activeArticleHistoryKey }, '', url);
   }
 
   function activateArticlesSection() {
@@ -158,10 +164,19 @@
     if (button) openArticle(button.dataset.articleId);
   });
 
+  // Solo reaccionar a movimientos del historial que pertenecen a un artículo.
+  // Los cambios de navegación entre secciones de la PWA no deben activar Artículos.
   window.addEventListener('popstate', () => {
     const id = new URL(window.location.href).searchParams.get('articulo');
-    if (id) openArticle(id, false);
-    else showList(false);
+    if (id) {
+      activeArticleHistoryKey = id;
+      openArticle(id, false);
+      return;
+    }
+    if (activeArticleHistoryKey) {
+      activeArticleHistoryKey = null;
+      showList(false);
+    }
   });
 
   async function loadArticles() {
@@ -198,6 +213,7 @@
     renderList();
     const requestedArticle = new URL(window.location.href).searchParams.get('articulo');
     if (requestedArticle) {
+      activeArticleHistoryKey = requestedArticle;
       activateArticlesSection();
       openArticle(requestedArticle, false);
     }
