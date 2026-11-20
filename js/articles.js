@@ -18,7 +18,7 @@
 
   function articleUrl(article) {
     const key = article.slug || article.id;
-    return 'https://puragracia-radio-api.vercel.app/api/article-share?article=' + encodeURIComponent(key);
+    return 'https://puragracia-radio-api-nine.vercel.app/api/article-share?article=' + encodeURIComponent(key);
   }
 
   function updateArticleUrl(article, method = 'pushState') {
