@@ -12,59 +12,27 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-    <title>Pura Gracia Radio (WRPG-DB) | Radio Cristiana 24 Horas</title>
+    <title>WRPG-DB Pura Gracia | Radio Cristiana Reformada</title>
 
     <meta name="description" content="Pura Gracia Radio (WRPG-DB) transmite sermones en formato de predicación expositiva, programas de conversación con enseñanza cristiana, y música bíblica que expone el evangelio de Cristo, 24 horas del día." />
 
     <meta name="theme-color" content="#121212" />
-
     <link rel="canonical" href="https://puragracia.com/" />
+<link rel="manifest" href="./manifest.json" />
 
-    <link rel="manifest" href="/manifest.json" />
-
-    <link rel="apple-touch-icon" href="/assets/icons/logo-192.png" />
+    <link rel="apple-touch-icon" href="./assets/icons/logo-192.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/logo-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/logo-16.png">
-
-    <!-- Open Graph -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Pura Gracia Radio" />
-    <meta property="og:description" content="Pura Gracia Radio transmite predicaciones expositivas, enseñanza cristiana y música bíblica que expone el evangelio de Cristo." />
-    <meta property="og:url" content="https://puragracia.com/" />
-    <meta property="og:image" content="https://puragracia.com/assets/icons/logo-512.png" />
-    <meta property="og:locale" content="es_PR" />
-
-    <!-- Twitter / X -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Pura Gracia Radio" />
-    <meta name="twitter:description" content="Pura Gracia transmite predicaciones expositivas, enseñanza cristiana y música bíblica." />
-    <meta name="twitter:image" content="https://puragracia.com/assets/icons/logo-512.png" />
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Datos estructurados -->
-    <script type="application/ld+json">
-    {
-      "@context":"https://schema.org",
-      "@type":"RadioStation",
-      "name":"Pura Gracia Radio",
-      "alternateName":"WRPG-DB",
-      "url":"https://puragracia.com/",
-      "logo":"https://puragracia.com/assets/icons/logo-512.png",
-      "description":"Radio cristiana reformada con predicación bíblica, música y enseñanza centrada en el evangelio.",
-      "publisher":{
-         "@type":"Organization",
-         "name":"Iglesia Bíblica Gracia Verdadera"
-      }
-    }
-    </script>
-
-    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/styles.css?v=20261120-2" />
 </head>
 <body>
 
     <header class="logo-header">
-        <img src="/assets/branding/logo-horizontal.webp" alt="Pura Gracia Radio" />
+        <img src="./assets/branding/logo-horizontal.webp" alt="Pura Gracia Radio" />
         
         <!-- Botón discreto de instalación -->
         <button id="installTrigger" aria-label="Instalar App" style="display:none;">
@@ -120,6 +88,22 @@
     <div id="sermons-archive-list" style="max-width: 600px; margin: 0 auto; width: 100%; box-sizing: border-box; display: flex; flex-direction: column;"></div>
 </section>
 
+
+
+        <section id="articulos" class="section">
+            <div class="articles-block">
+                <div class="articles-heading">
+                    <span>LECTURAS</span>
+                    <h2>Artículos</h2>
+                    <p>Reflexiones y contenido para edificar tu fe.</p>
+                </div>
+                <div id="articleListView" class="article-list-view">
+                    <p class="article-loading">Cargando artículos…</p>
+                </div>
+                <div id="articleReaderView" class="article-reader-view" hidden></div>
+            </div>
+        </section>
+
         <section id="contacto" class="section">
     <div class="contact-block">
         <div class="contact-card">
@@ -172,22 +156,30 @@
     <i class="fas fa-microphone-lines"></i>
     <span>Sermones</span>
   </a>
+  <a href="#" data-section="articulos" class="menu-item">
+    <i class="fas fa-book-open"></i>
+    <span>Artículos</span>
+  </a>
   <a href="#" data-section="contacto" class="menu-item">
     <i class="fas fa-envelope"></i>
     <span>Contacto</span>
   </a>
 </nav>
 
-    <script src="/js/schedule.js"></script>
-    <script src="/js/radio.js"></script>
-    <script src="/js/menu.js"></script>
-    <script src="/js/nowplaying.js"></script>
-    <script src="/js/sermones.js"></script>
+    <script src="./js/schedule.js"></script>
+    <script src="./js/radio.js"></script>
+    <script src="./js/menu.js"></script>
+    <script src="./js/nowplaying.js?v=20261107-1"></script>
+    <script src="./js/sermones.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
+    <script src="./js/supabase-config.js"></script>
+    <script src="./js/articles.js?v=20261120-1"></script>
 
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js')
+          navigator.serviceWorker.register('./sw.js', { scope: './' })
             .catch(err => console.log('PWA: Error registrando SW', err));
         });
       }

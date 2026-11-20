@@ -3,6 +3,10 @@
 // =========================
 
 const scheduleContainer = document.getElementById("scheduleContainer");
+const SCHEDULE_APP_BASE = new URL("./", document.baseURI);
+const resolveScheduleAsset = path => /^https?:\/\//i.test(path || "")
+  ? path
+  : new URL(String(path || "").replace(/^\/+/, ""), SCHEDULE_APP_BASE).href;
 
 let currentLiveCard = null;
 let lastFocusedCard = null;
@@ -18,13 +22,13 @@ let programsMap = {};
 
 async function loadPrograms() {
   try {
-    const res = await fetch('/data/programs.json');
+    const res = await fetch(new URL('data/programs.json', SCHEDULE_APP_BASE));
     const data = await res.json();
 
     programsMap = {};
 
     data.programs.forEach(p => {
-      programsMap[p.id] = p;
+      programsMap[p.id] = { ...p, artwork: p.artwork ? resolveScheduleAsset(p.artwork) : "" };
     });
 
   } catch (err) {
@@ -181,12 +185,9 @@ function focusCard(card) {
 
   const section = document.getElementById('programacion');
 
-  // Protección: Si el contenedor no tiene altura, reintentamos en 500ms
-  if (!section || section.offsetHeight === 0) {
-    console.log("DEBUG: Contenedor no listo, reintentando...");
-    setTimeout(() => focusCard(card), 500);
-    return;
-  }
+  // La sección puede estar oculta mientras el usuario está en Inicio.
+  // No intentamos desplazarla; el enfoque se ejecuta al abrir Programación.
+  if (!section || section.offsetHeight === 0) return;
 
   console.log("DEBUG: Intentando hacer scroll a:", card.innerText);
 
@@ -230,7 +231,7 @@ function runFocusEngine(force = false) {
 
 async function loadAndRenderSchedule() {
   try {
-    const res = await fetch('/data/schedule.json');
+    const res = await fetch(new URL('data/schedule.json', SCHEDULE_APP_BASE));
     const data = await res.json();
 
     renderSchedule(data);
@@ -365,6 +366,21 @@ async function init() {
 }
 
 init();
+
+// Al abrir Programación, ejecutamos el enfoque cuando la sección ya es visible.
+const programacionSection = document.getElementById("programacion");
+if (programacionSection) {
+  const programacionObserver = new MutationObserver(() => {
+    if (programacionSection.classList.contains("active")) {
+      updateLiveStatus();
+      runFocusEngine(true);
+    }
+  });
+  programacionObserver.observe(programacionSection, {
+    attributes: true,
+    attributeFilter: ["class"]
+  });
+}
 
 ["scroll", "touchstart", "wheel"].forEach(evt => {
   window.addEventListener(evt, () => {
