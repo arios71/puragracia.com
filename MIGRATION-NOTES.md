@@ -3,7 +3,7 @@
 ## Protección del sitio público
 
 - El trabajo de migración se mantiene en `migracion-radioboss`.
-- Comparación verificada con `main`: 24 commits por delante y 0 por detrás.
+- Comparación verificada con `main`: 25 commits por delante y 0 por detrás.
 - `main` y el sitio público no se han modificado como parte de esta preparación.
 - No integrar, cambiar DNS ni publicar en `www.puragracia.com` sin autorización expresa.
 - `CNAME` contiene `www.puragracia.com`; es la configuración prevista para el destino final, no una autorización para publicar.
@@ -23,7 +23,7 @@
 
 - Proyecto: `puragracia-radio-api`.
 - Dominio estable: `https://puragracia-radio-api-nine.vercel.app`.
-- Deployment revisado: READY, rama `migracion-radioboss`, commit `9d8e0f33541a02f68d76c2b6dabe2075ca7aa1a8`.
+- Deployment más reciente revisado: READY, rama `migracion-radioboss`, commit `20a1b4ce281b57709ec3de1854ef6d389ce710a1`.
 - Este proyecto aloja la API; no es el hosting del sitio público ni autoriza cambios en `main`.
 
 ## Artículos y compartir
