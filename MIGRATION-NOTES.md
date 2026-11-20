@@ -3,7 +3,7 @@
 ## Protección del sitio público
 
 - El trabajo de migración se mantiene en `migracion-radioboss`.
-- Comparación verificada con `main`: 25 commits por delante y 0 por detrás.
+- La comparación verificada con `main` confirma 0 commits por detrás; consultar GitHub para el número actual de commits por delante.
 - `main` y el sitio público no se han modificado como parte de esta preparación.
 - No integrar, cambiar DNS ni publicar en `www.puragracia.com` sin autorización expresa.
 - `CNAME` contiene `www.puragracia.com`; es la configuración prevista para el destino final, no una autorización para publicar.
@@ -23,7 +23,7 @@
 
 - Proyecto: `puragracia-radio-api`.
 - Dominio estable: `https://puragracia-radio-api-nine.vercel.app`.
-- Deployment más reciente revisado: READY, rama `migracion-radioboss`, commit `20a1b4ce281b57709ec3de1854ef6d389ce710a1`.
+- Los commits de esta rama activan despliegues automáticos de la API. Verificar que el último deployment esté READY antes de la prueba final.
 - Este proyecto aloja la API; no es el hosting del sitio público ni autoriza cambios en `main`.
 
 ## Artículos y compartir
@@ -43,7 +43,9 @@
 - [x] Deployment de la API verificado como READY.
 - [x] CORS habilitado para el origen GitHub Pages y los dominios oficiales.
 - [x] Vista previa al compartir artículos confirmada por el usuario en WhatsApp y Facebook.
-- [ ] Prueba integral de esta rama: reproducción, metadata/carátulas, navegación, programación, sermones, artículos y compartir.
+- [x] Integridad de recursos: los 22 archivos estáticos precargados por el Service Worker existen en el repositorio; los iconos del manifest también existen.
+- [x] Datos de programación: JSON de horario y catálogo válidos; los 30 programas usados por el horario existen en el catálogo y sus carátulas están presentes.
+- [ ] Prueba integral en navegador de esta rama: reproducción, metadata/carátulas, navegación, programación, sermones, artículos y compartir.
 - [ ] Verificación del panel editorial: acceso, roles, guardar, publicar, despublicar, imágenes y recuperación local.
 - [ ] Verificación de PWA instalada y actualización del Service Worker en el dispositivo de prueba.
 - [ ] Confirmar envío de metadata de RadioBOSS a TuneIn.
