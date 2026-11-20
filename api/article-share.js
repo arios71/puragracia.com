@@ -1,6 +1,6 @@
 const SUPABASE_URL = "https://kcrehxxnsfszfcikofsw.supabase.co";
 const SUPABASE_KEY = "sb_publishable_Osi7AyLU3svYgUomDTEfpw_h52xCrgr";
-const PWA_URL = "https://arios71.github.io/puragracia-radio-preview/";
+const PWA_URL = "https://www.puragracia.com/";
 const DEFAULT_IMAGE = "https://www.puragracia.com/assets/icons/logo-512.png";
 
 function escapeHtml(value) {
