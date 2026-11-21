@@ -82,7 +82,18 @@ module.exports = async function handler(req, res) {
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return send(res, 400, { ok: false, error: "Introduce un correo electrónico válido." });
       if (!ALLOWED_ROLES.has(role)) return send(res, 400, { ok: false, error: "El rol seleccionado no es válido." });
 
-      const redirectTo = "https://www.puragracia.com/admin.html";
+      let redirectTo = "https://www.puragracia.com/admin.html";
+      if (body.redirectTo) {
+        try {
+          const requested = new URL(String(body.redirectTo));
+          if (!allowedOrigin(requested.origin) || requested.pathname !== "/admin.html" || requested.search || requested.hash) {
+            return send(res, 400, { ok: false, error: "La dirección de retorno no está autorizada." });
+          }
+          redirectTo = requested.origin + "/admin.html";
+        } catch (_) {
+          return send(res, 400, { ok: false, error: "La dirección de retorno no es válida." });
+        }
+      }
       const inviteResponse = await supabaseFetch(
         "/auth/v1/invite?redirect_to=" + encodeURIComponent(redirectTo),
         { method: "POST", body: JSON.stringify({ email, data: { invited_role: role } }) },
