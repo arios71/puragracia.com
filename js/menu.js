@@ -8,6 +8,9 @@ menuLinks.forEach(link => {
 
     const target = link.getAttribute('data-section');
 
+    // Avisar al módulo de artículos antes de cambiar de sección.
+    window.dispatchEvent(new Event('pgr:section-navigation'));
+
     // Ocultar todas las secciones
     document.querySelectorAll('.section').forEach(sec => {
       sec.classList.remove('active');
