@@ -108,8 +108,12 @@
   }
 
   async function boot() {
+    const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+    const inviteLink = hashParams.get('type') === 'invite' || new URLSearchParams(window.location.search).get('type') === 'invite';
     const { data: { session } } = await client.auth.getSession();
-    if (session) await showEditor(session.user);
+    if (session && inviteLink) showPasswordSetup(session.user);
+    else if (session) await showEditor(session.user);
+    $('setupPasswordForm').addEventListener('submit', handlePasswordSetup);
     $('loginForm').addEventListener('submit', async event => {
       event.preventDefault();
       $('loginMessage').textContent = 'Verificando acceso…';
@@ -120,9 +124,46 @@
     $('signOutBtn').addEventListener('click', async () => { await client.auth.signOut(); location.reload(); });
     client.auth.onAuthStateChange(async (event, session) => {
       if (event === 'SIGNED_OUT') location.reload();
-      if (event === 'SIGNED_IN' && session && !currentUser) await showEditor(session.user);
+      if (event === 'SIGNED_IN' && session && !currentUser) {
+        if (inviteLink) showPasswordSetup(session.user);
+        else await showEditor(session.user);
+      }
     });
     bindEditor();
+  }
+
+  function showPasswordSetup(user) {
+    $('loginPanel').hidden = true;
+    $('editorPanel').hidden = true;
+    $('setupPasswordPanel').hidden = false;
+    $('signOutBtn').hidden = true;
+    $('sessionEmail').textContent = user.email || '';
+    $('setupPasswordMessage').textContent = '';
+  }
+
+  async function handlePasswordSetup(event) {
+    event.preventDefault();
+    const password = $('newUserPassword').value;
+    const confirmation = $('confirmUserPassword').value;
+    if (password.length < 10) {
+      $('setupPasswordMessage').textContent = 'La contraseña debe tener al menos 10 caracteres.';
+      return;
+    }
+    if (password !== confirmation) {
+      $('setupPasswordMessage').textContent = 'Las contraseñas no coinciden.';
+      return;
+    }
+    $('setupPasswordMessage').textContent = 'Guardando contraseña…';
+    const { data, error } = await client.auth.updateUser({ password });
+    if (error) {
+      $('setupPasswordMessage').textContent = error.message || 'No se pudo guardar la contraseña.';
+      return;
+    }
+    window.history.replaceState({}, document.title, window.location.pathname);
+    $('setupPasswordPanel').hidden = true;
+    $('newUserPassword').value = '';
+    $('confirmUserPassword').value = '';
+    await showEditor(data.user);
   }
 
   async function showEditor(user) {
@@ -348,7 +389,7 @@
     $('inviteUserBtn').disabled = true;
     $('inviteUserMessage').textContent = 'Enviando invitación…';
     try {
-      await editorialApiRequest({ action: 'invite', email, role });
+      await editorialApiRequest({ action: 'invite', email, role, redirectTo: window.location.origin + '/admin.html' });
       $('inviteUserMessage').textContent = 'Invitación enviada a ' + email + '. La persona podrá establecer su propia contraseña desde el correo.';
       $('inviteUserEmail').value = '';
       await loadUsers();
