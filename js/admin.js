@@ -164,9 +164,11 @@
     const { data, error } = await client.from('articles').select('*').eq('id',id).single();
     if (error || !data) { message('No fue posible abrir el artículo.',true); return; }
     const backupKey = 'pgr-editor-recovery:' + currentUser.id + ':' + data.id;
+    currentArticleStatus = data.status || 'draft';
+    currentArticleOwnerId = data.created_by || null;
     const recovered = recoverLocalBackup(backupKey);
-    if (recovered) { setReadOnly(currentRole === 'publisher' || (currentRole === 'editor' && data.status === 'published')); return; }
-    $('articleId').value = data.id;
+    if (!recovered) {
+      $('articleId').value = data.id;
     $('articleTitle').value = data.title || '';
     $('articleAuthor').value = data.author || '';
     $('articleCategory').value = data.category || '';
@@ -179,8 +181,7 @@
     $('coverPreview').hidden = !coverUrl;
     $('removeCoverBtn').hidden = !coverUrl;
     $('coverAlt').value = data.cover_image_alt || '';
-    currentArticleStatus = data.status || 'draft';
-    currentArticleOwnerId = data.created_by || null;
+    }
     const readOnly = currentRole === 'writer' && (currentArticleOwnerId !== currentUser.id || currentArticleStatus === 'published');
     setReadOnly(readOnly);
     $('publishBtn').hidden = currentRole === 'writer';
@@ -276,9 +277,9 @@
     currentArticleStatus = payload.status;
     currentArticleOwnerId = currentArticleOwnerId || currentUser.id;
     try { if (previousBackupKey) localStorage.removeItem(previousBackupKey); } catch (_) {}
-    $('saveStatus').textContent = 'Borrador guardado en Supabase';
+    $('saveStatus').textContent = 'Cambios guardados en Supabase';
     clearLocalBackup();
-    message('Borrador guardado correctamente.');
+    message('Cambios guardados correctamente.');
     await loadArticles();
     return result.data.id;
   }
@@ -289,7 +290,7 @@
     if (!id) {
       if (currentRole === 'writer') throw new Error('El rol Escritor no tiene permiso para publicar.');
       id = await saveDraft();
-    } else if (currentRole !== 'publisher') {
+    } else {
       id = await saveDraft();
     }
     const { error } = await client.rpc('publish_article',{article_id:id});
