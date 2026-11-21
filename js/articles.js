@@ -164,6 +164,20 @@
     if (button) openArticle(button.dataset.articleId);
   });
 
+  // Al navegar desde el menú, cerrar la vista de lectura sin activar Artículos.
+  window.addEventListener('pgr:section-navigation', () => {
+    activeArticleHistoryKey = null;
+    readerView.hidden = true;
+    readerView.innerHTML = '';
+    listView.hidden = false;
+
+    const url = new URL(window.location.href);
+    if (url.searchParams.has('articulo')) {
+      url.searchParams.delete('articulo');
+      window.history.replaceState(window.history.state, '', url);
+    }
+  });
+
   // Solo reaccionar a movimientos del historial que pertenecen a un artículo.
   // Los cambios de navegación entre secciones de la PWA no deben activar Artículos.
   window.addEventListener('popstate', () => {
