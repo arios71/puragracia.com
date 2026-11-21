@@ -49,7 +49,7 @@ END
 $$;
 
 -- Función segura para consultar el rol actual desde las políticas RLS.
-CREATE OR REPLACE FUNCTION public.current_app_role()
+CREATE OR REPLACE FUNCTION public.pgr_current_app_role()
 RETURNS text
 LANGUAGE sql
 STABLE
@@ -62,8 +62,8 @@ AS $$
   LIMIT 1
 $$;
 
-REVOKE ALL ON FUNCTION public.current_app_role() FROM PUBLIC, anon;
-GRANT EXECUTE ON FUNCTION public.current_app_role() TO authenticated;
+REVOKE ALL ON FUNCTION public.pgr_current_app_role() FROM PUBLIC, anon;
+GRANT EXECUTE ON FUNCTION public.pgr_current_app_role() TO authenticated;
 
 -- Garantizar que cualquier perfil creado automáticamente por Auth comience como Escritor.
 CREATE OR REPLACE FUNCTION public.pgr_set_default_writer_profile()
@@ -112,7 +112,7 @@ CREATE POLICY profiles_read_self_or_admin
 ON public.profiles
 FOR SELECT
 TO authenticated
-USING (id = auth.uid() OR public.current_app_role() = 'admin');
+USING (id = auth.uid() OR public.pgr_current_app_role() = 'admin');
 
 -- El público solo puede leer artículos publicados.
 CREATE POLICY articles_public_read_published
@@ -127,7 +127,7 @@ ON public.articles
 FOR SELECT
 TO authenticated
 USING (
-  public.current_app_role() IN ('admin', 'editor')
+  public.pgr_current_app_role() IN ('admin', 'editor')
   OR created_by = auth.uid()
 );
 
@@ -137,9 +137,9 @@ ON public.articles
 FOR INSERT
 TO authenticated
 WITH CHECK (
-  public.current_app_role() IN ('admin', 'editor')
+  public.pgr_current_app_role() IN ('admin', 'editor')
   OR (
-    public.current_app_role() = 'writer'
+    public.pgr_current_app_role() = 'writer'
     AND created_by = auth.uid()
     AND status::text = 'draft'
   )
@@ -152,17 +152,17 @@ ON public.articles
 FOR UPDATE
 TO authenticated
 USING (
-  public.current_app_role() IN ('admin', 'editor')
+  public.pgr_current_app_role() IN ('admin', 'editor')
   OR (
-    public.current_app_role() = 'writer'
+    public.pgr_current_app_role() = 'writer'
     AND created_by = auth.uid()
     AND status::text = 'draft'
   )
 )
 WITH CHECK (
-  public.current_app_role() IN ('admin', 'editor')
+  public.pgr_current_app_role() IN ('admin', 'editor')
   OR (
-    public.current_app_role() = 'writer'
+    public.pgr_current_app_role() = 'writer'
     AND created_by = auth.uid()
     AND status::text = 'draft'
   )
@@ -173,7 +173,7 @@ CREATE POLICY articles_delete_admin_only
 ON public.articles
 FOR DELETE
 TO authenticated
-USING (public.current_app_role() = 'admin');
+USING (public.pgr_current_app_role() = 'admin');
 
 -- Publicar y despublicar queda reservado a Administradores y Editores.
 CREATE OR REPLACE FUNCTION public.publish_article(article_id uuid)
@@ -183,7 +183,7 @@ SECURITY DEFINER
 SET search_path = public
 AS $$
 BEGIN
-  IF public.current_app_role() NOT IN ('admin', 'editor') THEN
+  IF public.pgr_current_app_role() NOT IN ('admin', 'editor') THEN
     RAISE EXCEPTION 'No tienes permiso para publicar artículos.';
   END IF;
 
@@ -205,7 +205,7 @@ SECURITY DEFINER
 SET search_path = public
 AS $$
 BEGIN
-  IF public.current_app_role() NOT IN ('admin', 'editor') THEN
+  IF public.pgr_current_app_role() NOT IN ('admin', 'editor') THEN
     RAISE EXCEPTION 'No tienes permiso para despublicar artículos.';
   END IF;
 
@@ -227,7 +227,7 @@ SECURITY DEFINER
 SET search_path = public
 AS $$
 BEGIN
-  IF public.current_app_role() <> 'admin' THEN
+  IF public.pgr_current_app_role() <> 'admin' THEN
     RAISE EXCEPTION 'Solo un Administrador puede eliminar artículos.';
   END IF;
 
