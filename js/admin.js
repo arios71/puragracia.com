@@ -1,7 +1,7 @@
 (() => {
   const $ = id => document.getElementById(id);
   const client = window.supabase.createClient(window.PGR_SUPABASE_URL, window.PGR_SUPABASE_KEY);
-  let currentUser = null, currentRole = null, articles = [], coverUrl = null, coverPath = null;
+  let currentUser = null, currentRole = null, articles = [], coverUrl = null, coverPath = null, currentArticleStatus = null, currentArticleOwnerId = null;
   const versions = {
     RVR1960: { id: '149', code: 'RVR1960', label: 'Reina-Valera 1960' },
     NVI: { id: '128', code: 'NVI', label: 'Nueva Versión Internacional' },
@@ -88,7 +88,7 @@
     return true;
   }
   function saveLocalBackup() {
-    if (!currentUser || $('editorPanel').hidden || currentRole === 'publisher') return;
+    if (!currentUser || $('editorPanel').hidden) return;
     const data = editorSnapshot();
     const meaningful = data.title.trim() || data.content.trim() || data.excerpt.trim();
     if (!meaningful) return;
@@ -139,7 +139,7 @@
     $('editorPanel').hidden = false;
     $('signOutBtn').hidden = false;
     $('userManagement').hidden = currentRole !== 'admin';
-    $('newArticleBtn').hidden = currentRole === 'publisher';
+    $('newArticleBtn').hidden = false;
     await loadArticles();
     if (currentRole === 'admin') await loadUsers();
     resetForm();
@@ -179,12 +179,15 @@
     $('coverPreview').hidden = !coverUrl;
     $('removeCoverBtn').hidden = !coverUrl;
     $('coverAlt').value = data.cover_image_alt || '';
-    const readOnly = currentRole === 'publisher' || (currentRole === 'editor' && data.status === 'published');
+    currentArticleStatus = data.status || 'draft';
+    currentArticleOwnerId = data.created_by || null;
+    const readOnly = currentRole === 'writer' && (currentArticleOwnerId !== currentUser.id || currentArticleStatus === 'published');
     setReadOnly(readOnly);
-    $('publishBtn').hidden = currentRole === 'editor' || (data.status === 'published' && currentRole === 'publisher');
-    $('unpublishBtn').hidden = data.status !== 'published' || !['admin','publisher'].includes(currentRole);
+    $('publishBtn').hidden = currentRole === 'writer';
+    $('unpublishBtn').hidden = currentArticleStatus !== 'published' || !['admin','editor'].includes(currentRole);
     $('deleteArticleBtn').hidden = currentRole !== 'admin';
-    $('saveDraftBtn').hidden = currentRole === 'publisher';
+    $('saveDraftBtn').hidden = readOnly;
+    $('saveDraftBtn').innerHTML = currentArticleStatus === 'published' ? '<i class="fa-regular fa-floppy-disk"></i> Guardar cambios' : '<i class="fa-regular fa-floppy-disk"></i> Guardar borrador';
     $('saveStatus').textContent = statusText(data.status) + ' · ' + (data.updated_at ? new Date(data.updated_at).toLocaleString('es-PR') : '');
     document.querySelectorAll('.admin-article-item').forEach(b => b.classList.toggle('active',b.dataset.id===id));
     message('');
@@ -205,9 +208,12 @@
     $('articleContent').innerHTML = '';
     coverUrl = null; coverPath = null;
     $('coverPreview').hidden = true; $('removeCoverBtn').hidden = true;
-    setReadOnly(currentRole === 'publisher');
-    $('saveDraftBtn').hidden = currentRole === 'publisher';
-    $('publishBtn').hidden = currentRole === 'editor';
+    currentArticleStatus = null;
+    currentArticleOwnerId = null;
+    setReadOnly(false);
+    $('saveDraftBtn').hidden = false;
+    $('saveDraftBtn').innerHTML = '<i class="fa-regular fa-floppy-disk"></i> Guardar borrador';
+    $('publishBtn').hidden = currentRole === 'writer';
     $('unpublishBtn').hidden = true;
     $('deleteArticleBtn').hidden = true;
     $('saveStatus').textContent = 'Nuevo artículo';
@@ -239,7 +245,7 @@
 
   async function saveDraft() {
     const previousBackupKey = localKey();
-    if (currentRole === 'publisher') throw new Error('Tu rol permite publicar, pero no editar el contenido.');
+    if (currentRole === 'writer' && currentArticleOwnerId && (currentArticleOwnerId !== currentUser.id || currentArticleStatus === 'published')) throw new Error('Solo puedes editar tus propios borradores.');
     const title = $('articleTitle').value.trim();
     if (!title) throw new Error('Escribe el título del artículo.');
     const content = DOMPurify.sanitize($('articleContent').innerHTML,{USE_PROFILES:{html:true},ADD_ATTR:['target','rel']});
@@ -252,7 +258,7 @@
       article_date: $('articleDate').value || localDate(),
       excerpt: $('articleExcerpt').value.trim() || null,
       content_html: content,
-      status: 'draft',
+      status: currentArticleStatus === 'published' && currentRole !== 'writer' ? 'published' : 'draft',
       cover_image_url: coverUrl,
       cover_image_alt: $('coverAlt').value.trim() || null,
       updated_at: new Date().toISOString()
@@ -267,6 +273,8 @@
     }
     if (result.error) throw result.error;
     $('articleId').value = result.data.id;
+    currentArticleStatus = payload.status;
+    currentArticleOwnerId = currentArticleOwnerId || currentUser.id;
     try { if (previousBackupKey) localStorage.removeItem(previousBackupKey); } catch (_) {}
     $('saveStatus').textContent = 'Borrador guardado en Supabase';
     clearLocalBackup();
@@ -276,9 +284,10 @@
   }
 
   async function publishArticle() {
+    if (currentRole === 'writer') throw new Error('El rol Escritor no tiene permiso para publicar.');
     let id = $('articleId').value;
     if (!id) {
-      if (currentRole === 'publisher') throw new Error('Selecciona primero un borrador para publicarlo.');
+      if (currentRole === 'writer') throw new Error('El rol Escritor no tiene permiso para publicar.');
       id = await saveDraft();
     } else if (currentRole !== 'publisher') {
       id = await saveDraft();
@@ -295,6 +304,7 @@
     const id = $('articleId').value;
     if (!id) throw new Error('Selecciona primero un artículo publicado.');
     if (!confirm('¿Despublicar este artículo? Dejará de aparecer en la PWA, pero seguirá guardado como borrador en Supabase.')) return;
+    if (!['admin','editor'].includes(currentRole)) throw new Error('No tienes permiso para despublicar artículos.');
     const { error } = await client.rpc('unpublish_article', { article_id: id });
     if (error) throw error;
     clearLocalBackup();
@@ -317,24 +327,67 @@
     await loadArticles();
   }
 
+  async function editorialApiRequest(payload) {
+    const { data: { session } } = await client.auth.getSession();
+    if (!session?.access_token) throw new Error('La sesión expiró. Vuelve a entrar al panel.');
+    const response = await fetch('/api/editorial-users', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.access_token },
+      body: JSON.stringify(payload)
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(result.error || 'No se pudo completar la operación.');
+    return result;
+  }
+
+  async function inviteEditorialUser(event) {
+    event.preventDefault();
+    const email = $('inviteUserEmail').value.trim().toLowerCase();
+    const role = $('inviteUserRole').value;
+    $('inviteUserBtn').disabled = true;
+    $('inviteUserMessage').textContent = 'Enviando invitación…';
+    try {
+      await editorialApiRequest({ action: 'invite', email, role });
+      $('inviteUserMessage').textContent = 'Invitación enviada a ' + email + '. La persona podrá establecer su propia contraseña desde el correo.';
+      $('inviteUserEmail').value = '';
+      await loadUsers();
+    } catch (error) {
+      $('inviteUserMessage').textContent = error.message || 'No se pudo enviar la invitación.';
+    } finally {
+      $('inviteUserBtn').disabled = false;
+    }
+  }
+
+  async function changeEditorialRole(select) {
+    const userId = select.dataset.userRole;
+    const role = select.value;
+    if (userId === currentUser.id && role !== 'admin') {
+      select.value = 'admin';
+      message('No puedes quitarte el rol de administrador desde tu propia sesión.', true);
+      return;
+    }
+    select.disabled = true;
+    try {
+      await editorialApiRequest({ action: 'set-role', userId, role });
+      message('Permiso actualizado correctamente.');
+      await loadUsers();
+    } catch (error) {
+      message(error.message || 'No se pudo cambiar el rol.', true);
+      await loadUsers();
+    }
+  }
+
   async function loadUsers() {
     const { data, error } = await client.from('profiles').select('id,email,role').order('email');
     if (error) { $('adminUserList').innerHTML = '<p class="muted small">No se pudieron cargar los colaboradores.</p>'; return; }
     $('adminUserList').innerHTML = (data || []).map(user => `
       <div class="user-row"><span>${escapeHtml(user.email || user.id)}</span>
-        <select data-user-role="${user.id}" aria-label="Rol de ${escapeHtml(user.email)}">
+        <select data-user-role="${user.id}" aria-label="Rol de ${escapeHtml(user.email || 'usuario')}" ${user.id === currentUser.id ? 'disabled title="No puedes cambiar tu propio rol"' : ''}>
           <option value="admin" ${user.role==='admin'?'selected':''}>Administrador</option>
           <option value="editor" ${user.role==='editor'?'selected':''}>Editor</option>
-          <option value="publisher" ${user.role==='publisher'?'selected':''}>Publicador</option>
+          <option value="writer" ${user.role==='writer'?'selected':''}>Escritor</option>
         </select></div>`).join('');
-    $('adminUserList').querySelectorAll('[data-user-role]').forEach(select => select.addEventListener('change', async () => {
-      if (select.dataset.userRole === currentUser.id && select.value !== 'admin') {
-        select.value = 'admin'; message('No puedes quitarte el rol de administrador desde tu propia sesión.',true); return;
-      }
-      const { error } = await client.from('profiles').update({role:select.value}).eq('id',select.dataset.userRole);
-      if (error) { message('No se pudo cambiar el rol: '+error.message,true); await loadUsers(); }
-      else message('Permiso actualizado correctamente.');
-    }));
+    $('adminUserList').querySelectorAll('[data-user-role]').forEach(select => select.addEventListener('change', () => changeEditorialRole(select)));
   }
 
   function insertAtCursor(html) {
@@ -359,6 +412,7 @@
 
   function bindEditor() {
     $('newArticleBtn').addEventListener('click',()=>{ saveLocalBackup(); resetForm(); recoverLocalBackup(localKey()); });
+    $('inviteUserForm').addEventListener('submit', inviteEditorialUser);
     $('refreshArticlesBtn').addEventListener('click',loadArticles);
     $('coverImageInput').addEventListener('change',e=>{if(e.target.files[0])handleCover(e.target.files[0]);e.target.value='';});
     $('removeCoverBtn').addEventListener('click',()=>{coverUrl=null;coverPath=null;$('coverPreview').hidden=true;$('removeCoverBtn').hidden=true;});
