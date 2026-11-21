@@ -44,8 +44,23 @@
           <div id="adminArticleList" class="admin-article-list"><p class="muted">Cargando…</p></div>
           <div id="userManagement" class="user-management" hidden>
             <div class="sidebar-title">Colaboradores</div>
-            <p class="muted small">Cambia el rol de los usuarios que ya tengan una cuenta autorizada.</p>
-            <div id="adminUserList"></div>
+            <p class="muted small">Invita al equipo editorial y administra sus permisos.</p>
+            <form id="inviteUserForm" class="invite-user-form">
+              <label>Correo electrónico
+                <input id="inviteUserEmail" type="email" autocomplete="email" required placeholder="nombre@correo.com">
+              </label>
+              <label>Rol inicial
+                <select id="inviteUserRole">
+                  <option value="writer" selected>Escritor</option>
+                  <option value="editor">Editor</option>
+                  <option value="admin">Administrador</option>
+                </select>
+              </label>
+              <button id="inviteUserBtn" class="button button-primary" type="submit"><i class="fa-solid fa-paper-plane"></i> Enviar invitación</button>
+              <p id="inviteUserMessage" class="form-message" role="status"></p>
+            </form>
+            <div class="sidebar-title collaborators-list-title">Cuentas autorizadas</div>
+            <div id="adminUserList"><p class="muted small">Cargando…</p></div>
           </div>
         </aside>
 
