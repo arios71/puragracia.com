@@ -134,6 +134,7 @@
     activateArticlesSection();
     readerView.hidden = false;
     listView.hidden = true;
+    readerView.scrollTop = 0;
     readerView.innerHTML = '<p class="article-loading">Cargando artículo…</p>';
     try {
       if (article.content !== undefined) {
@@ -146,9 +147,11 @@
         readerView.innerHTML = '<button class="article-back" type="button"><i class="fas fa-arrow-left" aria-hidden="true"></i> Todos los artículos</button>' +
           '<article class="article-full">' + shareControl() + DOMPurify.sanitize(parsed.body.innerHTML,{USE_PROFILES:{html:true},ADD_ATTR:['target','rel']}) + '</article>';
       }
+      readerView.scrollTop = 0;
       attachReaderControls(article);
     } catch (error) {
       readerView.innerHTML = '<button class="article-back" type="button"><i class="fas fa-arrow-left"></i> Todos los artículos</button><p class="article-error">No fue posible cargar este artículo. Inténtalo nuevamente.</p>';
+      readerView.scrollTop = 0;
       attachReaderControls(article);
     }
   }
