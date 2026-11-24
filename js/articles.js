@@ -42,6 +42,18 @@
     });
   }
 
+  // Al abrir un artículo, reiniciar ambos contenedores de scroll.
+  // La lista y el lector tienen desplazamiento independiente en la PWA.
+  function resetReaderScroll() {
+    const section = document.getElementById('articulos');
+    if (section) section.scrollTop = 0;
+    readerView.scrollTop = 0;
+    requestAnimationFrame(() => {
+      if (section) section.scrollTop = 0;
+      readerView.scrollTop = 0;
+    });
+  }
+
   function showList(updateUrl = true) {
     activateArticlesSection();
     readerView.hidden = true;
@@ -141,6 +153,7 @@
     readerView.hidden = false;
     listView.hidden = true;
     readerView.innerHTML = '<p class="article-loading">Cargando artículo…</p>';
+    resetReaderScroll();
     try {
       if (article.content !== undefined) {
         readerView.innerHTML = renderDatabaseArticle(article);
@@ -153,9 +166,11 @@
           '<article class="article-full">' + shareControl() + DOMPurify.sanitize(parsed.body.innerHTML,{USE_PROFILES:{html:true},ADD_ATTR:['target','rel']}) + '</article>';
       }
       attachReaderControls(article);
+      resetReaderScroll();
     } catch (error) {
       readerView.innerHTML = '<button class="article-back" type="button"><i class="fas fa-arrow-left"></i> Todos los artículos</button><p class="article-error">No fue posible cargar este artículo. Inténtalo nuevamente.</p>';
       attachReaderControls(article);
+      resetReaderScroll();
     }
   }
 
