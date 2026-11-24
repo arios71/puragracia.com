@@ -19,7 +19,10 @@
 
   function articleUrl(article) {
     const key = article.slug || article.id;
-    return 'https://puragracia-radio-api-nine.vercel.app/api/article-share?article=' + encodeURIComponent(key);
+    const url = new URL('https://www.puragracia.com/');
+    url.searchParams.set('articulo', key);
+    url.hash = 'articulos';
+    return url.toString();
   }
 
   function updateArticleUrl(article, method = 'pushState') {
@@ -118,11 +121,15 @@
 
   function renderDatabaseArticle(article) {
     const cover = article.cover ? '<img class="article-cover" src="'+escapeHtml(article.cover)+'" alt="'+escapeHtml(article.coverAlt || '')+'">' : '';
+    const category = String(article.category || '').trim();
+    const categoryLabel = category && category.toLocaleUpperCase('es-PR') !== 'LECTURAS'
+      ? '<span class="article-category">'+escapeHtml(category)+'</span>'
+      : '';
     return `
       <button class="article-back" type="button"><i class="fas fa-arrow-left" aria-hidden="true"></i> Todos los artículos</button>
       <article class="article-full">
         <header class="article-full-header">
-          <span class="article-category">${escapeHtml(article.category || 'ARTÍCULO')}</span>
+          ${categoryLabel}
           <h2>${escapeHtml(article.title)}</h2>
           <div class="article-byline"><time datetime="${escapeHtml(article.date)}">${escapeHtml(article.dateLabel || dateLabel(article.date))}</time><span>Por ${escapeHtml(article.author)}</span></div>
         </header>
