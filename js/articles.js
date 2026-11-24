@@ -161,6 +161,19 @@
     if (button) openArticle(button.dataset.articleId);
   });
 
+  // Al salir de Artículos desde el menú, cerrar el lector sin reactivar la sección.
+  window.addEventListener('pgr:section-navigation', () => {
+    readerView.hidden = true;
+    readerView.innerHTML = '';
+    listView.hidden = false;
+
+    const url = new URL(window.location.href);
+    if (url.searchParams.has('articulo')) {
+      url.searchParams.delete('articulo');
+      window.history.replaceState(window.history.state, '', url);
+    }
+  });
+
   window.addEventListener('popstate', () => {
     const id = new URL(window.location.href).searchParams.get('articulo');
     if (id) openArticle(id, false);
